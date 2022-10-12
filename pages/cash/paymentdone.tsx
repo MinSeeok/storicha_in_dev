@@ -3,9 +3,6 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { ChevronBackOutline } from 'react-ionicons';
 import styled from 'styled-components';
 
-interface title {
-  title: string;
-}
 export default function PaymentDone(){
   return(
         <Box>

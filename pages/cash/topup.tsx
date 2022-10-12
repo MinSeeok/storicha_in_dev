@@ -1,5 +1,6 @@
 import Box from 'components/Box';
 import { NextPage } from 'next';
+import Image from 'next/image';
 import * as React from 'react';
 import styled from 'styled-components';
 
@@ -30,7 +31,11 @@ const Cash:NextPage = () => {
             <TopupBox>
                 <CoinBox onClick={() => coinSelect(10)} className={selectNumber === 10 ? "select" : ""}>
                     <div className='left'>
-                        <img src="/images/icons/toriCoin.png" alt="" />
+                        <Image
+                            src={'/images/toriCoin.png'}
+                            width={'20px'}
+                            height={'20px'}
+                        />
                     </div>
                     <div className='right'>
                         <p>10개</p>
@@ -43,7 +48,11 @@ const Cash:NextPage = () => {
                 </CoinBox>
                 <CoinBox onClick={() => coinSelect(50)} className={selectNumber === 50 ? "select" : ""}>
                     <div className='left'>
-                        <img src="/images/icons/toriCoin.png" alt="" />
+                        <Image
+                            src={'/images/toriCoin.png'}
+                            width={'20px'}
+                            height={'20px'}
+                        />
                     </div>
                     <div className='right'>
                         <p>50개</p>
@@ -56,7 +65,11 @@ const Cash:NextPage = () => {
                 </CoinBox>
                 <CoinBox onClick={() => coinSelect(100)} className={selectNumber === 100 ? "select" : ""}>
                     <div className='left'>
-                        <img src="/images/icons/toriCoin.png" alt="" />
+                        <Image
+                            src={'/images/toriCoin.png'}
+                            width={'20px'}
+                            height={'20px'}
+                        />
                     </div>
                     <div className='right'>
                         <p>100개</p>
@@ -69,7 +82,11 @@ const Cash:NextPage = () => {
                 </CoinBox>
                 <CoinBox onClick={() => coinSelect(150)} className={selectNumber === 150 ? "select" : ""}>
                     <div className='left'>
-                        <img src="/images/icons/toriCoin.png" alt="" />
+                        <Image
+                            src={'/images/toriCoin.png'}
+                            width={'20px'}
+                            height={'20px'}
+                        />
                     </div>
                     <div className='right'>
                         <p>150개</p>
@@ -83,21 +100,29 @@ const Cash:NextPage = () => {
                 </CoinBox>
                 <CoinBox onClick={() => coinSelect(300)} className={selectNumber === 300 ? "select" : ""}>
                     <div className='left'>
-                    <img src="/images/icons/toriCoin.png" alt="" />
+                        <Image
+                            src={'/images/toriCoin.png'}
+                            width={'20px'}
+                            height={'20px'}
+                        />
                     </div>
                     <div className='right'>
-                            <p>300개</p>
+                        <p>300개</p>
                     </div>
                     <div className='left'>
-                            <p>15% 할인</p>
+                        <p>15% 할인</p>
                     </div>
                     <div className='right'>
-                            <p>₩25,500</p>
+                        <p>₩25,500</p>
                     </div>
                 </CoinBox>
                 <CoinBox onClick={() => coinSelect(500)} className={selectNumber === 500 ? "select" : ""}>
                     <div className='left'>
-                        <img src="/images/icons/toriCoin.png" alt="" />
+                        <Image
+                            src={'/images/toriCoin.png'}
+                            width={'20px'}
+                            height={'20px'}
+                        />
                     </div>
                     <div className='right'>
                         <p>500개</p>
@@ -184,6 +209,7 @@ const TopupBoxTop = styled.div`
         background-color: var(--box1);
         color: var(--title);
         padding: 16px 6px 4px 6px;
+        font-size: 16px;
     }
     b {
         color: var(--point);
@@ -230,7 +256,7 @@ const CoinBox = styled.div`
     padding: 12px;
     border-radius: 8px;
     row-gap: 11px;
-    font-size: 1.15rem;
+    font-size: 16px;
     color: var(--title);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     cursor: pointer;
@@ -242,7 +268,7 @@ const CoinBox = styled.div`
     .left{
         justify-content: flex-start;
         p {
-        font-size: 1rem;
+        font-size: 16px;
         color: var(--accent);
         }
     }
@@ -301,7 +327,7 @@ const Semen = styled.button`
         display: flex;
         flex-direction: row;
         align-items: flex-end;
-        font-size: 1rem;
+        font-size: 16px;
     }
     span{
         font-size: 1.8rem;
@@ -347,9 +373,9 @@ const SubText = styled.div`
     flex-direction: column;
     align-items: flex-start;
     p {
-        font-size: 1rem;
+        font-size: 16px;
         color: #8E8D8D;
-        line-height: 1.25rem;
+        line-height: 16px;
         letter-spacing: -.4px;
     }
     `

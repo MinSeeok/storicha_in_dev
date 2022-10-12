@@ -239,7 +239,7 @@ const HaveCash = styled.p`
 `
 const PaymentDetail = styled.div`
   position: relative;
-  padding: 20px 0;
+  padding-top: 20px;
   width: 100%;
   height: auto;
   background-color: #3B3B3B;
