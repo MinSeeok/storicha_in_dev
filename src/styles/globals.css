@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    position: relative;
+    box-sizing: border-box;
+    font-family: 'Pretendard-Regular';
+}
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body[data-theme="dark"]{
+    --bg-main: #111111;
+    --bg-sub: #333333;
+}
+
+body[data-theme="light"]{
+    --bg-main: #ffffff;
+    --bg-sub: #bdc1c9;
+}
+
+html{
+    --bgColor: #F6F5F3;
+    --boxColor: #EFEFEF;
+    --boxColor2: #FAFAFA;
+    --textColor: #141414;
+    --textColor2: #626262;
+    --accentColor: #44bd32;
+    --lineColor: #D7D7D7;
+    --pink: #F06A6A;
+
+    --background: #FAFAFA;
+    --container: #FFFFFF;
+    --panel: #25292F;
+    --section: #F6F8FA;
+    --opacityDivison: #F7F7F7;
+    --box1: #FFFFFF;
+    --box2: #F6F8FA;
+    --box3: #FAFAFA;
+    --line: #FAFAFA;
+    --borderLine: #EEEEEE;
+    --title: #1A1B1C;
+    --sub: #869197;
+    --placeholder: #C8C8C8;
+    --deactivatedButton: #CDCDCD;
+    --buttonPrime: #121212;
+    --buttonPrimeFont: #FFFFFF;
+    --buttonSecondary: #EBEBEB;
+    --buttonSecondaryFont: #1D2026;
+    --point: #E45059;
+    --pointContracst: #FFFFFF;
+    --pointText: #00D6D8;
+    --accent: #00C7C7;
+    --icon1: #878788;
+    --icon2: #4A5E53;
+    --success: #7070F8;
+    --warning: #BB1C12;
+    --transBorder: transparent;
+    --unchecked: #869197;
+    --checked: #FE4659;
+    --layerPopBg: #FAFAFA;
+    --modalSlideBg: #F6F8FA;
+    --titleBold: #1A1B1C;
+    --iconAccent: #E45059;
+}
+html.dark{
+    --title: white;
+    --bgColor: #1F1F1F;
+    --boxColor: #141414;
+    --boxColor2: #505050;
+    --textColor: #EFEFEF;
+    --textColor2: #D7D7D7;
+    --accentColor: #44bd32;
+    --lineColor: #626262;
+    --pink: #F06A6A;
+
+    --background: #242528;
+    --container: #17171A;
+    --panel: #242528;
+    --section: #2F2F2F;
+    --opacityDivison: #FFFFFF;
+    --box1: #17171A;
+    --box2: #242528;
+    --box3: #1D2026;
+    --line: #353535;
+    --borderLine: #2F2F2F;
+    --title: #FFFFFF;
+    --sub: #979797;
+    --placeholder: #5B5757;
+    --deactivatedButton: #878788;
+    --buttonPrime: #FCFCFC;
+    --buttonPrimeFont: #1D2026;
+    --buttonSecondary: #414147;
+    --buttonSecondaryFont: #FFFFFF;
+    --point: #E45059;
+    --pointContracst: #FFFFFF;
+    --pointText: #7882F5;
+    --accent: #FFBE7C;
+    --icon1: #4A4E53;
+    --icon2: #878788;
+    --success: #00C7C7;
+    --warning: #BB1C12;
+    --transBorder: #333333;
+    --unchecked: #979797;
+    --checked: #FE4659;
+    --layerPopBg: #242528;
+    --modalSlideBg: #242528;
+    --titleBold: #1A1B1C;
+    --iconAccent: #FFBE7C;
+}

@@ -24,16 +24,22 @@ export default class MyDocument extends Document {
       sheet.seal();
     }
   }
-
   render() {
+    const setThemeMode = `
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    `;
     return (
-      <Html>
-        <Head />
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
+        <Html>
+          <Head />
+          <body>
+            <Main />
+            <NextScript />
+          </body>
+        </Html>
     );
   }
 }

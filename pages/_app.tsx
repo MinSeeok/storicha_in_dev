@@ -1,20 +1,20 @@
+import { GlobalStyle } from '@src/styles/global-styled';
+import Container from 'components/Container';
+import Header from 'components/Header';
 import type { AppProps } from 'next/app';
-import GlobalStyle from '@src/styles/globalStyle';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import * as React from 'react';
 import { RecoilRoot } from 'recoil';
-import { Navigation } from 'components/Navigation';
+import '../src/styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const queryClient = new QueryClient();
     return (
         <>
-            <QueryClientProvider client={queryClient}>
-                <RecoilRoot>
-                    <GlobalStyle/>
-                    <Navigation/>
-                    <Component {...pageProps} />
-                </RecoilRoot>
-            </QueryClientProvider>
+            <RecoilRoot>
+                <GlobalStyle />
+                <Container>
+                    <Component {...pageProps}/>
+                </Container>
+            </RecoilRoot>
         </>
     )
 }
