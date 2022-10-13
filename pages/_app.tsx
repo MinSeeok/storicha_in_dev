@@ -1,4 +1,5 @@
 import { GlobalStyle } from '@src/styles/global-styled';
+import BackLogoImage from 'components/BackLogoImage';
 import Container from 'components/Container';
 import Header from 'components/Header';
 import type { AppProps } from 'next/app';
@@ -12,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <RecoilRoot>
                 <GlobalStyle />
                 <Container>
+                    <BackLogoImage/>
                     <Component {...pageProps}/>
                 </Container>
             </RecoilRoot>

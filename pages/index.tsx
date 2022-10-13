@@ -1,9 +1,20 @@
-import { NextPage } from 'next';
-import * as React from 'react';
+import React from 'react';
+import styled from "styled-components"
+import BackLogoImage from '../components/BackLogoImage';
+import HelmetProvier from 'components/Helmet';
+import Image from 'next/image';
+import Container from 'components/Container';
 
-const Home:NextPage = () => {
-    return(
-        <div className='text-red-500'>홈페이지</div>
-    )
+interface title {
+  title: string;
 }
-export default Home;
+export default function Home(title:title){
+  return (
+    <>
+        <HelmetProvier title='STORICHAIN'/>
+        <Container>
+            
+        </Container>
+    </>
+  )
+}
