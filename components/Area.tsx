@@ -10,7 +10,7 @@ const Area = ({children}:any) => {
 
 const Container = styled.div`
     width: 100%;
-    padding: 8px;
+    padding: 40px 12px 60px 12px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

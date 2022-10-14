@@ -11,350 +11,352 @@ interface title {
 }
 
 export default function Series(title: title) {
-  const tabTitle = ["대여하기 1TC", "소장하기 2TC", "NFT IP 구매"];
-  const ListSort = ["인기순", "업데이트순", "조회순", "별점순"];
-  const [tabState, setTabState] = React.useState<Number>(0);
-  const [listOn, setListOn] = React.useState<Boolean>(false);
-  const [sort, setSort] = React.useState<String>("업데이트순");
-  const [moreView, setMoreview] = React.useState<Boolean>(false);
-  const slideRef = React.useRef() as React.MutableRefObject<HTMLDivElement>;
-  const [otherState, setOtherState] = React.useState<any>(0);
-  const [hideReceipt, setHideReceipt] = React.useState<Boolean>(false);
-  const [mark, setMark] = React.useState(false);
+    const tabTitle = ["대여하기 1TC", "소장하기 2TC", "NFT IP 구매"];
+    const ListSort = ["인기순", "업데이트순", "조회순", "별점순"];
+    const [tabState, setTabState] = React.useState<Number>(0);
+    const [listOn, setListOn] = React.useState<Boolean>(false);
+    const [sort, setSort] = React.useState<String>("업데이트순");
+    const [moreView, setMoreview] = React.useState<Boolean>(false);
+    const slideRef = React.useRef() as React.MutableRefObject<HTMLDivElement>;
+    const [otherState, setOtherState] = React.useState<any>(0);
+    const [hideReceipt, setHideReceipt] = React.useState<Boolean>(false);
+    const [mark, setMark] = React.useState(false);
 
 
-  const OtherMoveLeft = () => {
-    if ((-(otherData.length - 1) * 170) !== otherState) {
-      slideRef.current.style.transform = `translateX(${otherState - 170}px)`;
-      setOtherState(otherState - 170);
+    const OtherMoveLeft = () => {
+        if ((-(otherData.length - 1) * 170) !== otherState) {
+            slideRef.current.style.transform = `translateX(${otherState - 170}px)`;
+            setOtherState(otherState - 170);
+        }
     }
-  }
-  const OtherMoveRight = () => {
-    if (otherState !== 0) {
-      slideRef.current.style.transform = `translateX(${otherState + 170}px)`;
-      setOtherState(otherState + 170);
+    const OtherMoveRight = () => {
+        if (otherState !== 0) {
+        slideRef.current.style.transform = `translateX(${otherState + 170}px)`;
+        setOtherState(otherState + 170);
+        }
     }
-  }
-  // 체크 아이템 배열
-  const [checkItems, setCheckItems] = React.useState([]);
-  // 체크박스 전체 선택
-  const handleAllCheck = (checked: Boolean) => {
-    if (checked) {
-      const idArray: any = [];
-      data.forEach((el) => idArray.push(el.idx));
-      setCheckItems(idArray);
-    } else {
-      setCheckItems([]);
+    // 체크 아이템 배열
+    const [checkItems, setCheckItems] = React.useState<Array<String>>([]);
+    // 체크박스 전체 선택
+    const handleAllCheck = (checked: Boolean) => {
+        if (checked) {
+        const idArray: any = [];
+        data.forEach((el) => idArray.push(el.idx));
+        setCheckItems(idArray);
+        } else {
+        setCheckItems([]);
+        }
     }
-  }
-  // 체크박스 단일 선택
-  const handleSingleCheck = (checked: any, idx: any) => {
-    if (checked) {
-      // 단일 선택 시 체크된 아이템을 배열에 추가
-      setCheckItems([...checkItems, idx]);
-    } else {
-      // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
-      setCheckItems(checkItems.filter((el) => el !== idx));
+    // 체크박스 단일 선택
+    const handleSingleCheck = (checked: any, idx: any) => {
+        if (checked) {
+        // 단일 선택 시 체크된 아이템을 배열에 추가
+        console.log('123');
+        console.log(checkItems);
+        console.log('321');
+        setCheckItems([...checkItems, idx]);
+        } else {
+        // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+        setCheckItems(checkItems.filter((el) => el !== idx));
+        }
+    };
+    const SortSelect = (content: string) => {
+        setListOn((e) => !e);
+        setSort(content);
     }
-  };
-  const SortSelect = (content: string) => {
-    setListOn((e) => !e);
-    setSort(content);
-  }
-  const data = [
-    { idx: "e1894d49-8483-4dcf-8436-aefb3449f9ce", episode: 1, title: "어느 겨울, 운명의 밤", score: 4.8, date: "22.06.22", free: true },
-    { idx: "189bccc4-1845-45b0-a596-6b12e4786b4d", episode: 2, title: "개막의 시각", score: 4.8, date: "22.06.22", free: true },
-    { idx: "710d58f5-948f-414f-9775-ba27be29399a", episode: 3, title: "전의의 소재", score: 4.8, date: "22.06.22", free: false },
-    { idx: "74a3edf5-13db-43ed-8210-74c5393c054c", episode: 4, title: "방과 후에 추는 춤", score: 4.8, date: "22.06.22", free: false },
-    { idx: "e9d9e6b7-66ff-46e2-81c8-a2bdc73afd24", episode: 5, title: "어느 겨울날, 마음이 머무는 곳", score: 4.8, date: "22.06.22", free: false },
-    { idx: "f1f426cb-32af-4d49-96d4-c72e352dedd3", episode: 6, title: "두 사람의 거리", score: 4.8, date: "22.06.22", free: false },
-    { idx: "b1ce70a8-986e-4ea4-b883-2f5d8a0a0ca5", episode: 7, title: "살며시 다가온 방문자", score: 4.8, date: "22.06.22", free: false },
-    { idx: "c680891e-2c65-4287-944a-595f5c5617d8", episode: 8, title: "어느 겨울날, 소원의 형태", score: 4.8, date: "22.06.22", free: false },
-    { idx: "6539a18a-5705-4f64-bb39-06925c9f63c4", episode: 9, title: "그 운명의 시작으로", score: 4.8, date: "22.06.22", free: false },
-    { idx: "4f310282-584f-4718-92ce-f3f56cf3eee0", episode: 10, title: "어느 겨울 날, 머나먼 귀로", score: 4.8, date: "22.06.22", free: false },
-  ]
-  const otherData = [
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 1", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 2", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 3", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 4", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 5", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 6", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 7", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 8", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 9", genre: "판타지, 멜로" },
-    { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 10", genre: "판타지, 멜로" },
-  ]
-  const listBoxRef = React.useRef([]);
-  const handleClickOutside = (e: MouseEvent) => {
-    if (!listBoxRef.current[0].contains(e.target)) {
-      setListOn(false);
-    } else {
+    const data = [
+        { idx: "e1894d49-8483-4dcf-8436-aefb3449f9ce", episode: 1, title: "어느 겨울, 운명의 밤", score: 4.8, date: "22.06.22", free: true },
+        { idx: "189bccc4-1845-45b0-a596-6b12e4786b4d", episode: 2, title: "개막의 시각", score: 4.8, date: "22.06.22", free: true },
+        { idx: "710d58f5-948f-414f-9775-ba27be29399a", episode: 3, title: "전의의 소재", score: 4.8, date: "22.06.22", free: false },
+        { idx: "74a3edf5-13db-43ed-8210-74c5393c054c", episode: 4, title: "방과 후에 추는 춤", score: 4.8, date: "22.06.22", free: false },
+        { idx: "e9d9e6b7-66ff-46e2-81c8-a2bdc73afd24", episode: 5, title: "어느 겨울날, 마음이 머무는 곳", score: 4.8, date: "22.06.22", free: false },
+        { idx: "f1f426cb-32af-4d49-96d4-c72e352dedd3", episode: 6, title: "두 사람의 거리", score: 4.8, date: "22.06.22", free: false },
+        { idx: "b1ce70a8-986e-4ea4-b883-2f5d8a0a0ca5", episode: 7, title: "살며시 다가온 방문자", score: 4.8, date: "22.06.22", free: false },
+        { idx: "c680891e-2c65-4287-944a-595f5c5617d8", episode: 8, title: "어느 겨울날, 소원의 형태", score: 4.8, date: "22.06.22", free: false },
+        { idx: "6539a18a-5705-4f64-bb39-06925c9f63c4", episode: 9, title: "그 운명의 시작으로", score: 4.8, date: "22.06.22", free: false },
+        { idx: "4f310282-584f-4718-92ce-f3f56cf3eee0", episode: 10, title: "어느 겨울 날, 머나먼 귀로", score: 4.8, date: "22.06.22", free: false },
+    ]
+    const otherData = [
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 1", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 2", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 3", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 4", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 5", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 6", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 7", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 8", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 9", genre: "판타지, 멜로" },
+        { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 10", genre: "판타지, 멜로" },
+    ]
+    const listBoxRef = React.useRef<Array<HTMLDivElement | null>>([]);
+    const handleClickOutside = (e: MouseEvent) => {
+        console.log(listBoxRef.current[0]);
+        if (!listBoxRef.current[0]) {
+            setListOn(false);
+        } else {
 
+        }
     }
-  }
-  React.useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    AOS.init();
-  }, []);
-  return (
-    <>
-      <Container>
-        <TopupBox>
-          <p>양과 여우들의 밤</p>
-        </TopupBox>
-        <Box>
-          <Left>
-            <TitleImg>
-              <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-              <div className='mobileHead'>
-                <p className='mobileTitle'>양과 여우들의 밤</p>
-                <p className='moblieSubTitle'>
-                  <span>
-                    <StarOutline />
-                    4.3
-                  </span>
-                  <span className='moblieMarkIcon'>
-                    {mark ?
-                      <Bookmark cssClasses={"bookMark"}
-                        onClick={() => {
-                          if (mark) {
-                            alert("북마크 해제되었습니다");
-                          }
-                          setMark((e) => !e);
-                        }}
-                      /> :
-                      <BookmarkOutline cssClasses={"bookMark"}
-                        onClick={() => {
-                          if (!mark) {
-                            alert("북마크 되었습니다");
-                          }
-                          setMark((e) => !e);
-                        }}
-                      />
-                    }
-                    10,262
-                  </span>
-                </p>
-              </div>
-            </TitleImg>
-            <SubBox>
-              <p className='firstEpisode'>
-                <BookOutline />
-                첫화 보기
-              </p>
-            </SubBox>
-            <TitleHead>줄거리</TitleHead>
-            <TitleSubText>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</TitleSubText>
-            <SubBox style={{ paddingTop: "176px" }}>
-              <WriterImg>
+    React.useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        AOS.init();
+    }, []);
+    return (
+        <Container>
+            <TopupBox>
+                <p>양과 여우들의 밤</p>
+            </TopupBox>
+            <Box>
+            <Left>
+                <TitleImg>
                 <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-              </WriterImg>
-              <WriteInfo>
-                <p className='title'>Richard Ottemant</p>
-                <p className='tag'>@Illustrator</p>
-                <WriteFollow>Follow</WriteFollow>
-                <WriteSupport>Staking Support</WriteSupport>
-              </WriteInfo>
-            </SubBox>
-            <SubBox style={{ flexDirection: "column" }}>
-              <p className='publicTitle'>작가의 공지</p>
-              <p className='public'>이전 주 연재가 조금 늦었습니다.<br />많은 양해 바랍니다.</p>
-            </SubBox>
-          </Left>
-          <Right>
-            <BookMark>
-              {mark ?
-                <Bookmark cssClasses={"bookMark"}
-                  onClick={() => {
-                    if (mark) {
-                      alert("북마크 해제되었습니다");
-                    }
-                    setMark((e) => !e);
-                  }}
-                /> :
-                <BookmarkOutline cssClasses={"bookMark"}
-                  onClick={() => {
-                    if (!mark) {
-                      alert("북마크 되었습니다");
-                    }
-                    setMark((e) => !e);
-                  }}
-                />
-              }
-              북마크하기
-            </BookMark>
-            <InfoBox>
-              <div>
-                <p>장르</p>
-                <p>액션, 판타지</p>
-              </div>
-              <div>
-                <p>에피소드</p>
-                <p>148</p>
-              </div>
-              <div>
-                <p>포멧라벨</p>
-                <p>웹소설, 시나리오, 드라마대본</p>
-              </div>
-            </InfoBox>
-            <MoblieStory>
-              <p>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</p>
-            </MoblieStory>
-            <MobileFirstView>
-              <button>
-                <BookOutline />첫화 보기
-              </button>
-            </MobileFirstView>
-            <SelectTab>
-              {tabTitle.map((title, i) => (
-                <p key={i} className={tabState === Number(i) ? "tabChoice" : ""} onClick={() => setTabState(i)}>{title}</p>
-              ))}
-            </SelectTab>
-            <ListTop>
-              <label htmlFor="allSelect">
-                {checkItems.length === data.length ?
-                  <IoMdCheckbox className='ckbox' />
-                  :
-                  <IoMdSquareOutline className='ckbox' />
-                }
-                <input
-                  id='allSelect'
-                  type="checkbox"
-                  onChange={(e) => handleAllCheck(e.target.checked)}
-                  checked={checkItems.length === data.length ? true : false}
-                />
-                전체선택</label>
-              {/* <label htmlFor="allSelect">전체선택</label> */}
-              <p className='sortList' onClick={() => setListOn((e) => !e)}>
-                <ListOutline
-                  width={"28px"}
-                  height={"28px"}
-                />
-                <span>{sort}</span>
-              </p>
-              <SortBox className={listOn ? "sortListView" : ""} ref={el => (listBoxRef.current[0] = el)}>
-                {listOn &&
-                  ListSort.map((content, i) => (
-                    <p className='sortValue' key={i} onClick={() => {
-                      SortSelect(content);
-                    }}>{content}</p>
-                  ))
-                }
-              </SortBox>
-            </ListTop>
-            <ContentBox className={moreView ? "moreView" : ""}>
-              {data.map((content, i) => (
-                <ContentLine key={i}>
-                  {checkItems.includes(content.idx) ?
-                    <label htmlFor={`selectBox${i}`}>
-                      <IoMdCheckbox
-                        className='ckbox'
-                      />
-                    </label>
-                    :
-                    <label htmlFor={`selectBox${i}`}>
-                      <IoMdSquareOutline
-                        className='ckbox'
-                      />
-                    </label>
-                  }
-                  <input
-                    id={`selectBox${i}`}
-                    type="checkbox"
-                    onChange={(e) => handleSingleCheck(e.target.checked, content.idx)}
-                    checked={checkItems.includes(content.idx) ? true : false}
-                  />
-                  <ContentImageBox>
-                    <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-                  </ContentImageBox>
-                  <ContentTextLine className='mobileBoxCon'>
-                    <p className='ep'><b>EP</b>{content.episode}</p>
-                    <p className='epTitle'>{content.title.length < 10 ? content.title : content.title}</p>
-                    <p className='scoreDate'>
-                      <Star
-                        width={"20px"}
-                        height={"20px"}
-                      />
-                      {content.score}&nbsp;&nbsp;&nbsp;&nbsp;{content.date}
+                <div className='mobileHead'>
+                    <p className='mobileTitle'>양과 여우들의 밤</p>
+                    <p className='moblieSubTitle'>
+                    <span>
+                        <StarOutline />
+                        4.3
+                    </span>
+                    <span className='moblieMarkIcon'>
+                        {mark ?
+                        <Bookmark cssClasses={"bookMark"}
+                            onClick={() => {
+                            if (mark) {
+                                alert("북마크 해제되었습니다");
+                            }
+                            setMark((e) => !e);
+                            }}
+                        /> :
+                        <BookmarkOutline cssClasses={"bookMark"}
+                            onClick={() => {
+                            if (!mark) {
+                                alert("북마크 되었습니다");
+                            }
+                            setMark((e) => !e);
+                            }}
+                        />
+                        }
+                        10,262
+                    </span>
                     </p>
-                    <button
-                      className={content.free ? "freeBtn" : ""}
-                      onClick={() => console.log(checkItems)}
-                    >
-                      {content.free ? "무료보기" :
-                        tabState === 0 ? "대여하기 (N)TC" : "소장하기 (N)TC"
-                      }
-                    </button>
-                  </ContentTextLine>
-                </ContentLine>
-              ))}
-            </ContentBox>
-            <MoreViewBtn
-              className={moreView ? "moreViewHide" : ""}
-              onClick={() => setMoreview((e) => !e)}
+                </div>
+                </TitleImg>
+                <SubBox>
+                <p className='firstEpisode'>
+                    <BookOutline />
+                    첫화 보기
+                </p>
+                </SubBox>
+                <TitleHead>줄거리</TitleHead>
+                <TitleSubText>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</TitleSubText>
+                <SubBox style={{ paddingTop: "176px" }}>
+                <WriterImg>
+                    <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
+                </WriterImg>
+                <WriteInfo>
+                    <p className='title'>Richard Ottemant</p>
+                    <p className='tag'>@Illustrator</p>
+                    <WriteFollow>Follow</WriteFollow>
+                    <WriteSupport>Staking Support</WriteSupport>
+                </WriteInfo>
+                </SubBox>
+                <SubBox style={{ flexDirection: "column" }}>
+                <p className='publicTitle'>작가의 공지</p>
+                <p className='public'>이전 주 연재가 조금 늦었습니다.<br />많은 양해 바랍니다.</p>
+                </SubBox>
+            </Left>
+            <Right>
+                <BookMark>
+                {mark ?
+                    <Bookmark cssClasses={"bookMark"}
+                    onClick={() => {
+                        if (mark) {
+                        alert("북마크 해제되었습니다");
+                        }
+                        setMark((e) => !e);
+                    }}
+                    /> :
+                    <BookmarkOutline cssClasses={"bookMark"}
+                    onClick={() => {
+                        if (!mark) {
+                        alert("북마크 되었습니다");
+                        }
+                        setMark((e) => !e);
+                    }}
+                    />
+                }
+                북마크하기
+                </BookMark>
+                <InfoBox>
+                <div>
+                    <p>장르</p>
+                    <p>액션, 판타지</p>
+                </div>
+                <div>
+                    <p>에피소드</p>
+                    <p>148</p>
+                </div>
+                <div>
+                    <p>포멧라벨</p>
+                    <p>웹소설, 시나리오, 드라마대본</p>
+                </div>
+                </InfoBox>
+                <MoblieStory>
+                <p>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</p>
+                </MoblieStory>
+                <MobileFirstView>
+                <button>
+                    <BookOutline />첫화 보기
+                </button>
+                </MobileFirstView>
+                <SelectTab>
+                {tabTitle.map((title, i) => (
+                    <p key={i} className={tabState === Number(i) ? "tabChoice" : ""} onClick={() => setTabState(i)}>{title}</p>
+                ))}
+                </SelectTab>
+                <ListTop>
+                <label htmlFor="allSelect">
+                    {checkItems.length === data.length ?
+                    <IoMdCheckbox className='ckbox' />
+                    :
+                    <IoMdSquareOutline className='ckbox' />
+                    }
+                    <input
+                    id='allSelect'
+                    type="checkbox"
+                    onChange={(e) => handleAllCheck(e.target.checked)}
+                    checked={checkItems.length === data.length ? true : false}
+                    />
+                    전체선택</label>
+                {/* <label htmlFor="allSelect">전체선택</label> */}
+                <p className='sortList' onClick={() => setListOn((e) => !e)}>
+                    <ListOutline
+                    width={"28px"}
+                    height={"28px"}
+                    />
+                    <span>{sort}</span>
+                </p>
+                <SortBox className={listOn ? "sortListView" : ""} ref={el => (listBoxRef.current[0] = el)}>
+                    {listOn &&
+                    ListSort.map((content, i) => (
+                        <p className='sortValue' key={i} onClick={() => {
+                        SortSelect(content);
+                        }}>{content}</p>
+                    ))
+                    }
+                </SortBox>
+                </ListTop>
+                <ContentBox className={moreView ? "moreView" : ""}>
+                {data.map((content, i) => (
+                    <ContentLine key={i}>
+                    {checkItems.includes(content.idx) ?
+                        <label htmlFor={`selectBox${i}`}>
+                        <IoMdCheckbox
+                            className='ckbox'
+                        />
+                        </label>
+                        :
+                        <label htmlFor={`selectBox${i}`}>
+                        <IoMdSquareOutline
+                            className='ckbox'
+                        />
+                        </label>
+                    }
+                    <input
+                        id={`selectBox${i}`}
+                        type="checkbox"
+                        onChange={(e) => handleSingleCheck(e.target.checked, content.idx)}
+                        checked={checkItems.includes(content.idx) ? true : false}
+                    />
+                    <ContentImageBox>
+                        <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
+                    </ContentImageBox>
+                    <ContentTextLine className='mobileBoxCon'>
+                        <p className='ep'><b>EP</b>{content.episode}</p>
+                        <p className='epTitle'>{content.title.length < 10 ? content.title : content.title}</p>
+                        <p className='scoreDate'>
+                        <Star
+                            width={"20px"}
+                            height={"20px"}
+                        />
+                        {content.score}&nbsp;&nbsp;&nbsp;&nbsp;{content.date}
+                        </p>
+                        <button
+                        className={content.free ? "freeBtn" : ""}
+                        onClick={() => console.log(checkItems)}
+                        >
+                        {content.free ? "무료보기" :
+                            tabState === 0 ? "대여하기 (N)TC" : "소장하기 (N)TC"
+                        }
+                        </button>
+                    </ContentTextLine>
+                    </ContentLine>
+                ))}
+                </ContentBox>
+                <MoreViewBtn
+                className={moreView ? "moreViewHide" : ""}
+                onClick={() => setMoreview((e) => !e)}
+                >
+                <ChevronDownOutline
+                    width={"24px"}
+                    height={"24px"}
+                /> 더보기
+                </MoreViewBtn>
+            </Right>
+            <OtherBox>
+                <p className='title' onClick={() => console.log(otherState)}>이 작가의 다른 작품 보기</p>
+                <OtherContentBox>
+                <ChevronBackCircleOutline
+                    width={"42px"}
+                    height={"42px"}
+                    onClick={OtherMoveLeft}
+                />
+                <ChevronForwardCircleOutline
+                    width={"42px"}
+                    height={"42px"}
+                    onClick={OtherMoveRight}
+                />
+                <OtherLine>
+                    <OtherWrapper className='slideRef' ref={slideRef} style={listStyled}>
+                    {otherData.map((content, i) => (
+                        <OtherContent key={i}>
+                        <OtherImage>
+                            <img src={`/images/test/${content.image}`} alt="" />
+                        </OtherImage>
+                        <OtherTitle>{content.title.length < 10 ? content.title : content.title.slice(0, 10) + "..."}</OtherTitle>
+                        <OtherGenre>{content.genre}</OtherGenre>
+                        </OtherContent>
+                    ))}
+                    </OtherWrapper>
+                </OtherLine>
+                </OtherContentBox>
+                <ListBackBtn>
+                <button><img src="/images/icons/backListBtn.svg" alt="" /> 목록으로</button>
+                </ListBackBtn>
+            </OtherBox>
+            </Box>
+            <ResultBox
+            className={checkItems[0] ?
+                hideReceipt ? "hideShowResult" : "" : "showResult"
+            }
             >
-              <ChevronDownOutline
-                width={"24px"}
-                height={"24px"}
-              /> 더보기
-            </MoreViewBtn>
-          </Right>
-          <OtherBox>
-            <p className='title' onClick={() => console.log(otherState)}>이 작가의 다른 작품 보기</p>
-            <OtherContentBox>
-              <ChevronBackCircleOutline
-                width={"42px"}
-                height={"42px"}
-                onClick={OtherMoveLeft}
-              />
-              <ChevronForwardCircleOutline
-                width={"42px"}
-                height={"42px"}
-                onClick={OtherMoveRight}
-              />
-              <OtherLine>
-                <OtherWrapper className='slideRef' ref={slideRef} style={listStyled}>
-                  {otherData.map((content, i) => (
-                    <OtherContent key={i}>
-                      <OtherImage>
-                        <img src={`/images/test/${content.image}`} alt="" />
-                      </OtherImage>
-                      <OtherTitle>{content.title.length < 10 ? content.title : content.title.slice(0, 10) + "..."}</OtherTitle>
-                      <OtherGenre>{content.genre}</OtherGenre>
-                    </OtherContent>
-                  ))}
-                </OtherWrapper>
-              </OtherLine>
-            </OtherContentBox>
-            <ListBackBtn>
-              <button><img src="/images/icons/backListBtn.svg" alt="" /> 목록으로</button>
-            </ListBackBtn>
-          </OtherBox>
-        </Box>
-        <ResultBox
-          className={checkItems[0] ?
-            hideReceipt ? "hideShowResult" : "" : "showResult"
-          }
-        >
-          <div className='top'>
-            <p>총 주문 금액</p>
-            <p>100 TC</p>
-            <p>총 2건</p>
-          </div>
-          <button>선택 구매</button>
-          <MenuOutline
-            width={"36px"}
-            height={"36px"}
-            cssClasses={"menuOutline"}
-            onClick={() => {
-              setHideReceipt((e) => !e);
-            }}
-          />
-        </ResultBox>
-      </Container>
-    </>
-  )
+            <div className='top'>
+                <p>총 주문 금액</p>
+                <p>100 TC</p>
+                <p>총 2건</p>
+            </div>
+            <button>선택 구매</button>
+            <MenuOutline
+                width={"36px"}
+                height={"36px"}
+                cssClasses={"menuOutline"}
+                onClick={() => {
+                setHideReceipt((e) => !e);
+                }}
+            />
+            </ResultBox>
+        </Container>
+    )
 }
 
 const Container = styled.div`
@@ -1198,7 +1200,7 @@ const OtherContentBox = styled.div`
     flex-wrap: wrap;
     height: auto;
     border-radius: 0;
-    background-color: ${props => props.theme.container};
+    background-color: var(--container);
     svg{
       display: none;
     }

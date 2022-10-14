@@ -1,3 +1,4 @@
+import Box from 'components/Box';
 import * as React from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
@@ -84,28 +85,6 @@ export default function Checkout(title:title){
     )
 }
 
-const Box = styled.div`
-  box-sizing: border-box;
-    min-width: 428px;
-    max-width: 500px;
-    padding: 50px 30px 40px 30px;
-    border-radius: 16px;
-    position: relative;
-    background-color: var(--box1);
-    z-index: 999;
-    margin-top: 24px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    color: var(--title);
-    @media screen and (max-width: 500px) {
-        width: 100%;
-        min-width: 350px;
-        padding: 50px 14px 30px 14px;
-        border-radius: 0px;
-        margin-top: 0;
-        min-height: 100vh;
-        padding: 60px 20px;
-    }
-`
 const TopTitle = styled.span`
     font-size: 18px;
     font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
@@ -134,7 +113,7 @@ const PaymentTitle = styled.p`
   text-align: left;
   color: var(--title);
   font-size: 24px;
-  margin-top: 16px;
+  margin-top: 38px;
   display: flex;
   justify-content: space-between;
   align-items: center;

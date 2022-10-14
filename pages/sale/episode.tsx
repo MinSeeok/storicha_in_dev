@@ -1,4 +1,5 @@
 import AddContentBox from 'components/AddContentBox';
+import Area from 'components/Area';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { AddCircleOutline, ChevronBackOutline, ChevronForwardOutline, CopyOutline, ListOutline, SearchOutline } from 'react-ionicons';
@@ -34,66 +35,66 @@ export default function SaleEpisode(){
     const storyList = [
         // public: 0-공개 / 1-비공개 / 2-팔로워에게만공개 / 3-초대된사람만
         {
-        idx: "fae83f3e-5499-402e-af52-f24c30264f4a",
-        img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
-        title: "맨홀 구멍",
-        link: "https://storicha.in/stori/view/SKoIcN04xKW",
-        public: 0,
+            idx: "fae83f3e-5499-402e-af52-f24c30264f4a",
+            img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
+            title: "맨홀 구멍",
+            link: "https://storicha.in/stori/view/SKoIcN04xKW",
+            public: 0,
         },
         {
-        idx: "76f4fe58-da03-4387-85ba-9b13a5b9784e",
-        img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
-        title: "검의 무게를 견뎌내는 자, 욕망을 다스리는 자",
-        link: "https://storicha.in/stori/view/dkeodkfediehe",
-        public: 1,
+            idx: "76f4fe58-da03-4387-85ba-9b13a5b9784e",
+            img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
+            title: "검의 무게를 견뎌내는 자, 욕망을 다스리는 자",
+            link: "https://storicha.in/stori/view/dkeodkfediehe",
+            public: 1,
         },
         {
-        idx: "f3a50e3b-5bbd-4c54-b6da-9f3db95495a9",
-        img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
-        title: "용의 눈물을 다시 머금고서",
-        link: "https://storicha.in/stori/view/FdieEiemdika8",
-        public: 2,
+            idx: "f3a50e3b-5bbd-4c54-b6da-9f3db95495a9",
+            img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
+            title: "용의 눈물을 다시 머금고서",
+            link: "https://storicha.in/stori/view/FdieEiemdika8",
+            public: 2,
         },
         {
-        idx: "81f166e1-5fbb-40d1-b1f7-feea25d9f2d1",
-        img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
-        title: "사선의 끝에서 찾아낸 아내의 시체",
-        link: "https://storicha.in/stori/view/UdieUneleiJel",
-        public: 3,
+            idx: "81f166e1-5fbb-40d1-b1f7-feea25d9f2d1",
+            img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
+            title: "사선의 끝에서 찾아낸 아내의 시체",
+            link: "https://storicha.in/stori/view/UdieUneleiJel",
+            public: 3,
         },
         {
-        idx: "d10980db-779d-45f0-b573-fbbcb7a3e843",
-        img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
-        title: "사랑과 악마",
-        link: "https://storicha.in/stori/view/FdieEiemdika8",
-        public: 0,
+            idx: "d10980db-779d-45f0-b573-fbbcb7a3e843",
+            img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
+            title: "사랑과 악마",
+            link: "https://storicha.in/stori/view/FdieEiemdika8",
+            public: 0,
         },
         {
-        idx: "16ad3af8-c3b0-4886-ac4a-51587593098a",
-        img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
-        title: "검의 무게를 견뎌내는 자, 욕망을 다스리는 자 ",
-        link: "https://storicha.in/stori/view/rSelKes93ke3",
-        public: 0,
+            idx: "16ad3af8-c3b0-4886-ac4a-51587593098a",
+            img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
+            title: "검의 무게를 견뎌내는 자, 욕망을 다스리는 자 ",
+            link: "https://storicha.in/stori/view/rSelKes93ke3",
+            public: 0,
         },
         {
-        idx: "60b94b25-8c36-43ab-abdd-1fd9ecd0c03f",
-        img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
-        title: "용의 눈물을 다시 머금고서 ",
-        link: "https://storicha.in/stori/view/dkeo7630sawQ",
-        public: 0,
+            idx: "60b94b25-8c36-43ab-abdd-1fd9ecd0c03f",
+            img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
+            title: "용의 눈물을 다시 머금고서 ",
+            link: "https://storicha.in/stori/view/dkeo7630sawQ",
+            public: 0,
         },
         {
-        idx: "d684eba1-4304-4926-9cad-c7d98b916f0c",
-        img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
-        title: "사선의 끝에서 찾아낸 아내의 시체 ",
-        link: "https://storicha.in/stori/view/FdieEiemdika8",
-        public: 0,
+            idx: "d684eba1-4304-4926-9cad-c7d98b916f0c",
+            img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif",
+            title: "사선의 끝에서 찾아낸 아내의 시체 ",
+            link: "https://storicha.in/stori/view/FdieEiemdika8",
+            public: 0,
         },
     ]
     const copyLink = (event:any) => {
         alert("복사되었습니다");
     }
-    const listBoxRef = useRef([]);
+    const listBoxRef = useRef<Array<HTMLDivElement | null>>([]);
     useEffect(()=>{
         document.addEventListener("mousedown", handleClickOutside);
     },[]);
@@ -110,7 +111,7 @@ export default function SaleEpisode(){
         }
     }
     return(
-        <>
+        <Area>
             <TopBox>
                 <p className='title'>판매 할 에피소드로 추가한 스토리 ( {addStory.length} )</p>
                 <p className='subtitle'>에피소드 번호를 입력 해 주세요. 미 입력시 맨 마지막에 노출 됩니다.</p>
@@ -233,7 +234,7 @@ export default function SaleEpisode(){
                 <button>가격 정책 관리로 가기</button>
                 <button>나의 책상으로 돌아가기</button>
             </BottomBtnBox>
-        </>
+        </Area>
     )
 }
 

@@ -93,23 +93,19 @@ export default function SignAgreement(){
                 <div className='underline'></div>
             </InputBox>
             <Title>개인정보 이용 정책 동의</Title>
-            <TextAreaBox readOnly={true}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, vero praesentium. Ut magnam asperiores reiciendis quod nam, consequuntur quo alias expedita nostrum atque laudantium repellat obcaecati deserunt distinctio eligendi sequi?, Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et incidunt veritatis facilis totam ullam provident maxime illo deleniti quibusdam dolorem, repellat optio quo quod voluptatibus nam amet labore recusandae magni?, Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat consequatur aliquid temporibus vel ad minima ut iste quo deserunt reiciendis quasi veritatis quae accusantium consectetur corrupti porro, repellendus a. Mollitia!, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, eius, impedit unde, eos odit facere temporibus provident consectetur blanditiis possimus accusantium quidem numquam ratione placeat quo sequi doloribus reprehenderit perspiciatis.
-            </TextAreaBox>
+            <TextAreaBox readOnly={true} defaultValue='안녕하세요'/>
             <AgreeBox>
                 <div>
-                    <input type="checkbox" checked={infoCheck ? true: false} id="checkbox123" onClick={()=> setInfoCheck((e) => !e)}/>
+                    <input type="checkbox" defaultChecked={infoCheck ? true: false} id="checkbox123" onClick={()=> setInfoCheck((e) => !e)}/>
                     <label htmlFor="checkbox123"><span>동의</span></label>
                 </div>
                 <div>
-                    <input type="checkbox" checked={infoCheck ? false: true} id="checkbox123" onClick={()=> setInfoCheck((e) => !e)}/>
+                    <input type="checkbox" defaultChecked={infoCheck ? false: true} id="checkbox123" onClick={()=> setInfoCheck((e) => !e)}/>
                     <label htmlFor="checkbox123" style={{left: 'calc(50% - 40px)'}}><span>비동의</span></label>
                 </div>
             </AgreeBox>
             <Title>콘텐츠 판매 계약 약관</Title>
-            <TextAreaBox readOnly={true}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, vero praesentium. Ut magnam asperiores reiciendis quod nam, consequuntur quo alias expedita nostrum atque laudantium repellat obcaecati deserunt distinctio eligendi sequi?, Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et incidunt veritatis facilis totam ullam provident maxime illo deleniti quibusdam dolorem, repellat optio quo quod voluptatibus nam amet labore recusandae magni?, Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat consequatur aliquid temporibus vel ad minima ut iste quo deserunt reiciendis quasi veritatis quae accusantium consectetur corrupti porro, repellendus a. Mollitia!, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, eius, impedit unde, eos odit facere temporibus provident consectetur blanditiis possimus accusantium quidem numquam ratione placeat quo sequi doloribus reprehenderit perspiciatis.
-            </TextAreaBox>
+            <TextAreaBox readOnly={true} defaultValue='안녕하세요'/>
             <TitleH2>파트너 티어란? Tier 별로 정산주기와 수익정산 요율이 다르게 됩니다.<br/>위 계약을 읽은 후 알맞게 선택 해 주세요</TitleH2>
             <TierSelectBox>
                 <p>신청 파트너 티어<b>*</b></p>
@@ -139,20 +135,20 @@ export default function SignAgreement(){
             </TierSelectBox>
             <AgreeBox>
                 <div>
-                    <input type="checkbox" checked={contractCheck ? true: false} id="checkbox12345" onClick={()=> setContractCheck((e) => !e)}/>
+                    <input type="checkbox" defaultChecked={contractCheck ? true: false} id="checkbox12345" onChange={()=> setContractCheck((e) => !e)}/>
                     <label htmlFor="checkbox12345"><span>동의</span></label>
                 </div>
                 <div>
-                    <input type="checkbox" checked={contractCheck ? false: true} id="checkbox12345" onClick={()=> setContractCheck((e) => !e)}/>
+                    <input type="checkbox" defaultChecked={contractCheck ? false: true} id="checkbox12345" onChange={()=> setContractCheck((e) => !e)}/>
                     <label htmlFor="checkbox12345" style={{left: 'calc(50% - 40px)'}}><span>비동의</span></label>
                 </div>
             </AgreeBox> 
             <ButtonBox>
                 <div>
-                    <button className='left' onClick={()=> alert("저장")}>저장</button>
+                    <button className='left' onChange={()=> alert("저장")}>저장</button>
                 </div>
                 <div>
-                    <button className='right' onClick={()=> alert("입점 신청")}>콘텐츠 판매자 입점 신청</button>
+                    <button className='right' onChange={()=> alert("입점 신청")}>콘텐츠 판매자 입점 신청</button>
                 </div>
             </ButtonBox>
         </Area>

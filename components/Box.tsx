@@ -18,12 +18,14 @@ const Container = styled.div`
   border-radius: 12px;
   position: relative;
   z-index: 999;
-  margin: 40px 0 80px 0;
+  margin: 40px 0 0 0;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  color: var(--title);
   @media screen and (max-width: 500px) {
     width: 100%;
     min-width: 350px;
-    padding: 30px 16px 20px 16px;
+    min-height: 100vh;
+    padding: 30px 16px 60px 16px;
     margin-top: 0px;
     border-radius: 0px;
   }

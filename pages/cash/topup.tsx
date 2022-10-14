@@ -224,7 +224,7 @@ const TopupBoxTop = styled.div`
 const Directly = styled.input`
     width: 100%;
     padding: 12px 104px 12px 12px;
-    border: 1.8px solid var(--panel);
+    border: 1.8px solid var(--lineColor);
     border-radius: 6px;
     font-size: 20px;
     text-align: right;
