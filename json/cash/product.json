@@ -1,0 +1,89 @@
+{
+    "response_code": "1000",
+    "response_data_count": 7,
+    "response_data": [
+        {
+            "cash_product_idx": 1,
+            "cash_price_policy_idx": 1,
+            "cash_product_title": "캐쉬 상품",
+            "cash_fillup_amount": 0,
+            "product_price": 1,
+            "product_dc_price": 0,
+            "product_dc_price_yn": "N",
+            "cash_buy_type": "Direct",
+            "vat_percent": 9.7
+        },
+        {
+            "cash_product_idx": 2,
+            "cash_price_policy_idx": 3,
+            "cash_product_title": "1000캐쉬",
+            "cash_fillup_amount": 1000,
+            "product_price": 1000,
+            "product_dc_price": 500,
+            "product_dc_price_yn": "N",
+            "cash_buy_type": "Suggeted",
+            "vat_percent": 9.7
+        },
+        {
+            "cash_product_idx": 3,
+            "cash_price_policy_idx": 4,
+            "cash_product_title": "5000캐쉬",
+            "cash_fillup_amount": 5000,
+            "product_price": 5000,
+            "product_dc_price": 0,
+            "product_dc_price_yn": "N",
+            "cash_buy_type": "Suggeted",
+            "vat_percent": 10.0
+        },
+        {
+            "cash_product_idx": 4,
+            "cash_price_policy_idx": 5,
+            "cash_product_title": "10000캐쉬",
+            "cash_fillup_amount": 10000,
+            "product_price": 10000,
+            "product_dc_price": 0,
+            "product_dc_price_yn": "N",
+            "cash_buy_type": "Suggeted",
+            "vat_percent": 10.0
+        },
+        {
+            "cash_product_idx": 6,
+            "cash_price_policy_idx": 7,
+            "cash_product_title": "30000캐쉬",
+            "cash_fillup_amount": 30000,
+            "product_price": 30000,
+            "product_dc_price": 26900,
+            "product_dc_price_yn": "Y",
+            "cash_buy_type": "Suggeted",
+            "vat_percent": 10.0
+        },
+        {
+            "cash_product_idx": 7,
+            "cash_price_policy_idx": 8,
+            "cash_product_title": "50000캐쉬",
+            "cash_fillup_amount": 50000,
+            "product_price": 50000,
+            "product_dc_price": 36000,
+            "product_dc_price_yn": "Y",
+            "cash_buy_type": "Suggeted",
+            "vat_percent": 10.0
+        },
+        {
+            "cash_product_idx": 8,
+            "cash_price_policy_idx": 2,
+            "cash_product_title": "월 자동 충전권",
+            "cash_fillup_amount": 21000,
+            "product_price": 14000,
+            "product_dc_price": 0,
+            "product_dc_price_yn": "N",
+            "cash_buy_type": "Autotopup",
+            "vat_percent": 9.8
+        }
+    ],
+    "response_message": "",
+    "response_status": "success",
+    "response_option": {
+        "option_use_yn": "N",
+        "paging_use_yn": "N"
+    }
+}
