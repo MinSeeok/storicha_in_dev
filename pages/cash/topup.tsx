@@ -1,12 +1,14 @@
 import Box from 'components/Box';
 import { NextPage } from 'next';
 import Image from 'next/image';
+import { fetchTopupData } from 'pages/api/getDataApi';
 import * as React from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 const Cash:NextPage = () => {
     const [inputValue, setInputValue] = React.useState<any>("0");
-    const [selectNumber, setSelectNumber] = React.useState<Number>(0);
+    const [selectNumber, setSelectNumber] = React.useState<number>(0);
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         const onlyNumber = value.replace(/[^0-9]/g, '');
@@ -15,9 +17,22 @@ const Cash:NextPage = () => {
     const coinSelect = (number: number) => {
         return setSelectNumber(number);
     }
+    const {isLoading, data} = useQuery('productData', fetchTopupData);
     return(
         <Box>
-            <Title>나의 토리 캐시 잔액 <img src="/images/icons/toriCoin.png" alt="" /> 50,00,222,111 <span>TC</span></Title>
+            <Title>
+                나의 토리 캐시 잔액 &nbsp;
+                {isLoading ? '로딩중 입니다..' : '로딩완료' }
+                <Image
+                    src={'/images/icons/toriCoin.png'}
+                    width={'20px'}
+                    height={'20px'}
+                    alt='Image'
+                />
+                &nbsp;
+                50,00,222,111 
+                <span onClick={()=>console.log(data)}>TC</span>
+            </Title>
             <TopupBoxTop>
                 <Directly
                     placeholder='0'
@@ -35,6 +50,7 @@ const Cash:NextPage = () => {
                             src={'/images/toriCoin.png'}
                             width={'20px'}
                             height={'20px'}
+                            alt='image'
                         />
                     </div>
                     <div className='right'>
@@ -52,6 +68,7 @@ const Cash:NextPage = () => {
                             src={'/images/toriCoin.png'}
                             width={'20px'}
                             height={'20px'}
+                            alt='image'
                         />
                     </div>
                     <div className='right'>
@@ -69,6 +86,7 @@ const Cash:NextPage = () => {
                             src={'/images/toriCoin.png'}
                             width={'20px'}
                             height={'20px'}
+                            alt='image'
                         />
                     </div>
                     <div className='right'>
@@ -86,6 +104,7 @@ const Cash:NextPage = () => {
                             src={'/images/toriCoin.png'}
                             width={'20px'}
                             height={'20px'}
+                            alt='image'
                         />
                     </div>
                     <div className='right'>
@@ -104,6 +123,7 @@ const Cash:NextPage = () => {
                             src={'/images/toriCoin.png'}
                             width={'20px'}
                             height={'20px'}
+                            alt='image'
                         />
                     </div>
                     <div className='right'>
@@ -122,6 +142,7 @@ const Cash:NextPage = () => {
                             src={'/images/toriCoin.png'}
                             width={'20px'}
                             height={'20px'}
+                            alt='image'
                         />
                     </div>
                     <div className='right'>
@@ -168,10 +189,6 @@ const Title = styled.p`
     justify-content: flex-start;
     align-items: center;
     color: var(--title);
-    img {
-        height: 1.15rem;
-        margin: 0 8.5px 0 6.5px;
-    }
     span {
         margin-left: 4px;
     }
@@ -231,6 +248,9 @@ const Directly = styled.input`
     outline: none;
     color: var(--title);
     background-color: var(--box1);
+    &:focus{
+        border: 1.8px solid var(--lineColor);
+    }
 `
 
 const TopupBox = styled.div`
@@ -260,6 +280,7 @@ const CoinBox = styled.div`
     color: var(--title);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     cursor: pointer;
+    pointer-events: none;
     div {
         display: flex;
         align-items: center;
