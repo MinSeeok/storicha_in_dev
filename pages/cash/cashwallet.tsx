@@ -1,72 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import * as React from 'react';
 import styled from 'styled-components';
 import AOS from 'aos';
 import "aos/dist/aos.css";
 import Box from 'components/Box';
+import PaymentHistory from '../../json/cash/paymentHistory.json';
+import Moment from 'react-moment';
+import moment from "moment";
 
-interface title {
-  title: string;
+interface responseData{
+    approval_date?: String | null;
+    canceled_date?: String | null;
+    cash_topup_amt?: Number | null;
+    pay_amt_krw?: Number | null;
+    payment_method?: String | null;
+    payment_status?: String | null;
+    refund_date?: String | null;
 }
-export default function CashWallet(title:title){
-    const [selectTab, setSelectTab] = useState("payment");
-    useEffect(()=> {
+interface responseOption{
+    option_use_yn?:string | null;
+    paging_use_yn?:string | null;
+} 
+
+interface ProductData{
+    response_code?: string | null;
+    response_data?: Array<responseData> | null;
+    response_data_count?:number | null;
+    response_message?:string | null;
+    response_option?:responseOption | null;
+    response_status?:string | null;
+}
+export default function CashWallet(){
+    const [selectTab, setSelectTab] = React.useState("payment");
+    const [paymentHistory , setPaymentHistory] = React.useState<ProductData>(PaymentHistory);
+    React.useEffect(()=> {
         AOS.init();
     },[])
-    const paymentListItems = [
-        {
-        date: "2022.08.11",
-        items: [
-            {
-            number: 2022102201234,        
-            date : "12:34",         
-            paymentAmout: 13200,  
-            method: "신용카드",        
-            chargingAmount: 155,
-            },
-            {
-            number: 2022102201234,        
-            date : "16:00",         
-            paymentAmout: 13200,  
-            method: "계좌이체",        
-            chargingAmount: 155,
-            },
-            {
-            number: 2022102201234,        
-            date : "21:14",         
-            paymentAmout: 13200,  
-            method: "보너스지급",        
-            chargingAmount: 155,
-            },
-        ]
-        },
-        {
-        date: "2022.08.01",
-        items: [
-            {
-            number: 2022102201234,        
-            date : "15:22",         
-            paymentAmout: 13200,  
-            method: "토스",        
-            chargingAmount: 155,
-            },
-            {
-            number: 2022102201234,        
-            date : "16:11",         
-            paymentAmout: 13200,  
-            method: "네이버페이",        
-            chargingAmount: 155,
-            },
-            {
-            number: 2022102201234,        
-            date : "19:34",         
-            paymentAmout: 13200,  
-            method: "신용카드",        
-            chargingAmount: 155,
-            },
-        ]
-        }
-    ]
     const useListItems = [
         {
         date: "2022.08.01",
@@ -167,28 +135,26 @@ export default function CashWallet(title:title){
                 <TabBox className={selectTab === "payment" ? "" : "active"} onClick={()=>setSelectTab("use")}>사용내역</TabBox>
             </Tab>
             <List className={selectTab === "payment" ? "" : "hide"}>
-            {paymentListItems.map((content, i) => (
-                <ListItem key={i}>
-                {/* <p className='head'>{content.date}<AiOutlineRight/></p> */}
-                <p className='head'>{content.date}</p>
-                {content.items.map((item, j) => (
-                    <ItemBox key={j}>
-                    <p className='time'>{item.date}</p>
-                    <p className='method'>{item.method}</p>
-                    <p className='amount'>{commaNumber(item.paymentAmout)}원</p>
-                    <div>
-                        <p className='charge'>+{item.chargingAmount} TC</p>
-                        <button>상세보기</button>
-                    </div>
-                    </ItemBox>
-                ))}
-                </ListItem>
-            ))}
+            {paymentHistory.response_data  && paymentHistory.response_data.map((content, i) => {
+              if((content.approval_date !== null || content.canceled_date !== null))
+                return (
+                  <ListItem key={i}>
+                      <ItemBox>
+                          <p className='time'>{content.approval_date ? moment(String(content.approval_date)).format('YYYY-MM-DD-HH:SS') : moment(String(content.canceled_date)).format('YYYY-MM-DD-HH:SS')}</p>
+                          <p className='method'>{content.approval_date ? content.payment_method : content.payment_method+'(결제취소)'}</p>
+                          <span className='amount'>{content.pay_amt_krw && commaNumber(content.pay_amt_krw)}원</span>
+                          <div>
+                              <p className='charge'>+{content.cash_topup_amt && commaNumber(content.cash_topup_amt)} TC</p>
+                              <button>상세보기</button>
+                          </div>
+                      </ItemBox>
+                  </ListItem>
+                )
+            })}
             </List>
             <List className={selectTab === "payment" ? "hide" : ""}>
             {useListItems.map((content, i ) => (
                 <ListItem key={i}>
-                <p className='head'>{content.date}</p>
                 {content.items.map((item, j) => (
                     <ItemBox key={j}>
                     <p className='time'>{item.date}</p>
@@ -207,108 +173,108 @@ export default function CashWallet(title:title){
     )
 }
 const TopTitle = styled.span`
-  font-size: 24px;
-  font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-  position: absolute;
-  top: 24px;
-  left: 30px;
-  background-color: var(--box1);
-  z-index: 9999;
-  padding-right: 8px;
-  padding-left: 8px;
-  color: var(--title);
-  font-weight: 700;
-  letter-spacing: -.6px;
+    font-size: 24px;
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    position: absolute;
+    top: 24px;
+    left: 30px;
+    background-color: var(--box1);
+    z-index: 9999;
+    padding-right: 8px;
+    padding-left: 8px;
+    color: var(--title);
+    font-weight: 700;
+    letter-spacing: -.6px;
 `
 const TopTitleLine = styled.div`
-  border-top: 1.8px solid var(--line);
-  position: absolute;
-  width: calc(100% - 60px);
-  top: 34px;
-  @media screen and (max-width: 500px) {
-    width: 100%;
-  }
+    border-top: 1.8px solid var(--line);
+    position: absolute;
+    width: calc(100% - 60px);
+    top: 34px;
+    @media screen and (max-width: 500px) {
+        width: 100%;
+    }
 `
 const HaveCash = styled.p`
-  font-size: 36px;
-  margin-top: 24px;
-  font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-  letter-spacing: -.4px;
-  text-align: center;
-  color: var(--title);
+    font-size: 36px;
+    margin-top: 24px;
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    letter-spacing: -.4px;
+    text-align: center;
+    color: var(--title);
 `
 const PaymentDetail = styled.div`
-  position: relative;
-  padding-top: 20px;
-  width: 100%;
-  height: auto;
-  background-color: #3B3B3B;
-  margin-top: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  border-radius: 6px;
+    position: relative;
+    padding-top: 20px;
+    width: 100%;
+    height: auto;
+    background-color: #3B3B3B;
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    border-radius: 6px;
 `
 const Detail = styled.div`
-  width: 100%;
-  display: flex;
-  height: 96px;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  color: #FFFFFF;
-  gap: 6px;
-  p{
-    font-size: 18px;
-  }
-  b{
-    letter-spacing: -0.8px;
-    font-size: 20px;
-    margin-right: 2px;
-    font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-    font-weight: 600;
-  }
-  span{
-    font-size: 16px;
-    margin-top: 4px;
-    color: #D7D7D7;
-  }
+    width: 100%;
+    display: flex;
+    height: 96px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: #FFFFFF;
+    gap: 6px;
+    p{
+        font-size: 18px;
+    }
+    b{
+        letter-spacing: -0.8px;
+        font-size: 20px;
+        margin-right: 2px;
+        font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        font-weight: 600;
+    }
+    span{
+        font-size: 16px;
+        margin-top: 4px;
+        color: #D7D7D7;
+    }
 `
 const Tab = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  margin-top: 16px;
-  padding-bottom: 8px;
-  &::after{
-    content: '';
-    position: absolute;
-    bottom:4px;
-    left: 0;
-    width: 50%;
-    height: 4px;
-    background-color: var(--point);
-    transition: all .1s ease-in-out;
-  }
-  &.use::after{
-    transform: translateX(100%);
-  }
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-top: 16px;
+    padding-bottom: 8px;
+    &::after{
+        content: '';
+        position: absolute;
+        bottom:4px;
+        left: 0;
+        width: 50%;
+        height: 4px;
+        background-color: var(--point);
+        transition: all .1s ease-in-out;
+    }
+    &.use::after{
+        transform: translateX(100%);
+    }
 `
 const TabBox = styled.div`
-  width: 100%;
-  padding: 12px 0;
-  font-size: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all .1s ease-in-out;
-  color: var(--title);
-  &.active{
-    color: var(--point);
-    cursor: auto;
-  }
+    width: 100%;
+    padding: 12px 0;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+    color: var(--title);
+    &.active{
+        color: var(--point);
+        cursor: auto;
+    }
 `
 
 const List = styled.div`
@@ -326,92 +292,92 @@ const List = styled.div`
   }
 `
 const ListItem = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  color: var(--title);
-  background-color: var(--box1);
-  margin-bottom: 32px;
-  .head{
     width: 100%;
-    padding: 18px 8px;
-    font-size: 20px;
-    border-bottom: 1.8px solid var(--sub);
     display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    svg {
-      position: absolute;
-      right: 4px;
-      cursor: pointer;
+    color: var(--title);
+    background-color: var(--box1);
+    margin-bottom: 32px;
+    .head{
+        width: 100%;
+        padding: 18px 8px;
+        font-size: 20px;
+        border-bottom: 1.8px solid var(--sub);
+        display: flex;
+        align-items: center;
+        svg {
+            position: absolute;
+            right: 4px;
+            cursor: pointer;
+        }
     }
-  }
-  div {
-    margin-bottom: 24px;
-  }
+    div {
+        margin-bottom: 24px;
+    }
 `
 const ItemBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 12px 8px;
-  gap: 4px;
-  .time{
-    font-size: 18px;
-    color: #a7a7a7;
-  }
-  .method{
-    font-size: 22px;
-    font-weight: bold;
-  }
-  .useMethod{
-    font-size: 20px;
-    font-weight: bold;
-    color: #a7a7a7;
-  }
-  .amount{
-    font-size: 20px;
-  }
-  .useAmount{
-    font-size: 20px;
-    margin-top: 12px;
-    /* color: #a7a7a7; */
-  }
-  div{
-    position: absolute;
-    right: 4px;
-    bottom: -12px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-end;
-    gap: 6px;
-    .charge{
-      font-size: 18px;
-      color: var(--poing);
+    align-items: flex-start;
+    padding: 12px 8px;
+    gap: 4px;
+    .time{
+        font-size: 18px;
+        color: #a7a7a7;
     }
-    button{
-      border: 1.4px solid var(--sub);
-      color: var(--title);
-      outline: none;
-      padding: 2px 6px;
-      font-size: 16px;
-      background-color: transparent;
-      cursor: pointer;
-      border-radius: 4px;
+    .method{
+        font-size: 20px;
+        font-weight: bold;
     }
-    .balancecount{
-      font-size: 20px;
-      margin-top: 5px;
-      letter-spacing: -.4px;
+    .useMethod{
+        font-size: 20px;
+        font-weight: bold;
+        color: #a7a7a7;
     }
-    .balance{
-      font-size: 20px;
-      margin-top: 8px;
-      letter-spacing: -.4px;
+    .amount{
+        font-size: 20px;
     }
-  }
+    .useAmount{
+        font-size: 20px;
+        margin-top: 12px;
+        /* color: #a7a7a7; */
+    }
+    div{
+        position: absolute;
+        right: 4px;
+        bottom: -12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 6px;
+        .charge{
+            font-size: 18px;
+            color: var(--poing);
+        }
+        button{
+            border: 1.4px solid var(--sub);
+            color: var(--title);
+            outline: none;
+            padding: 2px 6px;
+            font-size: 16px;
+            background-color: transparent;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .balancecount{
+            font-size: 20px;
+            margin-top: 5px;
+            letter-spacing: -.4px;
+        }
+        .balance{
+            font-size: 20px;
+            margin-top: 8px;
+            letter-spacing: -.4px;
+        }
+    }
 `

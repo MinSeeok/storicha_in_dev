@@ -1,0 +1,111 @@
+{
+    "response_code": "1000",
+    "response_data_count": 11,
+    "response_data": [
+        {
+            "approval_date": null,
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 15429,
+            "cash_topup_amt": 21000,
+            "payment_method": "신용카드",
+            "payment_status": "준비"
+        },
+        {
+            "approval_date": null,
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 15429,
+            "cash_topup_amt": 21000,
+            "payment_method": "신용카드",
+            "payment_status": "결제진행 중지"
+        },
+        {
+            "approval_date": null,
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 15429,
+            "cash_topup_amt": 21000,
+            "payment_method": "신용카드",
+            "payment_status": "결제진행 중지"
+        },
+        {
+            "approval_date": null,
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 15429,
+            "cash_topup_amt": 21000,
+            "payment_method": "신용카드",
+            "payment_status": "결제진행 중지"
+        },
+        {
+            "approval_date": null,
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 29590,
+            "cash_topup_amt": 26900,
+            "payment_method": "신용카드",
+            "payment_status": "결제진행 중지"
+        },
+        {
+            "approval_date": "2022-08-08T18:10:04.07",
+            "canceled_date": null,
+            "refund_date": "2022-08-09T18:10:04.07",
+            "pay_amt_krw": 11000,
+            "cash_topup_amt": 10000,
+            "payment_method": "포인트",
+            "payment_status": "결제취소완료"
+        },
+        {
+            "approval_date": null,
+            "canceled_date": "2022-08-08T18:08:11.01",
+            "refund_date": null,
+            "pay_amt_krw": 11000,
+            "cash_topup_amt": 10000,
+            "payment_method": "카카오페이",
+            "payment_status": "결제취소완료"
+        },
+        {
+            "approval_date": "2022-08-08T18:06:56.35",
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 11000,
+            "cash_topup_amt": 10000,
+            "payment_method": "토스",
+            "payment_status": "결제완료"
+        },
+        {
+            "approval_date": "2022-08-08T18:04:43.573",
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 5500,
+            "cash_topup_amt": 5000,
+            "payment_method": "페이팔",
+            "payment_status": "결제진행 중지"
+        },
+        {
+            "approval_date": "2022-08-08T18:04:30.043",
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 5500,
+            "cash_topup_amt": 5000,
+            "payment_method": "핸드폰",
+            "payment_status": "결제에러"
+        },
+        {
+            "approval_date": "2022-08-08T18:03:24.69",
+            "canceled_date": null,
+            "refund_date": null,
+            "pay_amt_krw": 1100,
+            "cash_topup_amt": 1000,
+            "payment_method": "신용카드",
+            "payment_status": "결제완료"
+        }
+    ],
+    "response_message": "",
+    "response_status": "success",
+    "response_option": {
+        "option_use_yn": "N",
+        "paging_use_yn": "N"
+    }
+}
