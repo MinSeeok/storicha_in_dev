@@ -1,9 +1,7 @@
 import Box from 'components/Box';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import { fetchTopupData } from 'pages/api/getDataApi';
 import * as React from 'react';
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import ProductData from '../../json/cash/product.json'
 
@@ -52,9 +50,6 @@ const Cash:NextPage = () => {
     }
     // 숫자만 남기고 나머지 제거
     let regex = /[^0-9]/gi;
-    React.useEffect(()=>{
-        console.log(getProducData);
-    },[]);
     return(
         <Box>
             <Title>

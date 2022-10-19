@@ -3,9 +3,30 @@ import * as React from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 import styled from 'styled-components';
+import checkOutData from '../../json/cash/checkout.json';
 
 interface title {
-  title: string;
+    title: string;
+}
+
+interface responseData{
+    code_value: Number; 
+    code_name: String;
+    code_name_en: String;
+}
+
+interface responseOption{
+  option_use_yn?:string;
+  paging_use_yn?:string;
+} 
+
+interface checkOutData{
+    response_code:String;
+    response_data:Array<responseData>;
+    response_data_count:Number;
+    response_message:String;
+    response_option: responseOption;
+    response_status:String;
 }
 export default function Checkout(title:title){
     const [ method, setMethod ] = React.useState<string>("신용카드");
@@ -13,11 +34,12 @@ export default function Checkout(title:title){
     const ClickMeansTab = () => {
         setMeansChange((e) => !e);
     }
-    const choiceMean = (event:any) => {
-        setMethod(event.target.innerText);
-        // document.getElementById("focusMean").id = "";
-        event.target.id = "focusMean";
-    }
+    const [getCheckOutData, setGetCheckOutData] = React.useState<checkOutData>(checkOutData);
+    const [means, setMeans] = React.useState('means1'); 
+    React.useEffect(()=>{
+      console.log(getCheckOutData.response_data);
+    },[]);
+    let regex = /[^0-9]/gi;
     return(
         <>
         <HelmetProvider>
@@ -32,7 +54,7 @@ export default function Checkout(title:title){
                 <p>11,000원</p>
             </PaymentInfo>
             <MeansSelect onClick={ClickMeansTab}>
-                <p>{method}</p>
+                <p>{getCheckOutData.response_data[Number(means.replace(regex, ""))].code_name}</p>
                 {!meansChange ? 
                     <p>변경
                     <ChevronDownOutline
@@ -51,18 +73,9 @@ export default function Checkout(title:title){
                 }
             </MeansSelect>
             <MeansBox meansChange={meansChange}>
-                <div id='focusMean' onClick={choiceMean}>신용카드</div>
-                <div onClick={choiceMean}>휴대폰</div>
-                <div onClick={choiceMean}>계좌이체</div>
-                <div onClick={choiceMean}>토스</div>
-                <div onClick={choiceMean}>네이버페이</div>
-                <div onClick={choiceMean}>포인트</div>
-                <div onClick={choiceMean}>카카오페이</div>
-                <div onClick={choiceMean}>페이코</div>
-                <div onClick={choiceMean}>문화상품권</div>
-                <div onClick={choiceMean}>도서문화상품권</div>
-                <div onClick={choiceMean}>T-money</div>
-                <div onClick={choiceMean}>OK 캐쉬백</div>
+                {getCheckOutData.response_data.map((content, i)=>(
+                  <div key={'means'+i} className={'means'+i} id={means === 'means'+i ? "focusMean" : ""} onClick={()=> setMeans('means'+i)}>{content.code_name}</div>
+                ))}
             </MeansBox>
             <ButtonBox>
                 <button>결제하기</button>

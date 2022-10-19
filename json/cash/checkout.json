@@ -1,0 +1,57 @@
+{
+    "response_code": "1000",
+    "response_data_count": 9,
+    "response_data": [
+        {
+            "code_value": 1,
+            "code_name": "신용카드",
+            "code_name_en": "credit_card"
+        },
+        {
+            "code_value": 2,
+            "code_name": "핸드폰",
+            "code_name_en": "cellphone"
+        },
+        {
+            "code_value": 3,
+            "code_name": "계좌이체",
+            "code_name_en": "bank_transfer"
+        },
+        {
+            "code_value": 4,
+            "code_name": "페이팔",
+            "code_name_en": "paypal"
+        },
+        {
+            "code_value": 5,
+            "code_name": "알리페이",
+            "code_name_en": "alipay"
+        },
+        {
+            "code_value": 6,
+            "code_name": "토스",
+            "code_name_en": "toss"
+        },
+        {
+            "code_value": 7,
+            "code_name": "네이버 페이",
+            "code_name_en": "naverpay"
+        },
+        {
+            "code_value": 8,
+            "code_name": "카카오페이",
+            "code_name_en": "kakaopay"
+        },
+        {
+            "code_value": 9,
+            "code_name": "포인트",
+            "code_name_en": "point"
+        }
+    ],
+    "response_message": "",
+    "response_status": "success",
+    "response_option": {
+        "option_use_yn": "N",
+        "paging_use_yn": "N"
+    }
+}
