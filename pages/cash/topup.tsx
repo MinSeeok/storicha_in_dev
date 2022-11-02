@@ -1,7 +1,10 @@
 import Box from 'components/Box';
+import { commaNumber } from 'func/addComma';
 import { NextPage } from 'next';
 import Image from 'next/image';
+import { fetchTopupData } from 'pages/api/getDataApi';
 import * as React from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import ProductData from '../../json/cash/product.json'
 
@@ -31,6 +34,16 @@ interface ProductData{
 }
 
 const Cash:NextPage = () => {
+    // const TopupData = () => {
+    //     const {isLoading, isError, data, error} = useQuery("topup", fetchTopupData, {
+    //         refetchOnWindowFocus: false, // 윈도우 재방문 시 실행 여부
+    //         retry: 0, // 실패 시 재호출 몇번 하는지
+    //         onSuccess: data => {
+    //             // 성공시 호출
+    //             console.log(data);
+    //         }
+    //     })
+    // }
     const [inputValue, setInputValue] = React.useState<any>("0");
     const [selectNumber, setSelectNumber] = React.useState<number>(0);
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,13 +55,14 @@ const Cash:NextPage = () => {
         return setSelectNumber(number);
     }
     const [getProducData, setGetProductData] = React.useState<ProductData>(ProductData);
-    // const {isLoading, data} = useQuery('productData', fetchTopupData);
-    function AddComma(num:any) 
-    {
-        var regexp = /\B(?=(\d{3})+(?!\d))/g;
-        return num.toString().replace(regexp, ',');
-    }
-    // 숫자만 남기고 나머지 제거
+    const {isLoading, isError, data, error} = useQuery('topup', fetchTopupData,{
+        refetchOnWindowFocus: false, //윈도우 이동 후 복귀 시 재호출 여부
+        retry: 0, //실패시 재 호출 횟수
+        onSuccess: data => {
+            // 성공시 호출
+            console.log(data);
+        },
+    });
     let regex = /[^0-9]/gi;
     return(
         <Box>
@@ -71,7 +85,7 @@ const Cash:NextPage = () => {
                     onChange={onChange}
                     value={inputValue}
                 />
-                <button>구매하기</button>
+                <button onClick={()=> console.log(data)}>구매하기</button>
                 <span><b>CASH</b>직접입력</span>
             </TopupBoxTop>
             <TopupBox>
@@ -88,7 +102,7 @@ const Cash:NextPage = () => {
                                     />
                                 </div>
                                 <div className='right'>
-                                    <p>{content.product_price ? AddComma(content.product_price) + "캐쉬" : ""}</p>
+                                    <p>{content.product_price ? commaNumber(content.product_price) + "캐쉬" : ""}</p>
                                 </div>
                                 <div className='left'>
                                     {content.product_dc_price_yn === "Y" ? (
@@ -99,9 +113,9 @@ const Cash:NextPage = () => {
                                 </div>
                                 <div className='right'>
                                     {content.product_dc_price_yn === "Y" ? (
-                                        <p>₩{AddComma(content.product_dc_price)}</p>                                        
+                                        <p>₩{commaNumber(Number(content.product_dc_price))}</p>                                        
                                     ) : (
-                                        <p>{content.cash_product_title ? '₩'+AddComma(content.cash_product_title.replace(regex, "")) : ""}</p>
+                                        <p>{content.cash_product_title ? '₩'+commaNumber(Number(content.cash_product_title.replace(regex, ""))) : ""}</p>
                                         
                                     )}
 
@@ -114,10 +128,10 @@ const Cash:NextPage = () => {
             {getProducData.response_data?.map((content, i)=>{
                 if(content.cash_buy_type === "Autotopup")
                     return(
-                        <Semen>
+                        <Semen key={i}>
                             <p>월 자동 충전권</p>
-                            <p><span>{content.product_price ? AddComma(content.product_price) : ''}</span>CASH</p>
-                            <p><span>{content.product_price ? AddComma(content.product_price) : ''}원</span>(VAT포함)</p>
+                            <p><span>{content.product_price ? commaNumber(content.product_price) : ''}</span>CASH</p>
+                            <p><span>{content.product_price ? commaNumber(content.product_price) : ''}원</span>(VAT포함)</p>
                         </Semen>
                     )
             })}

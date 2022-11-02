@@ -1,10 +1,41 @@
+import moment from 'moment';
 import Image from 'next/image';
 import * as React from 'react';
 import { AddCircleOutline } from 'react-ionicons';
 import styled from 'styled-components';
+import PriceSalePolicyData from '../json/sale/pricepolicy.json';
 
 interface kind{
     kind: string;
+}
+
+interface responseData{
+    price_policy_idx?: number;
+    code_name?: string;
+    code_name_en?: string;
+    price_policy_title?: string;
+    use_yn?: string;
+    keep_price?: number;
+    rental_price?: number;
+    keep_dc_price?: number;
+    rental_dc_price?: number;
+    start_date?: string;
+    end_date?: string;
+    wait_free_date?: string;
+    wait_free_yn?: string;
+}
+interface responseOption{
+    option_use_yn?:string;
+    paging_use_yn?:string;
+} 
+
+interface ProductData{
+    response_code?: string;
+    response_data?: Array<responseData>;
+    response_data_count?:number;
+    response_message?:string;
+    response_option?:responseOption;
+    response_status?:string;
 }
 
 export default function SalePolicyBox({kind}:kind){
@@ -13,6 +44,13 @@ export default function SalePolicyBox({kind}:kind){
     function onlyNumber(e: React.ChangeEvent<HTMLInputElement>){
         return e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
     }
+    const [priceSalePolicy, setPriceSalePolicy] = React.useState<ProductData>(PriceSalePolicyData);
+    const today = moment(new Date()).format('YYYY-MM-DD');
+    const dateB = moment('2014-11-11');
+    const dateC = moment('2014-10-11');
+    React.useEffect(()=>{
+        console.log(priceSalePolicy.response_data && moment(priceSalePolicy.response_data[0].wait_free_date).diff(moment(), 'days'));
+    },[]);
     return(
         <>
             <Box>
@@ -24,7 +62,7 @@ export default function SalePolicyBox({kind}:kind){
                     />
                     <p>기본 가격 판매정책</p>
                 </Title>
-                <SubTitle>본 세트에 포함 되는 모든 에피소드를 단일한 가격으로 설정 합니다. 예외로 가격을 달리하고 싶은 에피소드가 있을 경우 아래 예외 가격 판매 정책에서 설정 하실 수 있습니다.</SubTitle>
+                <SubTitle>본 세트에 포함 되는 모든 에피소드를 단일한 가격으 로 설정 합니다. 예외로 가격을 달리하고 싶은 에피소드가 있을 경우 아래 예외 가격 판매 정책에서 설정 하실 수 있습니다.</SubTitle>
                 <BoundaryLine/>
                 <AddPolicy>
                     판매 정책 추가
@@ -60,7 +98,7 @@ export default function SalePolicyBox({kind}:kind){
                             <input 
                             type="text" 
                             className='rightUnit' 
-                            placeholder={"10"} 
+                            placeholder={`${priceSalePolicy.response_data && priceSalePolicy.response_data[0].rental_price}`} 
                             readOnly={onModify ? false : true}
                             onChange={(event)=> onlyNumber(event)}
                             />
@@ -73,7 +111,7 @@ export default function SalePolicyBox({kind}:kind){
                             <input 
                             type="text" 
                             className='rightUnit' 
-                            placeholder={"8"} 
+                            placeholder={`${priceSalePolicy.response_data && priceSalePolicy.response_data[0].rental_dc_price}`} 
                             readOnly={onModify ? false : true}
                             onChange={(event)=> onlyNumber(event)}
                             />
@@ -86,7 +124,7 @@ export default function SalePolicyBox({kind}:kind){
                             <input 
                             type="text" 
                             className='rightUnit' 
-                            placeholder={"10"} 
+                            placeholder={`${priceSalePolicy.response_data && priceSalePolicy.response_data[0].keep_price}`} 
                             readOnly={onModify ? false : true}
                             onChange={(event)=> onlyNumber(event)}
                             />
@@ -99,7 +137,7 @@ export default function SalePolicyBox({kind}:kind){
                             <input 
                             type="text" 
                             className='rightUnit' 
-                            placeholder={"8"} 
+                            placeholder={`${priceSalePolicy.response_data && priceSalePolicy.response_data[0].keep_dc_price}`} 
                             readOnly={onModify ? false : true}
                             onChange={(event)=> onlyNumber(event)}
                             />
@@ -115,19 +153,19 @@ export default function SalePolicyBox({kind}:kind){
                                 <div className="toggler-knob"></div>
                             </div>
                             </label>
-                            <p>조회 후 2일 뒤</p>
+                            <p>{`${priceSalePolicy.response_data && moment(priceSalePolicy.response_data[0].wait_free_date).diff(moment(), 'days')}일 후 무료`}</p>
                         </div>
                     </div>
                     <div className='boxline'>
                         사용시작
                         <div className='box'>
-                            <p>2022-06-31</p>
+                            <p>{priceSalePolicy.response_data && moment(String(priceSalePolicy.response_data[0].start_date)).format('YYYY-MM-DD')}</p>
                         </div>
                     </div>
                     <div className='boxline'>
                         사용종료
                         <div className='box'>
-                            <p>2022-06-31</p>
+                            <p>{priceSalePolicy.response_data && moment(String(priceSalePolicy.response_data[0].end_date)).format('YYYY-MM-DD')}</p>
                         </div>
                     </div>
                     <BtnLine>

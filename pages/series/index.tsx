@@ -5,9 +5,45 @@ import { IoMdSquareOutline } from '@react-icons/all-files/io/IoMdSquareOutline';
 import styled from 'styled-components';
 import AOS from 'aos';
 import "aos/dist/aos.css";
+import cashSeriesData from '../../json/cashseries.json';
 
 interface title {
   title: string;
+}
+
+interface supplyImage{
+    image_height: number;
+    image_id: string;
+    image_idx: number;
+    image_key: string;
+    image_seq: number;
+    image_url: string;
+    image_width: number;
+    mime_type: string;
+}[]
+
+interface responseData{
+    supply_tag?: string;
+    topic_idx?: number;
+    scope_type_idx?: number;
+    supply_name?: string;
+    content_data_type_idx?: number;
+    genres_type_idxs?: string;
+    episode_count?: number;
+    supply_images?: Array<supplyImage>
+}
+interface responseOption{
+    option_use_yn?:string;
+    paging_use_yn?:string;
+} 
+
+interface ProductData{
+    response_code?: string;
+    response_data?: Array<responseData>;
+    response_data_count?:number;
+    response_message?:string;
+    response_option?:responseOption;
+    response_status?:string;
 }
 
 export default function Series(title: title) {
@@ -21,7 +57,7 @@ export default function Series(title: title) {
     const [otherState, setOtherState] = React.useState<any>(0);
     const [hideReceipt, setHideReceipt] = React.useState<Boolean>(false);
     const [mark, setMark] = React.useState(false);
-
+    const [cashSeries, setCashSeries] = React.useState<any>(cashSeriesData);
 
     const OtherMoveLeft = () => {
         if ((-(otherData.length - 1) * 170) !== otherState) {
@@ -99,6 +135,7 @@ export default function Series(title: title) {
     }
     React.useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
+        console.log(cashSeries);
         AOS.init();
     }, []);
     return (
@@ -739,7 +776,7 @@ const SelectTab = styled.div`
     align-items: center;
     padding: 16px 0;
     border-bottom: 3px solid transparent;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     color: var(--title);
     cursor: pointer;
@@ -748,7 +785,7 @@ const SelectTab = styled.div`
   }
   .tabChoice{
     border-bottom: 3px solid var(--point);
-    font-size: 18px;
+    font-size: 22px;
   }
   @media screen and (max-width: 1000px) {
     margin-top: 14px;

@@ -1,0 +1,41 @@
+{
+    "response_code": "1000",
+    "response_data_count": 1,
+    "response_data": {
+        "supply_tag": "",
+        "topic_idx": 0,
+        "scope_type_idx": 2,
+        "supply_name": "1년 사계절",
+        "content_data_type_idx": 0,
+        "genres_type_idxs": "",
+        "episode_count": 2,
+        "supply_images": [
+            {
+                "image_height": 0,
+                "image_id": "000004019001",
+                "image_idx": 4019,
+                "image_key": "supply",
+                "image_seq": 1,
+                "image_url": "https://img.storicha.in/supply/IMG_2022_10_18/000004019001.jpg",
+                "image_width": 0,
+                "mime_type": "image/jpeg"
+            },
+            {
+                "image_height": 0,
+                "image_id": "000004019002",
+                "image_idx": 4019,
+                "image_key": "supply",
+                "image_seq": 2,
+                "image_url": "https://img.storicha.in/supply/IMG_2022_10_18/000004019002.jpg",
+                "image_width": 0,
+                "mime_type": "image/jpeg"
+            }
+        ]
+    },
+    "response_message": "",
+    "response_status": "success",
+    "response_option": {
+        "option_use_yn": "N",
+        "paging_use_yn": "N"
+    }
+}

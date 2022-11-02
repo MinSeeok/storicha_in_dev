@@ -1,0 +1,27 @@
+{
+    "response_code": "1000",
+    "response_data_count": 1,
+    "response_data": [
+        {
+            "price_policy_idx": 23,
+            "code_name": "일반 가격",
+            "code_name_en": "common_policy",
+            "price_policy_title": "TEST10",
+            "use_yn": "Y",
+            "keep_price": 6,
+            "rental_price": 5,
+            "keep_dc_price": 4,
+            "rental_dc_price": 3,
+            "start_date": "2020-11-24T00:00:00",
+            "end_date": "2023-12-25T00:00:00",
+            "wait_free_date": "2072-08-24T00:00:00",
+            "wait_free_yn": "N"
+        }
+    ],
+    "response_message": "",
+    "response_status": "success",
+    "response_option": {
+        "option_use_yn": "N",
+        "paging_use_yn": "N"
+    }
+}

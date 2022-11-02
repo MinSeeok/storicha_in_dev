@@ -1,7 +1,7 @@
 import Area from 'components/Area';
 import SalePolicyBox from 'components/PolicyBox';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
 import { Ellipse, EllipseOutline, WalletOutline } from 'react-ionicons';
 import styled from "styled-components";
 
@@ -12,7 +12,7 @@ type IProgress = {
 };
 
 export default function SalePolicy(){
-    const [contentData, setContentData] = useState('');
+    const [contentData, setContentData] = React.useState('');
     let Progress: IProgress[] = [
         {state: "작성중", complete: 2, request: 1},
         {state: "검수중", complete: 2, request: 1},
@@ -21,7 +21,8 @@ export default function SalePolicy(){
         {state: "판매시작", complete: 0, request: 0},
         {state: "판매중지", complete: 0, request: 0},
     ]
-    useEffect(()=>{
+
+    React.useEffect(()=>{
         setContentData('사랑과 악마');
     },[]);
     return(
@@ -50,63 +51,63 @@ export default function SalePolicy(){
                     <p><span>진행현황</span> 진행중</p>
                 </TopLightBox>
             </TopLine>
-            <ProgressBarBox>
-                {Progress.map((progress, i) => {
-                    if(progress.complete === 0){
-                        return (
-                        <Line  key={i}>
-                            <ProgressBox>
+                <ProgressBarBox>
+                    {Progress.map((progress, i) => {
+                        if(progress.complete === 0){
+                            return (
+                            <Line  key={i}>
+                                <ProgressBox>
+                                    <EllipseOutline
+                                    width={"64px"}
+                                    height={"64px"}
+                                    color={"#D7D7D7"}
+                                    />
+                                    <p>{progress.state}</p>
+                                </ProgressBox>
+                                {i !== 5 ?
+                                (<BarLine className={i === 2 ? "opacityLine" : ""}>
+                                    <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
+                                </BarLine>): ""
+                                }
+                            </Line>
+                            )
+                        } else if (progress.complete === 1){
+                            return (
+                            <Line  key={i}>
+                                <ProgressBox>
                                 <EllipseOutline
-                                width={"64px"}
-                                height={"64px"}
-                                color={"#D7D7D7"}
+                                    width={"64px"}
+                                    height={"64px"}
                                 />
                                 <p>{progress.state}</p>
-                            </ProgressBox>
-                            {i !== 5 ?
-                            (<BarLine className={i === 2 ? "opacityLine" : ""}>
-                                <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
-                            </BarLine>): ""
-                            }
-                        </Line>
-                        )
-                    } else if (progress.complete === 1){
-                        return (
-                        <Line  key={i}>
-                            <ProgressBox>
-                            <EllipseOutline
-                                width={"64px"}
-                                height={"64px"}
-                            />
-                            <p>{progress.state}</p>
-                            </ProgressBox>
-                            {i !== 5 ?
-                            (<BarLine className={i === 2 ? "opacityLine" : ""}>
-                                <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
-                            </BarLine>): ""
-                            }
-                        </Line>
-                        )
-                    } else if (progress.complete === 2){
-                        return (
-                        <Line  key={i}>
-                            <ProgressBox>
-                                <Ellipse
-                                width={"64px"}
-                                height={"64px"}
-                                />
-                                <p>{progress.state}</p>
-                            </ProgressBox>
-                            {i !== 5 ?
-                            (<BarLine className={i === 2 ? "opacityLine" : ""}>
-                                <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
-                            </BarLine>): ""
-                            }
-                        </Line>
-                        )
-                    }
-                })}
-            </ProgressBarBox>
+                                </ProgressBox>
+                                {i !== 5 ?
+                                (<BarLine className={i === 2 ? "opacityLine" : ""}>
+                                    <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
+                                </BarLine>): ""
+                                }
+                            </Line>
+                            )
+                        } else if (progress.complete === 2){
+                            return (
+                            <Line  key={i}>
+                                <ProgressBox>
+                                    <Ellipse
+                                    width={"64px"}
+                                    height={"64px"}
+                                    />
+                                    <p>{progress.state}</p>
+                                </ProgressBox>
+                                {i !== 5 ?
+                                (<BarLine className={i === 2 ? "opacityLine" : ""}>
+                                    <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
+                                </BarLine>): ""
+                                }
+                            </Line>
+                            )
+                        }
+                    })}
+                </ProgressBarBox>
             <SalePolicyBox kind={"basic"}/>
         </Area>
     )

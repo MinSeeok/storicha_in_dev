@@ -4,7 +4,6 @@ import AOS from 'aos';
 import "aos/dist/aos.css";
 import Box from 'components/Box';
 import PaymentHistory from '../../json/cash/paymentHistory.json';
-import Moment from 'react-moment';
 import moment from "moment";
 
 interface responseData{
