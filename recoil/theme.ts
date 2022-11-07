@@ -98,7 +98,17 @@ export const LightState = atom({
     },
 })
 
-export const isThemeAtom = atom({
+export const isThemeAtom = atom<boolean>({
     key: 'isTheme',
     default: true,
+})
+
+export const isPointThemeAtom = atom<string>({
+    key: `isTheme`,
+    default: '#1e272e',
+})
+
+export const isMobileAtom = atom<Boolean | Boolean[] | undefined>({
+    key: `isMobile`,
+    default: false,
 })

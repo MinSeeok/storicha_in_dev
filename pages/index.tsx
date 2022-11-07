@@ -1,7 +1,8 @@
 import React from 'react';
 import HelmetProvier from 'components/Helmet';
 import Container from 'components/Container';
-import { useQuery } from 'react-query';
+import { Navigation } from 'components/index/Navigation';
+import { ThemeNavigation } from 'components/index/ThemeChangeBtn';
 import { fetchTopupData } from './api/getDataApi';
 
 export default function Home(){
@@ -10,6 +11,8 @@ export default function Home(){
     return (
         <>
             <HelmetProvier title='STORICHAIN'/>
+            <Navigation/>
+            <ThemeNavigation/>
             <Container/>
         </>
     )
