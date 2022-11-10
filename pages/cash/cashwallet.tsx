@@ -5,6 +5,7 @@ import "aos/dist/aos.css";
 import Box from 'components/Box';
 import PaymentHistory from '../../json/cash/paymentHistory.json';
 import moment from "moment";
+import axios from 'axios';
 
 interface responseData{
     approval_date?: String | null;
@@ -30,76 +31,33 @@ interface ProductData{
 }
 export default function CashWallet(){
     const [selectTab, setSelectTab] = React.useState("payment");
-    const [paymentHistory , setPaymentHistory] = React.useState<ProductData>(PaymentHistory);
-    React.useEffect(()=> {
-        AOS.init();
-    },[])
-    const useListItems = [
-        {
-        date: "2022.08.01",
-        items: [
-            {
-            number: 2022102201234,
-            date: "21:21",
-            transition: "minus",
-            title: "어느 겨울, 운명의 밤",
-            explain: "1부-소장: 겨울날, 마음이 머무는 곳",
-            count: 12,
-            balance: 36982,
-            },
-            {
-            number: 2022102201234,
-            date: "17:37",
-            transition: "minus",
-            title: "운명의밤",
-            explain: "2부-대여: 두 사람의 거리",
-            count: 6,
-            balance: 36994,
-            },
-            {
-            number: 2022102201234,
-            date: "16:13",
-            transition: "plus",
-            title: "충전(신용카드)+보너스",
-            explain: "월 자동구매",
-            count: 14000,
-            balance: 37000,
-            }
-        ]
-        },
-        {
-        date: "2022.07.31",
-        items: [
-            {
-            number: 2022102201234,
-            date: "19:23",
-            transition: "minus",
-            title: "만료",
-            explain: "미사용분 자동소멸",
-            count: 1000,
-            balance: 23000,
-            },
-            {
-            number: 2022102201234,
-            date: "17:37",
-            transition: "plus",
-            title: "보너스",
-            explain: "운영자 감사의 의미",
-            count: 1000,
-            balance: 24000,
-            },
-            {
-            number: 2022102201234,
-            date: "16:13",
-            transition: "plus",
-            title: "충전(신용카드)+보너스",
-            explain: "월 자동구매",
-            count: 14000,
-            balance: 23000,
-            }
-        ]
+    const [fetchData, setFetchData] = React.useState<any>(null);
+    const [usageDetails, setUsageDetails] = React.useState<any>(null);
+    const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState<any>(null);
+    const fetchDatas = async () => {
+        try {
+            // error, data 초기화
+            setError(null);
+            setFetchData(null);
+            // loading state true
+            setLoading(true);
+            const getData = await axios.get(
+                'https://dev-nft.storicha.in/api/payment/history/1?display_yn=y&product_id=0',{withCredentials:true}
+            )
+            setFetchData(getData.data);
+            const getDataSecond = await axios.get(
+                'https://dev-nft.storicha.in/api/wallet-history/1?display_yn=y&product_id=0',{withCredentials:true}
+            )
+            setUsageDetails(getDataSecond.data);
+        } catch(e) {
+            setError(e);
         }
-    ]
+        setLoading(false);
+    };
+    React.useEffect(()=> {
+        fetchDatas();
+    },[]);
     const commaNumber = (number:Number) => {
         const parts = number.toString().split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -109,7 +67,7 @@ export default function CashWallet(){
         <Box>
             <TopTitle>보유 CASH</TopTitle>
             <TopTitleLine/>
-            <HaveCash>1,000,000 TC</HaveCash>
+            <HaveCash onClick={()=> console.log(usageDetails)}>1,000,000 TC</HaveCash>
 
             <PaymentDetail>
             <Detail>
@@ -134,7 +92,7 @@ export default function CashWallet(){
                 <TabBox className={selectTab === "payment" ? "" : "active"} onClick={()=>setSelectTab("use")}>사용내역</TabBox>
             </Tab>
             <List className={selectTab === "payment" ? "" : "hide"}>
-            {paymentHistory.response_data  && paymentHistory.response_data.map((content, i) => {
+            {fetchData ? fetchData.response_data.map((content: { approval_date: null; canceled_date: null; payment_method: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; pay_amt_krw: Number; cash_topup_amt: Number; }, i: React.Key | null | undefined) => {
               if((content.approval_date !== null || content.canceled_date !== null))
                 return (
                   <ListItem key={i}>
@@ -149,22 +107,20 @@ export default function CashWallet(){
                       </ItemBox>
                   </ListItem>
                 )
-            })}
+            }): ('LOADING')}
             </List>
             <List className={selectTab === "payment" ? "hide" : ""}>
-            {useListItems.map((content, i ) => (
+            {usageDetails && usageDetails.response_data.map((content:any, i:any ) => (
                 <ListItem key={i}>
-                {content.items.map((item, j) => (
-                    <ItemBox key={j}>
-                    <p className='time'>{item.date}</p>
-                    <p className='useMethod'>{item.title}</p>
-                    <p className='useAmount'>{item.explain.length < 11 ? item.explain : item.explain.slice(0,11)+"..."}</p>
-                    <div>
-                        <p className='balancecount'style={item.transition === "plus" ? {color: '#E9446C'} : {color:'#889AF8'}} >{item.transition === "plus" ? "+" : "-"}{commaNumber(item.count)} TC</p>
-                        <p className='balance'>잔액 {commaNumber(item.balance)}TC</p>
-                    </div>
+                    <ItemBox>
+                        <p className='time'>{moment(String(content.create_date)).format('YYYY-MM-DD-HH:SS')}</p>
+                        <p className='useMethod' style={{ color: '#000000' }}>{content.purpose_category}</p>
+                        <p className='useAmount'>{content.purpose_detail.length < 11 ? content.purpose_detail : content.purpose_detail.slice(0,11)+"..."}</p>                       
+                        <div>
+                            <p className='balancecount'style={content.spend_earn_type.includes('earn_by') ? {color: '#E9446C'} : {color:'#889AF8'}} >{content.spend_earn_type.includes('earn_by') ? '충전' : '사용'}</p>
+                            <p className='balance'>잔액: 999TC</p>
+                        </div>
                     </ItemBox>
-                ))}
                 </ListItem>
             ))}
             </List>
