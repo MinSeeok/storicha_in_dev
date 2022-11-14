@@ -23,7 +23,9 @@ export const Navigation = () => {
                     />
                     <h1>STORICHAIN</h1>
                 </div>
-                <ProfileBox color={isPointTheme}>
+                <ProfileBox 
+                    color={isPointTheme}
+                >
                     <div>
                         <div className='back'/>
                         <div className='profileImage'>
