@@ -1,7 +1,6 @@
 import cookie from "cookie";
 
 export default (req, res) => {
-    console.log('123111');
     res.setHeader(
         "Set-Cookie",
         cookie.serialize("token", req.body.token, {

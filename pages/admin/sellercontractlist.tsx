@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { SearchOutline } from 'react-ionicons';
 
 export default function SellerContractList(){
     const [sortKind, setSortKind] = useState<string>("사업자명");
@@ -33,7 +32,9 @@ export default function SellerContractList(){
                 </div>
                 <div className='inputBox'>
                     <input type="text" placeholder='검색'/>
-                    <SearchOutline/>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
                 </div>
             </ListTop>
             <ListBox>
@@ -275,12 +276,15 @@ const ListTop = styled.div`
         max-width: 500px;
         left: 240px;
         height: 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
         input {
             width: 100%;
             height: 100%;
             text-align: left;
             padding: 16px 50px 16px 18px;
-            font-size: 20px;
+            font-size: 18px;
             outline: none;
             background-color: var(--box2);
             color: var(--title);
@@ -292,10 +296,12 @@ const ListTop = styled.div`
         }
         svg{
             position: absolute;
-            right: 14px;
             color: var(--title);
-            top: 50%;
-            transform: translateY(-50%) scale(1.2);
+            right: 12px;
+            top: 4px;
+            @media screen and (max-width: 768px) {
+                display: none;
+            }
         }
     }
     .listArray{
@@ -362,6 +368,7 @@ const ListBox = styled.div`
   align-items: center;
   margin-top: 40px;
   padding: 0 20px;
+  color: var(--title);
   .listHead{
         width: 100%;
         display: flex;

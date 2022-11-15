@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { AddOutline, Checkbox, CopyOutline, Ellipse, EllipseOutline, SquareOutline } from 'react-ionicons';
 import styled from 'styled-components';
 import AOS from 'aos';
 import "aos/dist/aos.css";
@@ -292,24 +291,21 @@ export default function AdminExamin(){
             />
             <RightModal className={modal ? "on" : ""}>
                 <Modalhead>
-                <p>심사하기</p>
-                <AddOutline
-                    width={"34px"}
-                    height={"34px"}
-                    onClick={()=>setModal((e)=>!e)}
-                />
+                    <p>심사하기</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" onClick={()=>setModal((e)=>!e)} strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </Modalhead>
                 <ModalHeadInfo>
-                <p style={{margin: "0px"}}><b>심사 요청번호</b> : {modalData.auditRequest}</p>
-                <p>
-                    <b>시리즈 주소</b> : {modalData.seriesLink}
-                    <CopyOutline
-                    width={"18px"}
-                    height={"18px"}
-                    />
-                </p>
-                <p><b>시리즈 이름</b> : {modalData.seriesName}</p>
-                <p>에피소드 수 : {modalData.episodeCount}</p>
+                    <p style={{margin: "0px"}}><b>심사 요청번호</b> : {modalData.auditRequest}</p>
+                    <p>
+                        <b>시리즈 주소</b> : {modalData.seriesLink}
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                        </svg>
+                    </p>
+                    <p><b>시리즈 이름</b> : {modalData.seriesName}</p>
+                    <p>에피소드 수 : {modalData.episodeCount}</p>
                 </ModalHeadInfo>
                 <ModalEpisodeInfo>
                 <p>시리즈 내 EP당 평균 정보 수량  : </p>
@@ -329,72 +325,67 @@ export default function AdminExamin(){
                 <button>추가된 에피소드 보기</button>
                 </ModalBtn>
                 <AuditBox>
-                <h4>심사 상태</h4>
-                <p style={{marginTop: "36px"}}>
-                    {modalData.state >= 0 ? 
-                    <Ellipse
-                        width={"26px"}
-                        height={"26px"}
-                    /> :
-                    <EllipseOutline
-                        width={"26px"}
-                        height={"26px"}
-                    />
-                    }
-                    작성중
-                </p>
-                <p>
-                    {modalData.state >= 1 ? 
-                    <Ellipse
-                        width={"26px"}
-                        height={"26px"}
-                    /> :
-                    <EllipseOutline
-                        width={"26px"}
-                        height={"26px"}
-                    />
-                    }
-                    검토 요청
-                </p>
-                <p>
-                    {modalData.state >= 2 ? 
-                    <Ellipse
-                        width={"26px"}
-                        height={"26px"}
-                    /> :
-                    <EllipseOutline
-                        width={"26px"}
-                        height={"26px"}
-                    />
-                    }
-                    수정 요청
-                </p>
-                <p>
-                    {modalData.state >= 3 ? 
-                    <Ellipse
-                        width={"26px"}
-                        height={"26px"}
-                    /> :
-                    <EllipseOutline
-                        width={"26px"}
-                        height={"26px"}
-                    />
-                    }
-                    승인 거절
-                </p>
-                <p>
-                    {modalData.state >= 4 ? 
-                    <Ellipse
-                        width={"26px"}
-                        height={"26px"}
-                    /> :
-                    <EllipseOutline
-                        width={"26px"}
-                        height={"26px"}
-                    />
-                    }
-                    판매 승인
-                </p>
+                    <h4>심사 상태</h4>
+                    <p style={{marginTop: "36px"}}>
+                        {modalData.state >= 0 ? 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                <path fillRule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clipRule="evenodd" />
+                            </svg>
+                            :
+                            <svg id='hellooo' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />
+                            </svg>
+                        }
+                        작성중
+                    </p>
+                    <p>
+                        {modalData.state >= 1 ? 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                <path fillRule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clipRule="evenodd" />
+                            </svg>
+                            :
+                            <svg id='hellooo' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />
+                            </svg>
+                        }
+                        검토 요청
+                    </p>
+                    <p>
+                        {modalData.state >= 2 ? 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                <path fillRule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clipRule="evenodd" />
+                            </svg>
+                            :
+                            <svg id='hellooo' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />
+                            </svg>
+                        }
+                        수정 요청
+                    </p>
+                    <p>
+                        {modalData.state >= 3 ? 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                <path fillRule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clipRule="evenodd" />
+                            </svg>
+                            :
+                            <svg id='hellooo' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />
+                            </svg>
+                        }
+                        승인 거절
+                    </p>
+                    <p>
+                        {modalData.state >= 4 ? 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                <path fillRule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clipRule="evenodd" />
+                            </svg>
+                            :
+                            <svg id='hellooo' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />
+                            </svg>
+                        }
+                        판매 승인
+                    </p>
                 </AuditBox>
                 <AdminBox>
                 <h2>관리자 운영 노트</h2>
@@ -421,7 +412,15 @@ export default function AdminExamin(){
                         alert("1");
                     }
                     }}>
-                    {modalData.sendRequest ? <Checkbox width={'26px'} height={'26px'}/> : <SquareOutline width={'26px'} height={'26px'}/>} 
+                    {modalData.sendRequest ? 
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                    : 
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                    } 
                     요청사항 보내기
                     </p>
                 </div>
@@ -673,6 +672,7 @@ const RightModal = styled.div`
     align-items: center;
     padding-top: 40px;
     background-color: var(--box1);
+    color: var(--title);
     width: 400px;
     min-height: 100vh;
     transition: all .2s ease-in-out;
@@ -694,15 +694,13 @@ const Modalhead = styled.div`
     padding: 18px 24px;
     font-size: 22px;
     font-weight: bold;
-    span {
+    svg {
         position: absolute;
         right: 20px;
         top: 50%;
-        transform: translateY(-50%) rotate(45deg);
+        transform: translateY(-50%);
         cursor: pointer;
-        svg {
         color: var(--title);
-        }
     }
     @media screen and (max-width: 846px) {
         font-size: 28px;
@@ -719,19 +717,28 @@ const ModalHeadInfo = styled.div`
         width: 100%;
         font-size: 14px;
         margin-top: 12px;
-        span {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         svg{
-            color: var(--title);
+            width: 16px;
+            height: 16px;
+            margin-left: 4px;
+            cursor: pointer;
         }
+        span {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            svg{
+                color: var(--title);
+            }
         }
         b {
-        font-weight: bold;
-        color: var(--sub);
+            font-weight: bold;
+            color: var(--sub);
         }
     }
     @media screen and (max-width: 846px) {
@@ -818,13 +825,17 @@ const AuditBox = styled.div`
         margin-right: 12px;
         }
         svg{
-        fill: var(--point);
         color: var(--point);
         font-weight: bold;
         }
     }
     p:nth-child(1){
         margin-top: 48px;
+    }
+    svg {
+        width: 32px;
+        height: 32px;
+        margin-right: 16px;
     }
 `
 const AdminBox = styled.div`
@@ -858,19 +869,18 @@ const AdminBox = styled.div`
         width: 100%;
         margin-top: 12px;
         p{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: auto;
-        cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            cursor: pointer;
         }
         span{
-        margin-top: 2px;
+            margin-top: 2px;
         }
         svg{
-        fill: var(--point);
-        color: var(--point);
-        margin-right: 4px;
+            color: var(--point);
+            margin-right: 4px;
         }
     }
 `

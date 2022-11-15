@@ -2,10 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import Moment from 'react-moment';
-import { BsCalendarDate, BsSortDownAlt } from 'react-icons/bs';
 import moment from 'moment';
 import 'react-calendar/dist/Calendar.css';
-import { ChevronDownOutline, SearchOutline } from 'react-ionicons';
 
 interface getDataInterface {
     number: number,
@@ -162,9 +160,6 @@ export default function PaymentList(){
   }
     return (
         <>
-            {/* <TopBar>
-                <p>출금통계</p>
-            </TopBar> */}
             <Box>
                 <TopLine>
                 <span className='title'>출금통계</span>
@@ -174,14 +169,18 @@ export default function PaymentList(){
                     <option value="">전체누적</option>
                     <option value="">오늘</option>
                     </select>
-                    <ChevronDownOutline/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                        <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clipRule="evenodd" />
+                    </svg>
                 </div>
                 <div>
                     <div className='calBox' onClick={()=> {
-                    setEndView(false);
-                    setBeginView((e) => !e);
+                        setEndView(false);
+                        setBeginView((e) => !e);
                     }}>
-                    <BsCalendarDate/>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
                     <Moment format='YYYY/MM/DD'>
                         {beginDate}
                     </Moment>
@@ -203,10 +202,12 @@ export default function PaymentList(){
                 <span className='or'>부터</span>
                 <div>
                     <div className='calBox' onClick={()=> {
-                    setBeginView(false);
-                    setEndView((e) => !e);
+                        setBeginView(false);
+                        setEndView((e) => !e);
                     }}>
-                    <BsCalendarDate/>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
                     <Moment format='YYYY/MM/DD'>
                         {endDate}
                     </Moment>
@@ -284,11 +285,15 @@ export default function PaymentList(){
                         <option value="name">실명</option>
                         <option value="productReview">상품평</option>
                         </select>
-                        <ChevronDownOutline/>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clipRule="evenodd" />
+                        </svg>
                     </div>
                     <div className='inputBox'>
                         <input type="text" placeholder='검색'/>
-                        <SearchOutline/>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
                     </div>
                     <div className='rightBox'>
                         <span>선택 기간 내 <b>{dataCount}</b> 개</span>
@@ -304,7 +309,9 @@ export default function PaymentList(){
                             <option value="">출금 요청 금액 크기 순</option>
                             <option value="">출금 요청 금액 적은 순</option>
                         </select>
-                        <BsSortDownAlt/>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                        </svg>
                         </div>
                     </div>
                     </div>
@@ -355,6 +362,7 @@ const Box = styled.div`
     padding: 24px;
     background-color: var(--box1);
     border-radius: 8px;
+    z-index: 999;
     h1{
         margin-top: 20px;
     }
@@ -388,15 +396,13 @@ const TopLine = styled.div`
             -moz-appearance: none; 
             appearance: none;
         }
-        span{
+        svg{
             position: absolute;
             font-size: 16px;
             top: 50%;
             right: 2px;
             transform: translateY(-50%);
-            svg{
-                color: var(--title);
-            }
+            color: var(--title);
         }
     }
     .or{
@@ -586,15 +592,13 @@ const Center = styled.div`
         appearance: none;
         }
         .selectBox{
-            span{
+            svg{
                 position: absolute;
                 font-size: 16px;
                 top: 50%;
                 right: 2px;
                 transform: translateY(-50%);
-                svg{
                 color: var(--title);
-                }
             }
         }
         .selectBox.left{
@@ -612,8 +616,8 @@ const Center = styled.div`
                 top: 50%;
                 transform: translateY(-50%);
             }
-            }
-            .inputBox{
+        }
+        .inputBox{
             input{
                 width: 200px;
                 font-size: 16px;
@@ -625,14 +629,12 @@ const Center = styled.div`
                 color: var(--title);
                 border-radius: 4px;
             }
-            span{
+            svg{
                 position: absolute;
                 right: 4px;
                 top: 50%;
                 transform: translateY(-50%);
-                svg{
-                    color: var(--title);
-                }
+                color: var(--title);
             }
         }
         .rightBox{

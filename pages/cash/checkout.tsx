@@ -2,7 +2,6 @@ import axios from 'axios';
 import Box from 'components/Box';
 import * as React from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 import styled from 'styled-components';
 
 interface title {
@@ -58,19 +57,18 @@ export default function Checkout(title:title){
                   <MeansSelect onClick={ClickMeansTab}>
                       <p>{fetchData !== null && fetchData.response_data[Number(means.replace(regex, ""))].code_name}</p>
                       {!meansChange ? 
-                          <p>변경
-                          <ChevronDownOutline
-                              width={"20px"}
-                              height={"20px"}
-                              color={"#E9446C"}
-                          />
-                          </p> :
-                          <p>닫기
-                          <ChevronUpOutline
-                              width={"20px"}
-                              height={"20px"}
-                              color={"#E9446C"}
-                          />
+                          <p>
+                            변경
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" color='#E9446C' viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                          </p> 
+                          :
+                          <p>
+                            닫기
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" color='#E9446C' viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                            </svg>
                           </p>
                       }
                   </MeansSelect>
@@ -165,6 +163,9 @@ const MeansSelect = styled.div`
     display: flex;
     align-items: center;
     color: var(--point);
+  }
+  svg {
+    margin-left: 2px;
   }
 `
 const MeansBox = styled.div<{meansChange: boolean}>`

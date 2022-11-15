@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { ChevronDownOutline, RemoveCircleOutline } from 'react-ionicons';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
@@ -43,7 +42,12 @@ export default function AddContentBox(props:any){
         </div>
         <div className='right'>
             <div className='selectPrice'>
-            <span onClick={()=> setBoxView((e)=>!e)}>적용된 판매정책 : 기본가격<ChevronDownOutline width={"20px"} height={"20px"}/></span>
+            <span onClick={()=> setBoxView((e)=>!e)}>
+              적용된 판매정책 : 기본가격 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </span>
             <SelectPriceBox className={boxView ? "selectPriceBoxView" : ""}>
                 <p>기본 가격정책 적용</p>
                 <p>예외 가격정책 적용</p>
@@ -63,12 +67,9 @@ export default function AddContentBox(props:any){
             </div>
         </div>
         <AddCircle>
-            <RemoveCircleOutline
-                width={"36px"}
-                height={"36px"}
-                cssClasses={"removeBtn"}
-                onClick={RemoveStory}
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="removeBtn" onClick={RemoveStory}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </AddCircle>
         </AddContent>
     )
@@ -284,18 +285,17 @@ const SelectPriceBox = styled.div`
 
 const AddCircle = styled.div`
   position: absolute;
-  top: 0;
+  top: 50%;
   width: 50px;
   right: 8px;
   height: 100%;
-  span{
+  svg{
+    width: 34px;
+    height: 34px;
     position: absolute;
-    transform: translateX(8px) translateY(-50%);
-    top: 50%;
+    transform: translateX(12px) translateY(-50%);
     cursor: pointer;
-    svg{
-      color: var(--accent);
-    }
+    color: var(--accent);
   }
   span{
     left: 0;

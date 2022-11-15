@@ -32,10 +32,9 @@ export default function PaymentDone(){
             </ProductName>
                 <button>나의 캐시 지갑 보기</button>
             <BackP>
-                <ChevronBackOutline
-                    width={"20px"}
-                    height={"20px"}
-                />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                </svg>
                 돌아가기
             </BackP>
         </Box>
@@ -160,7 +159,7 @@ const BackP = styled.p`
     font-size: 20px;
     font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
     svg{
-        margin-top: 4px;
         color: var(--title);
+        margin-right: 4px;
     }
 `
