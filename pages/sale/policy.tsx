@@ -13,7 +13,7 @@ type IProgress = {
 
 export default function SalePolicy(){
     const [contentData, setContentData] = React.useState('');
-    let Progress: IProgress[] = [
+    const Progress: IProgress[] = [
         {state: "작성중", complete: 2, request: 1},
         {state: "검수중", complete: 2, request: 1},
         {state: "수정요청", complete: 2, request: 2},

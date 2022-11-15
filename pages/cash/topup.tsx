@@ -43,7 +43,7 @@ const Cash:NextPage = () => {
     const coinSelect = (number: number) => {
         return setSelectNumber(number);
     }
-    let regex = /[^0-9]/gi;
+    const regex = /[^0-9]/gi;
 
     const [fetchData, setFetchData] = React.useState<ProductData | null>(null);
     const [loading, setLoading] = React.useState(false);
@@ -61,6 +61,7 @@ const Cash:NextPage = () => {
             setFetchData(getData.data);
         } catch(e) {
             setError(e);
+            console.log(error);
         }
         setLoading(false);
     };

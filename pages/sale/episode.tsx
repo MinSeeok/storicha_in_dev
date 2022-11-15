@@ -30,8 +30,8 @@ export default function SaleEpisode(){
         {img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif", idx: "6c875b05-9717-4d18-83fc-6eb6a49f776d", number: 4, title: "아이러니 - 착오가 곧 성공 ...", policy: 0, rent: 8, rentSale: 18, own: 18, ownSale: 18 ,textCount: 25112, artworkCount: 5, sceneCount: 2, characterCount: 10},
     ]
     const sortKind = ["최신순","가나다순","공개순","비공개순","팔로워 공개 순","초대된 사람만 순"];
-    const [sort, setSort] = useState<String>("최신 순");
-    const [sortOn, setSortOn] = useState<Boolean>(false);
+    const [sort, setSort] = useState<string>("최신 순");
+    const [sortOn, setSortOn] = useState<boolean>(false);
     const storyList = [
         // public: 0-공개 / 1-비공개 / 2-팔로워에게만공개 / 3-초대된사람만
         {
@@ -91,7 +91,7 @@ export default function SaleEpisode(){
             public: 0,
         },
     ]
-    const copyLink = (event:any) => {
+    const copyLink = () => {
         alert("복사되었습니다");
     }
     const listBoxRef = useRef<Array<HTMLDivElement | null>>([]);

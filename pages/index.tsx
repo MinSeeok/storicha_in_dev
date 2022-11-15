@@ -21,6 +21,7 @@ export default function Home(){
             setCash(getData);
         } catch(e:any) {
             setError(e);
+            console.log(error);
         }
         setLoading(false);
     }
