@@ -125,7 +125,7 @@ export default function AdminExamin(){
             state: 2
         },
     ]
-    const [modal, setModal] = useState<Boolean>(false);
+    const [modal, setModal] = useState(false);
     const [modalData ,setModalData] = useState<modalDataInterface>({
         auditRequest: "",
         seriesLink: "",
@@ -419,8 +419,6 @@ export default function AdminExamin(){
                     <p onClick={()=> {
                     if(modalData.sendRequest){
                         alert("1");
-                    } else {
-
                     }
                     }}>
                     {modalData.sendRequest ? <Checkbox width={'26px'} height={'26px'}/> : <SquareOutline width={'26px'} height={'26px'}/>} 

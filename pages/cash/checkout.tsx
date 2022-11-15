@@ -1,38 +1,15 @@
 import axios from 'axios';
 import Box from 'components/Box';
-import { on } from 'events';
 import * as React from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 import styled from 'styled-components';
-import checkOutData from '../../json/cash/checkout.json';
 
 interface title {
     title: string;
 }
-
-interface responseData{
-    code_value: Number; 
-    code_name: String;
-    code_name_en: String;
-}
-
-interface responseOption{
-  option_use_yn?:string;
-  paging_use_yn?:string;
-} 
-
-interface checkOutData{
-    response_code:String;
-    response_data:Array<responseData>;
-    response_data_count:Number;
-    response_message:String;
-    response_option: responseOption;
-    response_status:String;
-}
 export default function Checkout(title:title){
-    const [ method, setMethod ] = React.useState<string>("신용카드");
-    const [ meansChange, setMeansChange ] = React.useState<Boolean>(false);
+    const [ meansChange, setMeansChange ] = React.useState<boolean>(false);
     const ClickMeansTab = () => {
         setMeansChange((e) => !e);
     }
@@ -53,13 +30,14 @@ export default function Checkout(title:title){
             setFetchData(getData.data);
         } catch(e) {
             setError(e);
+            console.log(error);
         }
         setLoading(false);
     };
     React.useEffect(()=> {
         fetchDatas();
     },[]);
-    let regex = /[^0-9]/gi;
+    const regex = /[^0-9]/gi;
     return(
         <> 
           {loading ? (
@@ -189,7 +167,7 @@ const MeansSelect = styled.div`
     color: var(--point);
   }
 `
-const MeansBox = styled.div<{meansChange: Boolean}>`
+const MeansBox = styled.div<{meansChange: boolean}>`
   width: 100%;
   display: flex;
   flex-wrap: wrap;

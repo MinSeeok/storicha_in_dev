@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { ChevronBackOutline } from 'react-ionicons';
 import styled from 'styled-components';
 

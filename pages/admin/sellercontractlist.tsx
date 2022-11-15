@@ -1,143 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import Chart from "react-apexcharts";
-import { CheckmarkOutline, ChevronDownOutline, SearchOutline } from 'react-ionicons';
-import { RiSortDesc } from "react-icons/ri"
+import { SearchOutline } from 'react-ionicons';
 
-interface title {
-  title: string;
-}
-
-export default function SellerContractList(title: title){
-    const darkkk = "#141414";
-    const data = {
-        yAxis: "수량",
-        contractApprovedSellerCount: 25,
-        orderWithin30Days: 8,
-        cumulativeAppCount: 51,
-        xAxisData: ["T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T11","T12","T13","T14","T15","T16","T17","T18","T19","T20"],
-        yAxisData: [54, 73, 55, 25, 5, 90, 17, 28, 84, 62, 21, 82, 15, 7, 96, 12, 60, 43, 11, 48],
-    }
-    const chartOptions = {
-        options: {
-        chart: {
-            id: "basic-bar"
-        },
-        plotOptions: {
-            bar: {
-            dataLabels: {
-                position: 'top'
-            }
-            }
-        },
-        dataLabels: {
-            offsetY: -24,
-            style: {
-            fontSize: '14px',
-            //   colors: [isDark ? '#ffffff' : '#000000'],
-
-            }
-        },
-        xaxis: {
-            categories: data.xAxisData,
-            position: 'bottom',
-            axisBorder: {
-            show: false
-            },
-            axisTicks: {
-            show: false
-            },
-            labels: {
-            show: true,
-            style: {
-                colors: 'white',
-                cssClass: 'topChartXText'
-            }
-            }
-        },
-        grid: {
-            show: false,
-            padding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-            }, 
-        },
-        yaxis: {
-            axisBorder: {
-            show: false,
-            },
-            labels:{
-            show: false,
-            }
-        },
-        tooltip:{
-            enabled: true,
-            x: {
-            show: true,
-            },
-            style:{
-            fontSize: '16px',
-            }
-        }
-        },
-        series: [
-        {
-            name: "운영수익",
-            data: data.yAxisData
-        }
-        ]
-    }
-    const [windowWidth, setWindowWidth] = useState<Number>(0);
-    const HandleResize = () => {
-        if(typeof window !== "undefined"){
-            if(window.innerWidth > 1500) {
-                setWindowWidth(1500 - 400);
-            } else if (window.innerWidth > 1024){
-                setWindowWidth(window.innerWidth - 400); 
-            } else {
-                setWindowWidth(window.innerWidth - 60); 
-            }
-        }
-    }
-    const [sortKind, setSortKind] = useState<String>("사업자명");
+export default function SellerContractList(){
+    const [sortKind, setSortKind] = useState<string>("사업자명");
     const dataState = ["신청", "보류", "검토중", "거절", "보류", "보류", "보류", "보류", "보류"];
-    const listState = ["신청일순", "계약일자순", "신청만", "검토중만", "보류만", "승인만", "가나다순", "가나다역순"];
-    const [sortList, setSortList] = useState<String>("신청일순");
-
-    const [sortView, setSortView] = useState<Boolean>(false);
-    const [sortListView, setSortListView] = useState<Boolean>(false);
-
-    const listBoxRef = useRef([]);
-    const handleClickOutside = (e:MouseEvent)=> {
-        // !listBoxRef.current[0].contains(e.target) && setSortView(false);
-        // !listBoxRef.current[1].contains(e.target) && setSortListView(false);
-    }
-    useEffect(()=>{
-        document.addEventListener("mousedown", handleClickOutside);
-        HandleResize();
-        if(typeof window !== "undefined"){
-            window.addEventListener('resize', HandleResize);
-            return ()=>{
-                window.removeEventListener('resize', HandleResize);
-            }
-        }
-    },[]);
+    const [sortView, setSortView] = useState<boolean>(false);
     return (
         <Box>
             <h1 className='headTitle'>파트너 티어별 수량</h1>
             <ChartBox>
-                {/* {typeof window !== "undefined" && (
-                    <Chart
-                        className={"topCharts"}
-                        options={chartOptions.options}
-                        series={chartOptions.series}
-                        type="bar"
-                        width={String(windowWidth)+"px"}
-                        height={window.innerWidth > 1024 ? "400px" : "300px"}
-                    />
-                )} */}
                 <HeadBox>
                     <p>누적 신청 수: 51</p>
                     <p>계약 승인된 판매자 수: 25</p>
@@ -145,13 +17,6 @@ export default function SellerContractList(title: title){
                 </HeadBox>
             </ChartBox>
             <ListTop>
-                {/* <p 
-                    className='sortP' 
-                    onClick={()=> setSortView((e) => !e)}
-                    ref={el => (listBoxRef.current[0] = el)}
-                >
-                    {sortKind}<ChevronDownOutline/>
-                </p> */}
                 <div className='sortBox' style={!sortView ? {display: 'none'} : {display: 'flex'}}>
                     <p onClick={()=> {
                         setSortView((e) => !e);
@@ -170,25 +35,6 @@ export default function SellerContractList(title: title){
                     <input type="text" placeholder='검색'/>
                     <SearchOutline/>
                 </div>
-                {/* <div 
-                    className='listArray' 
-                    onClick={()=> setSortListView((e) => !e)}
-                    ref={el => (listBoxRef.current[1] = el)}
-                >
-                    <RiSortDesc/>
-                    {sortList}
-                    <div 
-                        className='listSort' 
-                        style={sortListView ? {display: "flex"} : {display: "none"}} 
-                    >
-                        {listState.map((content, i)=>(
-                        <p key={i} onClick={()=> setSortList(content)}>
-                            {content}
-                            {sortList === content && (<CheckmarkOutline/>)}
-                        </p>
-                        ))}
-                    </div>
-                </div> */}
             </ListTop>
             <ListBox>
                 <div className='listHead'>
@@ -262,6 +108,7 @@ const Box = styled.div`
     align-items: center;
     background-color: var(--box1);
     border-radius: 15px;
+    z-index: 9999;
     .headTitle{
         font-size: 26px;
         padding-bottom: 48px;

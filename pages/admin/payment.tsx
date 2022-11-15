@@ -3,13 +3,9 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import Moment from 'react-moment';
 import { BsCalendarDate, BsSortDownAlt } from 'react-icons/bs';
-import moment, { isDate, months } from 'moment';
+import moment from 'moment';
 import 'react-calendar/dist/Calendar.css';
 import { ChevronDownOutline, SearchOutline } from 'react-ionicons';
-
-interface title{
-    title:string;
-}
 
 interface getDataInterface {
     number: number,
@@ -29,8 +25,7 @@ interface requestInterface{
     state: string,
     className: string,
 }
-export default function PaymentList({title}:title){
-    let date = new Intl.DateTimeFormat('kr').format(new Date());
+export default function PaymentList(){
     const [beginView, setBeginView] = React.useState(false);
     const [beginDate, setBeginDate] = React.useState(new Date());
 
@@ -47,7 +42,7 @@ export default function PaymentList({title}:title){
         setEndDate(value);
         setEndView(false);
     }
-    const [dataCount, setDataCount] = React.useState(12345);
+    const dataCount = 12345;
     const requestState:requestInterface[] = [
         {
         state: '출금신청',
@@ -160,7 +155,7 @@ export default function PaymentList({title}:title){
         state: 5
         },
     ]
-  const commaNumber = (number:Number) => {
+  const commaNumber = (number:number) => {
         const parts = number.toString().split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return parts.join('.');
@@ -325,25 +320,25 @@ export default function PaymentList({title}:title){
                     <div className='datail'>상세보기</div>
                     </div>
                     {getData.map((content, i) => (
-                    <div className='contentLine'>
-                        <div className='no'>{content.number}</div>
-                        <div className='email'><p>{content.email}</p></div>
-                        <div className='name'><p>{content.name}<br/>(@{content.tag})</p></div>
-                        <div className='date'>
-                        <p>(출금요청) {content.startDate === '' ? '--' : content.startDate}</p>
-                        <p>(송금완료) {content.endDate === '' ? '--' : content.endDate}</p>
+                        <div className='contentLine' key={i}>
+                            <div className='no'>{content.number}</div>
+                            <div className='email'><p>{content.email}</p></div>
+                            <div className='name'><p>{content.name}<br/>(@{content.tag})</p></div>
+                            <div className='date'>
+                            <p>(출금요청) {content.startDate === '' ? '--' : content.startDate}</p>
+                            <p>(송금완료) {content.endDate === '' ? '--' : content.endDate}</p>
+                            </div>
+                            <div className='withdrawal'><p>{commaNumber(content.withdrawal)}</p></div>
+                            <div className='remittance'>
+                            <p>
+                                {content.remittance}<br/>
+                                ({content.discount === 0 ? "VAT" : content.discount+'%'} {commaNumber(content.vat)})
+                            </p>
+                            </div>
+                            <div className='cycle'><p>{content.cycle}</p></div>
+                            <div className='state'><p className={requestState[content.state].className}>{requestState[content.state].state}</p></div>
+                            <div className='datail'><button>상세보기</button></div>
                         </div>
-                        <div className='withdrawal'><p>{commaNumber(content.withdrawal)}</p></div>
-                        <div className='remittance'>
-                        <p>
-                            {content.remittance}<br/>
-                            ({content.discount === 0 ? "VAT" : content.discount+'%'} {commaNumber(content.vat)})
-                        </p>
-                        </div>
-                        <div className='cycle'><p>{content.cycle}</p></div>
-                        <div className='state'><p className={requestState[content.state].className}>{requestState[content.state].state}</p></div>
-                        <div className='datail'><button>상세보기</button></div>
-                    </div>
                     ))}
                 </Center>
                 </ContentBox>

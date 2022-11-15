@@ -1,39 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import AOS from 'aos';
 import "aos/dist/aos.css";
 import Box from 'components/Box';
-import PaymentHistory from '../../json/cash/paymentHistory.json';
 import moment from "moment";
 import axios from 'axios';
 
-interface responseData{
-    approval_date?: String | null;
-    canceled_date?: String | null;
-    cash_topup_amt?: Number | null;
-    pay_amt_krw?: Number | null;
-    payment_method?: String | null;
-    payment_status?: String | null;
-    refund_date?: String | null;
-}
-interface responseOption{
-    option_use_yn?:string | null;
-    paging_use_yn?:string | null;
-} 
-
-interface ProductData{
-    response_code?: string | null;
-    response_data?: Array<responseData> | null;
-    response_data_count?:number | null;
-    response_message?:string | null;
-    response_option?:responseOption | null;
-    response_status?:string | null;
-}
 export default function CashWallet(){
     const [selectTab, setSelectTab] = React.useState("payment");
     const [fetchData, setFetchData] = React.useState<any>(null);
     const [usageDetails, setUsageDetails] = React.useState<any>(null);
-    const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<any>(null);
     const fetchDatas = async () => {
         try {
@@ -41,7 +16,6 @@ export default function CashWallet(){
             setError(null);
             setFetchData(null);
             // loading state true
-            setLoading(true);
             const getData = await axios.get(
                 'https://dev-nft.storicha.in/api/payment/history/1?display_yn=y&product_id=0',{withCredentials:true}
             )
@@ -52,13 +26,13 @@ export default function CashWallet(){
             setUsageDetails(getDataSecond.data);
         } catch(e) {
             setError(e);
+            console.log(error);
         }
-        setLoading(false);
     };
     React.useEffect(()=> {
         fetchDatas();
     },[]);
-    const commaNumber = (number:Number) => {
+    const commaNumber = (number:number) => {
         const parts = number.toString().split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return parts.join('.');
@@ -92,7 +66,7 @@ export default function CashWallet(){
                 <TabBox className={selectTab === "payment" ? "" : "active"} onClick={()=>setSelectTab("use")}>사용내역</TabBox>
             </Tab>
             <List className={selectTab === "payment" ? "" : "hide"}>
-            {fetchData ? fetchData.response_data.map((content: { approval_date: null; canceled_date: null; payment_method: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; pay_amt_krw: Number; cash_topup_amt: Number; }, i: React.Key | null | undefined) => {
+            {fetchData ? fetchData.response_data.map((content: { approval_date: null; canceled_date: null; payment_method: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; pay_amt_krw: number; cash_topup_amt: number; }, i: React.Key | null | undefined) => {
               if((content.approval_date !== null || content.canceled_date !== null))
                 return (
                   <ListItem key={i}>

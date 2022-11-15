@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
     React.useEffect(()=> {
         fetchDatas();
+        console.log(user, loading, error);
     },[]);
     return (
         <>

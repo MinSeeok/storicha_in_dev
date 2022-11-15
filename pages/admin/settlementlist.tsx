@@ -1,12 +1,7 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { HiSortDescending } from '@react-icons/all-files/hi/HiSortDescending';
 import AOS from 'aos';
 import "aos/dist/aos.css";
-
-interface title {
-    title: string;
-}
 
 // 정산 정책
 interface calcCycle {
@@ -33,7 +28,7 @@ interface listData {
     salesAppStatus: boolean;
 }
 
-export default function AdminSettlementList({title}:title){
+export default function AdminSettlementList(){
     // 정산정책
     const calcPolicy:calcCycle = {
         cycle : '매월 1일',
@@ -84,28 +79,12 @@ export default function AdminSettlementList({title}:title){
         salesAppStatus: true,
         },
     ]
-    const commaNumber = (number:Number) => {
+    const commaNumber = (number:number) => {
         const parts = number.toString().split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return parts.join('.');
     }
-    const [viewSort, setViewSort] = useState<Boolean>(false);
-    const [criterion, setCriterion] = useState<String>("정산신청일순")
-    const listViewOn = (event:any) => {
-        event.preventDefault();
-        setViewSort((e) => !e);
-    }
-    function sortCriterion(text:string){
-        setViewSort((e) => !e);
-        setCriterion(text);
-    }
-    const listBoxRef : MutableRefObject<never[]> = useRef([]);
-    const handleClickOutside = (e:MouseEvent)=> {
-        // 리스트정렬버튼 never타입 오류
-        // !listBoxRef.current[0].contains(e.target) && setViewSort(false);
-    }
     useEffect(()=>{
-        document.addEventListener("mousedown", handleClickOutside);
         AOS.init();
     },[]);
     return (
