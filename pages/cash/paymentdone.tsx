@@ -1,5 +1,4 @@
 import React from 'react';
-import { ChevronBackOutline } from 'react-ionicons';
 import styled from 'styled-components';
 
 export default function PaymentDone(){
