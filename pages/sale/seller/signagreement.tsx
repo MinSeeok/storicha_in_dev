@@ -1,6 +1,5 @@
 import Area from 'components/Area';
 import React, { useState } from 'react';
-import { ChevronDownOutline } from 'react-ionicons';
 import styled from 'styled-components';
 
 export default function SignAgreement(){
@@ -80,7 +79,9 @@ export default function SignAgreement(){
                     <option value="제주은행">제주은행</option>
                     <option value="기업은행">기업은행</option>
                 </select>
-                <ChevronDownOutline cssClasses={"svgClass"}/>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="svgClass">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
             </InputBox>
             <InputBox>
                 <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
@@ -131,7 +132,9 @@ export default function SignAgreement(){
                     <option value="19">Partner Tier 19</option>
                     <option value="20">Partner Tier 20</option>
                 </select>
-                <ChevronDownOutline/>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="svgClass">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
             </TierSelectBox>
             <AgreeBox>
                 <div>
@@ -274,6 +277,13 @@ const InputBox = styled.div`
     }
     input:focus + span {
         left: 88px;
+    }
+    svg{
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 50%;
+      right: 4px;
     }
 `
 
@@ -423,6 +433,8 @@ const TierSelectBox = styled.div`
     position: absolute;
     right: 4px;
     top: 50%;
+    width: 20px;
+    height: 20px;
     transform: translateY(-50%);
     color: ${props => props.theme.textColor};
   }

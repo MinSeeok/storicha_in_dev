@@ -2,7 +2,6 @@ import AddContentBox from 'components/AddContentBox';
 import Area from 'components/Area';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
-import { AddCircleOutline, ChevronBackOutline, ChevronForwardOutline, CopyOutline, ListOutline, SearchOutline } from 'react-ionicons';
 import styled from 'styled-components';
 
 interface StoryDataInterface{
@@ -119,23 +118,21 @@ export default function SaleEpisode(){
                     <AddContentBox {...content} key={i}/>
                 ))}
                 <p className='pagingList'>
-                <ChevronBackOutline
-                    width={"22px"}
-                    height={"22px"}
-                />
-                <b onClick={()=> alert("페이징처리")}>1</b>
-                <b onClick={()=> alert("페이징처리")}>2</b>
-                <b onClick={()=> alert("페이징처리")}>3</b>
-                <b onClick={()=> alert("페이징처리")}>4</b>
-                <b onClick={()=> alert("페이징처리")}>5</b>
-                <b onClick={()=> alert("페이징처리")}>6</b>
-                <b onClick={()=> alert("페이징처리")}>7</b>
-                <b onClick={()=> alert("페이징처리")}>8</b>
-                <b onClick={()=> alert("페이징처리")}>9</b>
-                <ChevronForwardOutline
-                    width={"22px"}
-                    height={"22px"}
-                />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                  <b onClick={()=> alert("페이징처리")}>1</b>
+                  <b onClick={()=> alert("페이징처리")}>2</b>
+                  <b onClick={()=> alert("페이징처리")}>3</b>
+                  <b onClick={()=> alert("페이징처리")}>4</b>
+                  <b onClick={()=> alert("페이징처리")}>5</b>
+                  <b onClick={()=> alert("페이징처리")}>6</b>
+                  <b onClick={()=> alert("페이징처리")}>7</b>
+                  <b onClick={()=> alert("페이징처리")}>8</b>
+                  <b onClick={()=> alert("페이징처리")}>9</b>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
                 </p>
             </TopBox>
             <ContentBox>
@@ -147,16 +144,14 @@ export default function SaleEpisode(){
                 </span>
                 <div className='center'>
                     <input type="text" placeholder='스토리 찾기'/>
-                    <SearchOutline
-                    width={"24px"}
-                    height={"24px"}
-                    />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
                 </div>
                 <div className='right' onClick={()=>setSortOn((e) => !e)} ref={el => (listBoxRef.current[0] = el)}>
-                    <ListOutline
-                    width={"26px"}
-                    height={"26px"}
-                    />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                  </svg>
                     {sort}
                     {sortOn && (
                     <div className='sortBox'>
@@ -195,39 +190,32 @@ export default function SaleEpisode(){
                     </p>
                     </ContentLineBox>
                     <ContentLineBox className='secondBox'>
-                    <span className='link'>{content.link}</span>
-                    <CopyOutline
-                        width={"24px"}
-                        height={"24px"}
-                        cssClasses={"copyOutline"}
-                        onClick={copyLink}
-                    />
-                    <AddCircleOutline
-                        width={"38px"}
-                        height={"38px"}
-                        cssClasses={"AddCircleOutline"}
-                    />
+                      <span className='link'>{content.link}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="copyOutline" onClick={copyLink}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="AddCircleOutline">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                     </ContentLineBox>
                 </ContentLine>
                 ))}
                 <p className='pagingList'>
-                <ChevronBackOutline
-                    width={"22px"}
-                    height={"22px"}
-                />
-                <b onClick={()=> alert("페이징처리")}>1</b>
-                <b onClick={()=> alert("페이징처리")}>2</b>
-                <b onClick={()=> alert("페이징처리")}>3</b>
-                <b onClick={()=> alert("페이징처리")}>4</b>
-                <b onClick={()=> alert("페이징처리")}>5</b>
-                <b onClick={()=> alert("페이징처리")}>6</b>
-                <b onClick={()=> alert("페이징처리")}>7</b>
-                <b onClick={()=> alert("페이징처리")}>8</b>
-                <b onClick={()=> alert("페이징처리")}>9</b>
-                <ChevronForwardOutline
-                    width={"22px"}
-                    height={"22px"}
-                />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                  <b onClick={()=> alert("페이징처리")}>1</b>
+                  <b onClick={()=> alert("페이징처리")}>2</b>
+                  <b onClick={()=> alert("페이징처리")}>3</b>
+                  <b onClick={()=> alert("페이징처리")}>4</b>
+                  <b onClick={()=> alert("페이징처리")}>5</b>
+                  <b onClick={()=> alert("페이징처리")}>6</b>
+                  <b onClick={()=> alert("페이징처리")}>7</b>
+                  <b onClick={()=> alert("페이징처리")}>8</b>
+                  <b onClick={()=> alert("페이징처리")}>9</b>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
                 </p>
             </ContentBox>
             <BottomBtnBox>
@@ -266,7 +254,6 @@ const TopBox = styled.div`
         gap: 8px;
         font-size: 20px;
         span, svg ,b{
-            fill: var(--title);
             color: var(--title);
         cursor: pointer;
         }
@@ -338,10 +325,13 @@ const ContentBox = styled.div`
         background-color: transparent;
         outline: none;
       }
-      span {
+      svg {
         position: absolute;
         right: 16px;
         color: var(--title);
+        width: 26px;
+        height: 26px;
+        fill: none;
       }
     }
     .right {
@@ -356,9 +346,6 @@ const ContentBox = styled.div`
     span, svg{
       fill: var(--title);
       color: var(--title);
-    }
-    svg{
-      margin-top: 4px;
     }
     .sortBox{
       position: absolute;
@@ -396,6 +383,7 @@ const ContentBox = styled.div`
       }
       .AddCircleOutline{
         width: 20px;
+        height: 20px;
       }
     }
   }
@@ -476,9 +464,13 @@ const ContentLineBox = styled.div`
     color: var(--title);
     margin-left: 8px;
     cursor: pointer;
+    width: 28px;
+    height: 28px;
   }
   .AddCircleOutline{
-    margin-left: 8px;
+    width: 28px;
+    height: 28px;
+    margin-left: 4px;
     color: var(--point);
   }
   @media screen and (max-width:1024px) {

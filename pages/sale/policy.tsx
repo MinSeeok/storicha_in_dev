@@ -2,7 +2,6 @@ import Area from 'components/Area';
 import SalePolicyBox from 'components/PolicyBox';
 import Image from 'next/image';
 import * as React from 'react';
-import { Ellipse, EllipseOutline, WalletOutline } from 'react-ionicons';
 import styled from "styled-components";
 
 type IProgress = {
@@ -41,10 +40,9 @@ export default function SalePolicy(){
                 </TitleTextBox>
                 <TopLightBox>
                     <button>
-                        <WalletOutline
-                        width={"22px"}
-                        height={"22px"}
-                        />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
+                        </svg>
                         내 책상
                     </button>
                     <p><span>배급사</span> 씨엠닉스</p>
@@ -57,11 +55,7 @@ export default function SalePolicy(){
                             return (
                             <Line  key={i}>
                                 <ProgressBox>
-                                    <EllipseOutline
-                                    width={"64px"}
-                                    height={"64px"}
-                                    color={"#D7D7D7"}
-                                    />
+                                    <EllipseFill/>
                                     <p>{progress.state}</p>
                                 </ProgressBox>
                                 {i !== 5 ?
@@ -75,10 +69,7 @@ export default function SalePolicy(){
                             return (
                             <Line  key={i}>
                                 <ProgressBox>
-                                <EllipseOutline
-                                    width={"64px"}
-                                    height={"64px"}
-                                />
+                                <EllipseFill/>
                                 <p>{progress.state}</p>
                                 </ProgressBox>
                                 {i !== 5 ?
@@ -92,10 +83,7 @@ export default function SalePolicy(){
                             return (
                             <Line  key={i}>
                                 <ProgressBox>
-                                    <Ellipse
-                                    width={"64px"}
-                                    height={"64px"}
-                                    />
+                                    <Ellipse/>
                                     <p>{progress.state}</p>
                                 </ProgressBox>
                                 {i !== 5 ?
@@ -189,7 +177,7 @@ const TopLightBox = styled.div`
         cursor: pointer;
         color: var(--title);
         border-radius: 24px;
-        span{
+        svg{
             color: var(--title);
             margin-right: 4px;
             svg{
@@ -289,5 +277,19 @@ const BarLine = styled.div`
 const Bar = styled.div`
     width: 0;
     height: 100%;
+    background-color: var(--point);
+`
+
+const Ellipse = styled.div`
+    width: 54px;
+    height: 54px;
+    border: 4px solid var(--point);
+    border-radius: 50%;
+`
+const EllipseFill = styled.div`
+    width: 54px;
+    height: 54px;
+    border: 4px solid var(--point);
+    border-radius: 50%;
     background-color: var(--point);
 `
