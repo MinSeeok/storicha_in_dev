@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { isPointThemeAtom } from 'recoil/theme';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import HeadLogo from '../../assets/images/img1.daumcdn.jpg';
 import ProfileImage from '../../assets/images/img1.daumcdn.jpg';

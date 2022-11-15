@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-export default function Header(props:any){
+export default function Header(){
     const themeModeHandle = (e:any) => {
         e.preventDefault();
         localStorage.theme = localStorage.theme === 'dark' ? 'light' : 'dark';

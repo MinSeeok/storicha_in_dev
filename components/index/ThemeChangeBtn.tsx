@@ -1,5 +1,5 @@
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { isPointThemeAtom, isThemeAtom } from "recoil/theme"
+import { isPointThemeAtom } from "recoil/theme"
 import styled from "styled-components"
 import * as React from 'react'
 

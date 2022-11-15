@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import * as React from 'react';
-import styled from "styled-components";
 
 const Header = dynamic(() => import ('./Header'),{
     ssr: false

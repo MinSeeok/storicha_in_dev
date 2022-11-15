@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 export default function View(){
     const [fetchData, setFetchData] = React.useState<any>(null);
-    const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<any>(null);
     const fetchDatas = async () => {
         try {
@@ -14,15 +13,14 @@ export default function View(){
             setError(null);
             setFetchData(null);
             // loading state true
-            setLoading(true);
             const getData = await axios.get(
                 'https://dev-nft.storicha.in/api/wallet-history/1?display_yn=y&product_id=0',{withCredentials:true}
             )
             setFetchData(getData);
         } catch(e) {
             setError(e);
+            console.log(error);
         }
-        setLoading(false);
     };
     React.useEffect(()=> {
         fetchDatas();

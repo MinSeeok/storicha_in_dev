@@ -7,57 +7,18 @@ import AOS from 'aos';
 import "aos/dist/aos.css";
 import cashSeriesData from '../../json/cashseries.json';
 
-interface title {
-  title: string;
-}
-
-interface supplyImage{
-    image_height: number;
-    image_id: string;
-    image_idx: number;
-    image_key: string;
-    image_seq: number;
-    image_url: string;
-    image_width: number;
-    mime_type: string;
-}[]
-
-interface responseData{
-    supply_tag?: string;
-    topic_idx?: number;
-    scope_type_idx?: number;
-    supply_name?: string;
-    content_data_type_idx?: number;
-    genres_type_idxs?: string;
-    episode_count?: number;
-    supply_images?: Array<supplyImage>
-}
-interface responseOption{
-    option_use_yn?:string;
-    paging_use_yn?:string;
-} 
-
-interface ProductData{
-    response_code?: string;
-    response_data?: Array<responseData>;
-    response_data_count?:number;
-    response_message?:string;
-    response_option?:responseOption;
-    response_status?:string;
-}
-
-export default function Series(title: title) {
+export default function Series() {
     const tabTitle = ["대여하기 1TC", "소장하기 2TC", "NFT IP 구매"];
     const ListSort = ["인기순", "업데이트순", "조회순", "별점순"];
-    const [tabState, setTabState] = React.useState<Number>(0);
-    const [listOn, setListOn] = React.useState<Boolean>(false);
-    const [sort, setSort] = React.useState<String>("업데이트순");
-    const [moreView, setMoreview] = React.useState<Boolean>(false);
+    const [tabState, setTabState] = React.useState<number>(0);
+    const [listOn, setListOn] = React.useState<boolean>(false);
+    const [sort, setSort] = React.useState<string>("업데이트순");
+    const [moreView, setMoreview] = React.useState<boolean>(false);
     const slideRef = React.useRef() as React.MutableRefObject<HTMLDivElement>;
     const [otherState, setOtherState] = React.useState<any>(0);
-    const [hideReceipt, setHideReceipt] = React.useState<Boolean>(false);
+    const [hideReceipt, setHideReceipt] = React.useState<boolean>(false);
     const [mark, setMark] = React.useState(false);
-    const [cashSeries, setCashSeries] = React.useState<any>(cashSeriesData);
+    const cashSeries = cashSeriesData;
 
     const OtherMoveLeft = () => {
         if ((-(otherData.length - 1) * 170) !== otherState) {
@@ -72,9 +33,9 @@ export default function Series(title: title) {
         }
     }
     // 체크 아이템 배열
-    const [checkItems, setCheckItems] = React.useState<Array<String>>([]);
+    const [checkItems, setCheckItems] = React.useState<Array<string>>([]);
     // 체크박스 전체 선택
-    const handleAllCheck = (checked: Boolean) => {
+    const handleAllCheck = (checked: boolean) => {
         if (checked) {
         const idArray: any = [];
         data.forEach((el) => idArray.push(el.idx));
@@ -125,13 +86,8 @@ export default function Series(title: title) {
         { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 10", genre: "판타지, 멜로" },
     ]
     const listBoxRef = React.useRef<Array<HTMLDivElement | null>>([]);
-    const handleClickOutside = (e: MouseEvent) => {
-        console.log(listBoxRef.current[0]);
-        if (!listBoxRef.current[0]) {
-            setListOn(false);
-        } else {
-
-        }
+    const handleClickOutside = () => {
+        !listBoxRef.current[0] && setListOn(false);
     }
     React.useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);

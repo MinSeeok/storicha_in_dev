@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 export default function AddContentBox(props:any){
-    const [ selectPriceBoxView, useSelectPriceBoxView ] = useState(false);
+    const [ boxView, setBoxView ] = useState<boolean>(false);
     const RemoveStory = () => {
         Swal.fire({
             title: '스토리를 삭제하시겠습니까?',
@@ -43,8 +43,8 @@ export default function AddContentBox(props:any){
         </div>
         <div className='right'>
             <div className='selectPrice'>
-            <span onClick={() => useSelectPriceBoxView((e) => !e)}>적용된 판매정책 : 기본가격<ChevronDownOutline width={"20px"} height={"20px"}/></span>
-            <SelectPriceBox className={selectPriceBoxView ? "selectPriceBoxView" : ""}>
+            <span onClick={()=> setBoxView((e)=>!e)}>적용된 판매정책 : 기본가격<ChevronDownOutline width={"20px"} height={"20px"}/></span>
+            <SelectPriceBox className={boxView ? "selectPriceBoxView" : ""}>
                 <p>기본 가격정책 적용</p>
                 <p>예외 가격정책 적용</p>
                 <p>012 글자수 많은...</p>

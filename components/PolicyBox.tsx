@@ -9,45 +9,13 @@ interface kind{
     kind: string;
 }
 
-interface responseData{
-    price_policy_idx?: number;
-    code_name?: string;
-    code_name_en?: string;
-    price_policy_title?: string;
-    use_yn?: string;
-    keep_price?: number;
-    rental_price?: number;
-    keep_dc_price?: number;
-    rental_dc_price?: number;
-    start_date?: string;
-    end_date?: string;
-    wait_free_date?: string;
-    wait_free_yn?: string;
-}
-interface responseOption{
-    option_use_yn?:string;
-    paging_use_yn?:string;
-} 
-
-interface ProductData{
-    response_code?: string;
-    response_data?: Array<responseData>;
-    response_data_count?:number;
-    response_message?:string;
-    response_option?:responseOption;
-    response_status?:string;
-}
-
 export default function SalePolicyBox({kind}:kind){
     const [exception, setException] = React.useState(false);
     const [onModify, setOnModify] = React.useState(false);
     function onlyNumber(e: React.ChangeEvent<HTMLInputElement>){
         return e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
     }
-    const [priceSalePolicy, setPriceSalePolicy] = React.useState<ProductData>(PriceSalePolicyData);
-    const today = moment(new Date()).format('YYYY-MM-DD');
-    const dateB = moment('2014-11-11');
-    const dateC = moment('2014-10-11');
+    const priceSalePolicy = PriceSalePolicyData;
     React.useEffect(()=>{
         console.log(priceSalePolicy.response_data && moment(priceSalePolicy.response_data[0].wait_free_date).diff(moment(), 'days'));
     },[]);
