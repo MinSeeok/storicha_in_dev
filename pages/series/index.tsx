@@ -45,9 +45,7 @@ export default function Series() {
     const handleSingleCheck = (checked: any, idx: any) => {
         if (checked) {
         // 단일 선택 시 체크된 아이템을 배열에 추가
-        console.log('123');
         console.log(checkItems);
-        console.log('321');
         setCheckItems([...checkItems, idx]);
         } else {
         // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
