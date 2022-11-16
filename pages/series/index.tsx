@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { Bookmark, BookmarkOutline, BookOutline, ChevronBackCircleOutline, ChevronDownOutline, ChevronForwardCircleOutline, ListOutline, MenuOutline, Star, StarOutline } from 'react-ionicons';
-import { IoMdCheckbox } from '@react-icons/all-files/io/IoMdCheckbox';
-import { IoMdSquareOutline } from '@react-icons/all-files/io/IoMdSquareOutline';
 import styled from 'styled-components';
 import AOS from 'aos';
 import "aos/dist/aos.css";
@@ -89,6 +86,10 @@ export default function Series() {
     const handleClickOutside = () => {
         !listBoxRef.current[0] && setListOn(false);
     }
+    const markCheck = () => {
+      mark ? alert("북마크 해제되었습니다") : alert("북마크 되었습니다");
+      setMark((e) => !e);
+    }
     React.useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         console.log(cashSeries);
@@ -102,56 +103,51 @@ export default function Series() {
             <Box>
             <Left>
                 <TitleImg>
-                <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-                <div className='mobileHead'>
-                    <p className='mobileTitle'>양과 여우들의 밤</p>
-                    <p className='moblieSubTitle'>
-                    <span>
-                        <StarOutline />
-                        4.3
-                    </span>
-                    <span className='moblieMarkIcon'>
-                        {mark ?
-                        <Bookmark cssClasses={"bookMark"}
-                            onClick={() => {
-                            if (mark) {
-                                alert("북마크 해제되었습니다");
-                            }
-                            setMark((e) => !e);
-                            }}
-                        /> :
-                        <BookmarkOutline cssClasses={"bookMark"}
-                            onClick={() => {
-                            if (!mark) {
-                                alert("북마크 되었습니다");
-                            }
-                            setMark((e) => !e);
-                            }}
-                        />
-                        }
-                        10,262
-                    </span>
-                    </p>
-                </div>
+                  <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
+                  <div className='mobileHead'>
+                      <p className='mobileTitle'>양과 여우들의 밤</p>
+                      <p className='moblieSubTitle'>
+                      <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                          <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                      </svg>
+                          4.3
+                      </span>
+                      <span className='moblieMarkIcon'>
+                          {mark ?
+                              <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} viewBox="0 0 24 24" fill="currentColor" className="bookMark">
+                                  <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
+                              </svg> 
+                              :
+                              <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="bookMark">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                              </svg>
+                          }
+                          10,262
+                      </span>
+                      </p>
+                  </div>
                 </TitleImg>
                 <SubBox>
-                <p className='firstEpisode'>
-                    <BookOutline />
-                    첫화 보기
-                </p>
+                    <p className='firstEpisode'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                    </svg>
+                        첫화 보기
+                    </p>
                 </SubBox>
                 <TitleHead>줄거리</TitleHead>
                 <TitleSubText>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</TitleSubText>
                 <SubBox style={{ paddingTop: "176px" }}>
-                <WriterImg>
-                    <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-                </WriterImg>
-                <WriteInfo>
-                    <p className='title'>Richard Ottemant</p>
-                    <p className='tag'>@Illustrator</p>
-                    <WriteFollow>Follow</WriteFollow>
-                    <WriteSupport>Staking Support</WriteSupport>
-                </WriteInfo>
+                    <WriterImg>
+                        <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
+                    </WriterImg>
+                    <WriteInfo>
+                        <p className='title'>Richard Ottemant</p>
+                        <p className='tag'>@Illustrator</p>
+                        <WriteFollow>Follow</WriteFollow>
+                        <WriteSupport>Staking Support</WriteSupport>
+                    </WriteInfo>
                 </SubBox>
                 <SubBox style={{ flexDirection: "column" }}>
                 <p className='publicTitle'>작가의 공지</p>
@@ -160,25 +156,16 @@ export default function Series() {
             </Left>
             <Right>
                 <BookMark>
-                {mark ?
-                    <Bookmark cssClasses={"bookMark"}
-                    onClick={() => {
-                        if (mark) {
-                        alert("북마크 해제되었습니다");
-                        }
-                        setMark((e) => !e);
-                    }}
-                    /> :
-                    <BookmarkOutline cssClasses={"bookMark"}
-                    onClick={() => {
-                        if (!mark) {
-                        alert("북마크 되었습니다");
-                        }
-                        setMark((e) => !e);
-                    }}
-                    />
-                }
-                북마크하기
+                    {mark ?
+                        <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} viewBox="0 0 24 24" fill="currentColor" className="bookMark">
+                            <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
+                        </svg> 
+                        :
+                        <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="bookMark">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                        </svg>
+                    }
+                    북마크하기
                 </BookMark>
                 <InfoBox>
                 <div>
@@ -198,9 +185,12 @@ export default function Series() {
                 <p>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</p>
                 </MoblieStory>
                 <MobileFirstView>
-                <button>
-                    <BookOutline />첫화 보기
-                </button>
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                        </svg>
+                        첫화보기
+                    </button>
                 </MobileFirstView>
                 <SelectTab>
                 {tabTitle.map((title, i) => (
@@ -208,59 +198,60 @@ export default function Series() {
                 ))}
                 </SelectTab>
                 <ListTop>
-                <label htmlFor="allSelect">
-                    {checkItems.length === data.length ?
-                    <IoMdCheckbox className='ckbox' />
-                    :
-                    <IoMdSquareOutline className='ckbox' />
-                    }
-                    <input
-                    id='allSelect'
-                    type="checkbox"
-                    onChange={(e) => handleAllCheck(e.target.checked)}
-                    checked={checkItems.length === data.length ? true : false}
-                    />
-                    전체선택</label>
-                {/* <label htmlFor="allSelect">전체선택</label> */}
-                <p className='sortList' onClick={() => setListOn((e) => !e)}>
-                    <ListOutline
-                    width={"28px"}
-                    height={"28px"}
-                    />
-                    <span>{sort}</span>
-                </p>
-                <SortBox className={listOn ? "sortListView" : ""} ref={el => (listBoxRef.current[0] = el)}>
-                    {listOn &&
-                    ListSort.map((content, i) => (
-                        <p className='sortValue' key={i} onClick={() => {
-                        SortSelect(content);
-                        }}>{content}</p>
-                    ))
-                    }
-                </SortBox>
+                    <label htmlFor="allSelect">
+                        <div className='checkbox'>
+                          {checkItems.length === data.length ? 
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                              </svg>
+                          : 
+                              "" 
+                          }
+                        </div>
+                        <input
+                            id='allSelect'
+                            type="checkbox"
+                            onChange={(e) => handleAllCheck(e.target.checked)}
+                            checked={checkItems.length === data.length ? true : false}
+                        />
+                        전체선택
+                    </label>
+                    <p className='sortList' onClick={() => setListOn((e) => !e)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                        </svg>
+                        <span>{sort}</span>
+                    </p>
+                    <SortBox className={listOn ? "sortListView" : ""} ref={el => (listBoxRef.current[0] = el)}>
+                        {listOn &&
+                        ListSort.map((content, i) => (
+                            <p className='sortValue' key={i} onClick={() => {
+                            SortSelect(content);
+                            }}>{content}</p>
+                        ))
+                        }
+                    </SortBox>
                 </ListTop>
                 <ContentBox className={moreView ? "moreView" : ""}>
                 {data.map((content, i) => (
                     <ContentLine key={i}>
-                    {checkItems.includes(content.idx) ?
                         <label htmlFor={`selectBox${i}`}>
-                        <IoMdCheckbox
-                            className='ckbox'
-                        />
+                            <div className='checkbox'>
+                                {checkItems.includes(content.idx) ? 
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                    </svg>
+                                : 
+                                    "" 
+                                }
+                            </div>
                         </label>
-                        :
-                        <label htmlFor={`selectBox${i}`}>
-                        <IoMdSquareOutline
-                            className='ckbox'
+                        <input
+                            id={`selectBox${i}`}
+                            type="checkbox"
+                            onChange={(e) => handleSingleCheck(e.target.checked, content.idx)}
+                            checked={checkItems.includes(content.idx) ? true : false}
                         />
-                        </label>
-                    }
-                    <input
-                        id={`selectBox${i}`}
-                        type="checkbox"
-                        onChange={(e) => handleSingleCheck(e.target.checked, content.idx)}
-                        checked={checkItems.includes(content.idx) ? true : false}
-                    />
                     <ContentImageBox>
                         <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
                     </ContentImageBox>
@@ -268,10 +259,9 @@ export default function Series() {
                         <p className='ep'><b>EP</b>{content.episode}</p>
                         <p className='epTitle'>{content.title.length < 10 ? content.title : content.title}</p>
                         <p className='scoreDate'>
-                        <Star
-                            width={"20px"}
-                            height={"20px"}
-                        />
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                        </svg>
                         {content.score}&nbsp;&nbsp;&nbsp;&nbsp;{content.date}
                         </p>
                         <button
@@ -287,41 +277,37 @@ export default function Series() {
                 ))}
                 </ContentBox>
                 <MoreViewBtn
-                className={moreView ? "moreViewHide" : ""}
-                onClick={() => setMoreview((e) => !e)}
-                >
-                <ChevronDownOutline
-                    width={"24px"}
-                    height={"24px"}
-                /> 더보기
+                    className={moreView ? "moreViewHide" : ""}
+                    onClick={() => setMoreview((e) => !e)}
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                    더보기
                 </MoreViewBtn>
             </Right>
             <OtherBox>
                 <p className='title' onClick={() => console.log(otherState)}>이 작가의 다른 작품 보기</p>
                 <OtherContentBox>
-                <ChevronBackCircleOutline
-                    width={"42px"}
-                    height={"42px"}
-                    onClick={OtherMoveLeft}
-                />
-                <ChevronForwardCircleOutline
-                    width={"42px"}
-                    height={"42px"}
-                    onClick={OtherMoveRight}
-                />
-                <OtherLine>
-                    <OtherWrapper className='slideRef' ref={slideRef} style={listStyled}>
-                    {otherData.map((content, i) => (
-                        <OtherContent key={i}>
-                        <OtherImage>
-                            <img src={`/images/test/${content.image}`} alt="" />
-                        </OtherImage>
-                        <OtherTitle>{content.title.length < 10 ? content.title : content.title.slice(0, 10) + "..."}</OtherTitle>
-                        <OtherGenre>{content.genre}</OtherGenre>
-                        </OtherContent>
-                    ))}
-                    </OtherWrapper>
-                </OtherLine>
+                    <svg xmlns="http://www.w3.org/2000/svg" onClick={OtherMoveLeft} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 mr-3">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" onClick={OtherMoveRight} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                    <OtherLine>
+                        <OtherWrapper className='slideRef' ref={slideRef} style={listStyled}>
+                        {otherData.map((content, i) => (
+                            <OtherContent key={i}>
+                            <OtherImage>
+                                <img src={`/images/test/${content.image}`} alt="" />
+                            </OtherImage>
+                            <OtherTitle>{content.title.length < 10 ? content.title : content.title.slice(0, 10) + "..."}</OtherTitle>
+                            <OtherGenre>{content.genre}</OtherGenre>
+                            </OtherContent>
+                        ))}
+                        </OtherWrapper>
+                    </OtherLine>
                 </OtherContentBox>
                 <ListBackBtn>
                 <button><img src="/images/icons/backListBtn.svg" alt="" /> 목록으로</button>
@@ -329,24 +315,19 @@ export default function Series() {
             </OtherBox>
             </Box>
             <ResultBox
-            className={checkItems[0] ?
-                hideReceipt ? "hideShowResult" : "" : "showResult"
-            }
-            >
-            <div className='top'>
-                <p>총 주문 금액</p>
-                <p>100 TC</p>
-                <p>총 2건</p>
-            </div>
-            <button>선택 구매</button>
-            <MenuOutline
-                width={"36px"}
-                height={"36px"}
-                cssClasses={"menuOutline"}
-                onClick={() => {
-                setHideReceipt((e) => !e);
-                }}
-            />
+                className={checkItems[0] ?
+                    hideReceipt ? "hideShowResult" : "" : "showResult"
+                }
+                >
+                <div className='top'>
+                    <p>총 주문 금액</p>
+                    <p>100 TC</p>
+                    <p>총 2건</p>
+                </div>
+                <button>선택 구매</button>
+                <svg xmlns="http://www.w3.org/2000/svg" onClick={()=> setHideReceipt((e) => !e)} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menuOutline">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
             </ResultBox>
         </Container>
     )
@@ -423,58 +404,56 @@ const Left = styled.div`
 `
 
 const TitleImg = styled.div`
-  width: 100%;
-  height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 8px;
-  img{
-    position: absolute;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 8px;
+  img{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
   }
   .mobileHead{
-    display: none;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background-color: transparent;
-    background-image: linear-gradient(
-      180deg, 
-      transparent 0%, 
-      var(--box1) 100%
-    );
-    p{
-      left: 20px;
-    }
-    .mobileTitle{
+      display: none;
+      width: 100%;
+      height: 100%;
       position: absolute;
-      bottom: 50px;
-      font-size: 36px;
-      letter-spacing: -.8px;
-    }
-    .moblieSubTitle{
-      position: absolute;
-      bottom: 12px;
-      font-size: 24px;
-      display: flex;
-      gap: 16px;
-      span{
-        display: flex;
-        align-items: center;
-        .bookMark{
-          color: var(--point);
-          fill: var(--point);
-          cursor: pointer;
-        }
+      background-color: transparent;
+      background-image: linear-gradient(
+        180deg, 
+        transparent 0%, 
+        var(--box1) 100%
+      );
+      p{
+          left: 20px;
       }
-      svg{
-        color: var(--title);
+      .mobileTitle{
+          position: absolute;
+          bottom: 50px;
+          font-size: 36px;
+          letter-spacing: -.8px;
       }
-    }
+      .moblieSubTitle{
+          position: absolute;
+          bottom: 12px;
+          font-size: 24px;
+          display: flex;
+          gap: 16px;
+          span{
+            display: flex;
+            align-items: center;
+          }
+          svg{
+              width: 20px;
+              height: 20px;
+              color: var(--point);
+              cursor: pointer;
+          }
+      }
   }
   @media screen and (max-width: 1000px) {
     border-radius: 0;
@@ -486,46 +465,45 @@ const TitleImg = styled.div`
 `
 
 const SubBox = styled.div`
-  width: 100%;
-  padding: 9.5px 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-top: 18px;
-  color: var(--title);
-  background-color: var(--box2);
-  border-radius: 9px;
-  .firstEpisode{
     width: 100%;
+    padding: 9.5px 20px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    svg{
-      color: var(--title);
-      margin-right: 6px;
-      margin-top: 4px;
+    margin-top: 18px;
+    color: var(--title);
+    background-color: var(--box2);
+    border-radius: 9px;
+    .firstEpisode{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        svg{
+            color: var(--title);
+            margin-right: 6px;
+        }
     }
-  }
-  .publicTitle{
-    width: 100%;
-    text-align: left;
-    font-size: 18px;
-    margin-top: 12px;
-  }
-  .public{
-    width: 100%;
-    text-align: left;
-    font-size: 16px;
-    margin-top: 12px;
-    color: #6C6C6C;
-    line-height: 22px;
-  }
-  @media screen and (max-width: 1000px) {
-    display: none;
-  }
+    .publicTitle{
+        width: 100%;
+        text-align: left;
+        font-size: 18px;
+        margin-top: 12px;
+    }
+    .public{
+        width: 100%;
+        text-align: left;
+        font-size: 16px;
+        margin-top: 12px;
+        color: #6C6C6C;
+        line-height: 22px;
+    }
+    @media screen and (max-width: 1000px) {
+        display: none;
+    }
 `
 const TitleHead = styled.p`
   width: 100%;
@@ -632,13 +610,13 @@ const BookMark = styled.p`
   color: var(--title);
   cursor: pointer;
   svg{
-    color: var(--point);
-    fill: var(--point);
-    margin-right: 4px;
-    margin-top: 2px;
+      width: 24px;
+      height: 24px;
+      color: var(--point);
+      margin-right: 4px;
   }
   @media screen and (max-width: 1000px) {
-    display: none;
+      display: none;
   }
 `
 const InfoBox = styled.div`
@@ -691,124 +669,132 @@ const MoblieStory = styled.div`
   }
 `
 const MobileFirstView = styled.div`
-  display: none;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  margin-top: 36px;
-  button{
-    width: 400px;
-    background-color: var(--box2);
-    display: flex;
+    display: none;
+    width: 100%;
     justify-content: center;
     align-items: center;
-    padding: 8.5px 0;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    border-radius: 28px;
-    svg{
-      color: var(--title);
-      margin-right: 8px;
-      margin-top: 4px ;
+    margin-top: 36px;
+    button{
+        width: 400px;
+        background-color: var(--box2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8.5px 0;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        border-radius: 28px;
+        svg{
+            color: var(--title);
+            margin-right: 8px;
+        }
+        color: var(--title);
+        font-size: 20px;
     }
-    color: var(--title);
-    font-size: 20px;
-  }
-  @media screen and (max-width: 1000px) {
-    display: flex;
-  }
+    @media screen and (max-width: 1000px) {
+        display: flex;
+    }
 `
 const SelectTab = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 32px;
-  p{
-    width: 30%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 16px 0;
-    border-bottom: 3px solid transparent;
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--title);
-    cursor: pointer;
-    letter-spacing: -.2px;
-    word-spacing: -1px;
-  }
-  .tabChoice{
-    border-bottom: 3px solid var(--point);
-    font-size: 22px;
-  }
-  @media screen and (max-width: 1000px) {
-    margin-top: 14px;
+    margin-top: 32px;
     p{
-      font-size: 16px;
+        width: 30%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 3px solid transparent;
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--title);
+        cursor: pointer;
+        letter-spacing: -.2px;
+        word-spacing: -1px;
     }
-  }
+    .tabChoice{
+        border-bottom: 3px solid var(--point);
+        font-size: 22px;
+    }
+    @media screen and (max-width: 1000px) {
+        margin-top: 14px;
+        p{
+            font-size: 16px;
+        }
+    }
 `
 const ListTop = styled.div`
-  width: 100%;
-  padding: 4.5px 0;
-  background-color: var(--box2);
-  margin-top: 18px;
-  border-radius: 6px;
-  #allSelect{
-    display: none;
-  }
-  label{
-    left: 12px;
-    width: 200px;
-    font-size: 20px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    cursor: pointer;
-    @media screen and (max-width: 500px) {
-      font-size: 18px;
-      padding-left: 4px;
+    width: 100%;
+    padding: 4.5px 0;
+    background-color: var(--box2);
+    margin-top: 18px;
+    border-radius: 6px;
+    #allSelect{
+        display: none;
     }
-    svg{
-      margin-right: 6px;
+    label{
+        left: 12px;
+        width: 200px;
+        font-size: 20px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        cursor: pointer;
+        @media screen and (max-width: 500px) {
+            font-size: 18px;
+            padding-left: 4px;
+        }
+        svg{
+            margin-right: 6px;
+        }
     }
-  }
-  .ckbox{
-    width: 32px;
-    height: 32px;
-    color: var(--unchecked);
-  }
-  .sortList{
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 18px;
-    svg {
-      margin-top: 4px;
-      color: var(--title);
-      margin-right: 4px;
-      @media screen and (max-width: 500px) {
-        width: 20px;
-        margin-right: 2px;
+    .ckbox{
+        width: 32px;
+        height: 32px;
+        color: var(--unchecked);
+    }
+    .checkbox{
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      border: 2px solid var(--unchecked);
+      border-radius: 4px;
+      svg {
+        color: var(--unchecked);
       }
     }
-    span {
-      @media screen and (max-width: 500px) {
-        font-size: 16px;
-      }
+    .sortList{
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 18px;
+        svg {
+            color: var(--title);
+            margin-right: 4px;
+            @media screen and (max-width: 500px) {
+              width: 20px;
+              margin-right: 2px;
+            }
+        }
+        span {
+            @media screen and (max-width: 500px) {
+              font-size: 16px;
+            }
+        }
     }
-  }
-  @media screen and (max-width: 1024px) {
-    width: calc(100% - 12px);
-    padding: 6px 0;
-  }
+    @media screen and (max-width: 1024px) {
+      width: calc(100% - 12px);
+      padding: 6px 0;
+    }
 `
 const SortBox = styled.div`
   position: absolute;
@@ -860,35 +846,43 @@ const ContentBox = styled.div`
   }
 `
 const ContentLine = styled.div`
-  width: 100%;
-  height: 222px;
-  padding: 20px 0 20px 54px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  input[type="checkbox"]{
-    display: none;
-  }
-  label{
-    position: absolute;
-    left: 4px;
-    width: 32px;
-    height: 100%;
-    .ckbox{
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 32px;
-      height: 32px;
-      color: var(--unchecked);
-      cursor: pointer;
+    width: 100%;
+    height: 222px;
+    padding: 20px 0 20px 54px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    input[type="checkbox"]{
+      display: none;
     }
-  }
-  @media screen and (max-width: 500px) {
-    height: 160px;
-    padding: 12px 0 12px 54px;
-  }
+    label{
+        position: absolute;
+        left: 4px;
+        width: 32px;
+        height: 100%;
+        .checkbox{
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            color: var(--unchecked);
+            border: 2px solid var(--unchecked);
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            svg{
+              margin: 0;
+            }
+        }
+    }
+    @media screen and (max-width: 500px) {
+      height: 160px;
+      padding: 12px 0 12px 54px;
+    }
 `
 const ContentTextLine = styled.div`
   width: calc(100% - 140px);
@@ -1015,7 +1009,7 @@ const ContentImageBox = styled.div`
 
 const MoreViewBtn = styled.div`
   width: 100%;
-  padding: 8px 0;
+  height: 38px;
   background-color: var(--box2);
   display: flex;
   flex-direction: row;
@@ -1024,10 +1018,10 @@ const MoreViewBtn = styled.div`
   margin-top: 36px;
   font-size: 18px;
   border-radius: 24px;
+  z-index: 999;
   cursor: pointer;
   svg {
     color: var(--title);
-    fill: var(--title);
     margin-right: 4px;
   }
   @media screen and (max-width: 1000px) {
@@ -1035,127 +1029,128 @@ const MoreViewBtn = styled.div`
   }
 `
 const ResultBox = styled.div`
-  position: fixed;
-  left: 0;
-  bottom: 0px;
-  padding: 24px 20px 22px 20px;
-  background-color: var(--modalSlideBg);
-  width: 100%;
-  border: 2px solid var(--borderLine);
-  border-bottom: none;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 999 !important;
-  transition: all .45s ease-in-out;
-  .top{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    p {
-      width: 100%;
-      font-size: 22px;
-      text-align: center;
-    }
-    p:nth-child(1){
-      text-align: left;
-    }
-    p:nth-child(3){
-      text-align: right;
-    }
-  }
-  button{
-    padding: 12px 150px;
-    font-size: 22px;
-    font-weight: bold;
-    background-color: var(--point);
-    border-radius: 28px;
-    margin-top: 24px;
-    border: none;
-    outline: none;
-    color: #FFFFFF;
-    cursor: pointer;
-    @media screen and (max-width: 500px) {
-      width: 100%;
-      padding: 12px 0;
-    }
-  }
-  &::after{
-    position: absolute;
-    content: "";
-    top: -42px;
-    width: 200px;
-    height: 40px;
+    position: fixed;
+    left: 0;
+    bottom: 0px;
+    padding: 24px 20px 22px 20px;
     background-color: var(--modalSlideBg);
+    width: 100%;
     border: 2px solid var(--borderLine);
     border-bottom: none;
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-    border-bottom: none;
-    z-index: 99 !important;
-    left: 50%;
-    transform: translateX(-50%);
-    @media screen and (max-width: 400px) {
-      top: -41px;
-    }
-  }
-  .menuOutline {
-    position: absolute;
-    bottom: 124px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--sub);
-    fill: var(--sub);
-    z-index: 99999;
-    cursor: pointer;
-  }
-  &.showResult{
-    bottom: -500px;
-  }
-  &.hideShowResult{
-    bottom: -146px;
-  }
-  @media screen and (max-width: 1000px) {
-    padding: 24px 20px;
-    &.hideShowResult{
-      bottom: -138px;
-    }
-    .menuOutline{
-      bottom: 116px;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999 !important;
+    transition: all .45s ease-in-out;
+    .top{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      p {
+        width: 100%;
+        font-size: 22px;
+        text-align: center;
+      }
+      p:nth-child(1){
+        text-align: left;
+      }
+      p:nth-child(3){
+        text-align: right;
+      }
     }
     button{
-      padding: 8px 120px;
-      font-size: 20px;
+      padding: 12px 150px;
+      font-size: 22px;
+      font-weight: bold;
+      background-color: var(--point);
+      border-radius: 28px;
+      margin-top: 24px;
+      border: none;
+      outline: none;
+      color: #FFFFFF;
+      cursor: pointer;
+      @media screen and (max-width: 500px) {
+        width: 100%;
+        padding: 12px 0;
+      }
     }
-  }
+    &::after{
+        position: absolute;
+        content: "";
+        top: -40px;
+        width: 200px;
+        height: 40px;
+        background-color: var(--modalSlideBg);
+        border: 2px solid var(--borderLine);
+        border-bottom: none;
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+        border-bottom: none;
+        z-index: 999 !important;
+        left: 50%;
+        transform: translateX(-50%);
+        @media screen and (max-width: 400px) {
+            top: -41px;
+        }
+    }
+    .menuOutline {
+        position: absolute;
+        top: -36px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--sub);
+        z-index: 99999;
+        cursor: pointer;
+        width: 28px;
+        height: 28px;
+    }
+    &.showResult{
+      bottom: -500px;
+    }
+    &.hideShowResult{
+      bottom: -146px;
+    }
+    @media screen and (max-width: 1000px) {
+      padding: 24px 20px;
+      &.hideShowResult{
+        bottom: -138px;
+      }
+      .menuOutline{
+        bottom: 116px;
+      }
+      button{
+        padding: 8px 120px;
+        font-size: 20px;
+      }
+    }
 `
 
 const OtherBox = styled.div`
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 60px);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  .title{
-    font-size: 20px;
-    font-weight: bold;
-  }
-  @media screen and (max-width: 1000px) {
-    position: relative;
-    margin-top: 54px;
-    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
     .title{
-      font-size: 24px;
+        font-size: 20px;
+        font-weight: bold;
     }
-  }
+    @media screen and (max-width: 1000px) {
+        position: relative;
+        margin-top: 54px;
+        width: 100%;
+        .title{
+            font-size: 24px;
+        }
+    }
 `
 const OtherContentBox = styled.div`
   width: 100%;
@@ -1169,20 +1164,17 @@ const OtherContentBox = styled.div`
   background-color: var(--box2);
   margin-top: 24px;
   overflow: hidden;
-  span{
+  svg{
     position: absolute;
     cursor: pointer;
     top: 50%;
     transform: translateY(-50%);
-    svg{
-      color: var(--title);
-      fill: var(--title);
-    }
+    color: var(--title);
   }
-  span:nth-child(1){
+  svg:nth-child(1){
     left: 18px;
   }
-  span:nth-child(2){
+  svg:nth-child(2){
     right: 18px;
   }
   @media screen and (max-width: 1024px) {
