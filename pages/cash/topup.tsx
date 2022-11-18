@@ -56,7 +56,7 @@ const Cash:NextPage = () => {
             // loading state true
             setLoading(true);
             const getData = await axios.get(
-                'https://dev-nft.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
+                'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
             )
             setFetchData(getData.data);
         } catch(e) {
@@ -82,7 +82,7 @@ const Cash:NextPage = () => {
                         />
                         &nbsp;
                         50,00,222,111 
-                        <span>TC</span>
+                        <span onClick={()=> console.log(fetchData)}>TC</span>
                     </Title>
                     <TopupBoxTop>
                         <Directly

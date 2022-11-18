@@ -14,7 +14,7 @@ export default function View(){
             setFetchData(null);
             // loading state true
             const getData = await axios.get(
-                'https://dev-nft.storicha.in/api/wallet-history/1?display_yn=y&product_id=0',{withCredentials:true}
+                'https://api-v2.storicha.in/api/wallet-history/1?display_yn=y&product_id=0',{withCredentials:true}
             )
             setFetchData(getData);
         } catch(e) {

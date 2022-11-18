@@ -16,7 +16,7 @@ export default function Home(){
             // loading 상태를 true로 바꾼다.
             setLoading(true);
             const getData:any = await axios.get(
-                'https://dev-nft.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
+                'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
             )
             setCash(getData);
         } catch(e:any) {

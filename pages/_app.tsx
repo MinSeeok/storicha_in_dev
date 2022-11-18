@@ -2,6 +2,7 @@ import { GlobalStyle } from '@src/styles/global-styled';
 import axios from 'axios';
 import BackLogoImage from 'components/BackLogoImage';
 import Container from 'components/Container';
+import Devtools from 'components/dev/devtools';
 import type { AppProps } from 'next/app';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -20,17 +21,20 @@ function MyApp({ Component, pageProps }: AppProps) {
             setUser(null);
             setLoading(true);
             const request:any = await axios.post(
-                'https://dev-nft.storicha.in/api/User/SiteSnsLogin?site_user_id=testkwy@test.com&pwd=1234QWER!'
+                'https://api-v2.storicha.in/api/User/SiteSnsLogin?site_user_id=testkwy@test.com&pwd=1234QWER!'
             )
+            // .then(response => console.info('headers:' , response.headers))
             setUser(request);
         } catch (e:any) {
             setError(e);
         }
         setLoading(false);
     }
+    const getCookie = () => {
+    }
+    
     React.useEffect(()=> {
         fetchDatas();
-        console.log(user, loading, error);
     },[]);
     return (
         <>
@@ -38,6 +42,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <QueryClientProvider client={queryClient}>
                     <GlobalStyle />
                     <Container>
+                        <h1 style={{zIndex: 999999}} onClick={getCookie}>테스트</h1>
+                        <Devtools/>
                         <BackLogoImage/>
                         <Component {...pageProps}/>
                     </Container>
@@ -46,5 +52,4 @@ function MyApp({ Component, pageProps }: AppProps) {
         </>
     )
 }
-
 export default MyApp
