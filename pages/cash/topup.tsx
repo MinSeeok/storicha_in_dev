@@ -65,9 +65,9 @@ const Cash:NextPage = () => {
         }
         setLoading(false);
     };
-    React.useEffect(()=> {
-        fetchDatas();
-    },[]);
+    // React.useEffect(()=> {
+    //     fetchDatas();
+    // },[]);
     return(
         <Box>
             {!loading && (
@@ -82,7 +82,7 @@ const Cash:NextPage = () => {
                         />
                         &nbsp;
                         50,00,222,111 
-                        <span onClick={()=> console.log(fetchData)}>TC</span>
+                        <span onClick={fetchDatas}>TC</span>
                     </Title>
                     <TopupBoxTop>
                         <Directly
