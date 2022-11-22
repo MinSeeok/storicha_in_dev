@@ -4,6 +4,8 @@ import { commaNumber } from 'func/addComma';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import * as React from 'react';
+import { useRecoilValue } from 'recoil';
+import { LoginState } from 'recoil/user';
 import styled from 'styled-components';
 import ProductData from '../../json/cash/product.json'
 
@@ -35,6 +37,7 @@ interface ProductData{
 const Cash:NextPage = () => {
     const [inputValue, setInputValue] = React.useState<any>("0");
     const [selectNumber, setSelectNumber] = React.useState<number>(0);
+    const login = useRecoilValue(LoginState);
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         const onlyNumber = value.replace(/[^0-9]/g, '');
@@ -49,25 +52,33 @@ const Cash:NextPage = () => {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<any>(null);
     const fetchDatas = async () => {
-        try {
-            // error, data 초기화
-            setError(null);
-            setFetchData(null);
-            // loading state true
-            setLoading(true);
-            const getData = await axios.get(
-                'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
-            )
-            setFetchData(getData.data);
-        } catch(e) {
-            setError(e);
-            console.log(error);
+        if(login !== null){
+            console.log('fetch Data start...');
+            try {
+                // error, data 초기화
+                setError(null);
+                setFetchData(null);
+                // loading state true
+                setLoading(true);
+                const getData = await axios.get(
+                    'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
+                )
+                setFetchData(getData.data);
+            } catch(e) {
+                setError(e);
+                console.log(error);
+            }
         }
         setLoading(false);
     };
-    // React.useEffect(()=> {
-    //     fetchDatas();
-    // },[]);
+    React.useEffect(()=> {
+        console.log('login change');
+        login !== null ? fetchDatas() : setFetchData(null);
+    },[login]);
+    React.useEffect(()=>{
+        console.log('component lender')
+        login !== null ? fetchDatas() : setFetchData(null);
+    },[]);
     return(
         <Box>
             {!loading && (
@@ -398,5 +409,12 @@ const SubText = styled.div`
         font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
         color: var(--sub);
     }
+`
+
+const LoginBtn = styled.div`
+    padding: 4px;
+    font-size: 18px;
+    width: auto;
+    border: 2px solid red;
 `
 export default Cash;
