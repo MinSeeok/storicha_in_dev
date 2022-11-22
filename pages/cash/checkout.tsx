@@ -2,6 +2,8 @@ import axios from 'axios';
 import Box from 'components/Box';
 import * as React from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useRecoilValue } from 'recoil';
+import { LoginState } from 'recoil/user';
 import styled from 'styled-components';
 
 interface title {
@@ -16,6 +18,7 @@ export default function Checkout(title:title){
     const [fetchData, setFetchData] = React.useState<any>(null);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<any>(null);
+    const login = useRecoilValue(LoginState);
     const fetchDatas = async () => {
         try {
             // error, data 초기화
@@ -24,7 +27,7 @@ export default function Checkout(title:title){
             // loading state true
             setLoading(true);
             const getData = await axios.get(
-                'https://dev-nft.storicha.in/api/payment/method?display_yn=y&product_id=0',{withCredentials:true}
+                'https://api-v2.storicha.in/api/payment/method?display_yn=y&product_id=0',{withCredentials:true}
             )
             setFetchData(getData.data);
         } catch(e) {
@@ -34,8 +37,11 @@ export default function Checkout(title:title){
         setLoading(false);
     };
     React.useEffect(()=> {
-        fetchDatas();
+        login  ? fetchDatas() : setFetchData(null); 
     },[]);
+    React.useEffect(()=> {
+      login  ? fetchDatas() : setFetchData(null); 
+  },[login]);
     const regex = /[^0-9]/gi;
     return(
         <> 
@@ -47,7 +53,7 @@ export default function Checkout(title:title){
                   <Helmet title={title.title}/>
               </HelmetProvider>
               <Box>
-                  <TopTitle onClick={()=>console.log(fetchData.data)}>구매 상품명</TopTitle>
+                  <TopTitle onClick={()=> console.log(fetchData)}>구매 상품명</TopTitle>
                   <TopTitleLine/>
                   <PaymentTitle>결제</PaymentTitle>
                   <PaymentInfo>
@@ -55,7 +61,7 @@ export default function Checkout(title:title){
                       <p>11,000원</p>
                   </PaymentInfo>
                   <MeansSelect onClick={ClickMeansTab}>
-                      <p>{fetchData !== null && fetchData.response_data[Number(means.replace(regex, ""))].code_name}</p>
+                      <p>{fetchData !== null ? fetchData.response_data[Number(means.replace(regex, ""))].code_name : '데이터가 존재하지 않습니다.'}</p>
                       {!meansChange ? 
                           <p>
                             변경
@@ -73,9 +79,11 @@ export default function Checkout(title:title){
                       }
                   </MeansSelect>
                   <MeansBox meansChange={meansChange}>
-                      {fetchData && fetchData.response_data.map((content: { code_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, i: string)=>(
+                      {fetchData ? fetchData.response_data.map((content: { code_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, i: string)=>(
                         <div key={'means'+i} className={'means'+i} id={means === 'means'+i ? "focusMean" : ""} onClick={()=> setMeans('means'+i)}>{content.code_name}</div>
-                      ))}
+                      )) : (
+                        <></>
+                      )}
                   </MeansBox>
                   <ButtonBox>
                       <button>결제하기</button>

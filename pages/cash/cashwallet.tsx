@@ -4,6 +4,8 @@ import "aos/dist/aos.css";
 import Box from 'components/Box';
 import moment from "moment";
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { LoginState } from 'recoil/user';
 
 export default function CashWallet(){
     const [selectTab, setSelectTab] = React.useState("payment");
@@ -17,11 +19,11 @@ export default function CashWallet(){
             setFetchData(null);
             // loading state true
             const getData = await axios.get(
-                'https://dev-nft.storicha.in/api/payment/history/1?display_yn=y&product_id=0',{withCredentials:true}
+                'https://api-v2.storicha.in/api/payment/history/1?display_yn=y&product_id=0',{withCredentials:true}
             )
             setFetchData(getData.data);
             const getDataSecond = await axios.get(
-                'https://dev-nft.storicha.in/api/wallet-history/1?display_yn=y&product_id=0',{withCredentials:true}
+                'https://api-v2.storicha.in/api/wallet-history/1?display_yn=y&product_id=0',{withCredentials:true}
             )
             setUsageDetails(getDataSecond.data);
         } catch(e) {
@@ -29,8 +31,18 @@ export default function CashWallet(){
             console.log(error);
         }
     };
+    const NoneData = () => {
+        setFetchData(null);
+        setUsageDetails(null);
+        setSelectTab('payment');
+    }
+    const login = useRecoilValue(LoginState);
     React.useEffect(()=> {
-        fetchDatas();
+        console.log('cashWallet ReWrite..!!');
+        login !== null ? fetchDatas() : NoneData()
+    },[login]);
+    React.useEffect(()=> {
+        login !== null ? fetchDatas() : NoneData()
     },[]);
     const commaNumber = (number:number) => {
         const parts = number.toString().split('.');
@@ -81,10 +93,10 @@ export default function CashWallet(){
                       </ItemBox>
                   </ListItem>
                 )
-            }): ('LOADING')}
+            }): ('LOGIN PLEASE...')}
             </List>
             <List className={selectTab === "payment" ? "hide" : ""}>
-            {usageDetails && usageDetails.response_data.map((content:any, i:any ) => (
+            {usageDetails ? usageDetails.response_data.map((content:any, i:any ) => (
                 <ListItem key={i}>
                     <ItemBox>
                         <p className='time'>{moment(String(content.create_date)).format('YYYY-MM-DD-HH:SS')}</p>
@@ -96,7 +108,7 @@ export default function CashWallet(){
                         </div>
                     </ItemBox>
                 </ListItem>
-            ))}
+            )): ('LOGIN PLEASE...')}
             </List>
         </Box>
     )

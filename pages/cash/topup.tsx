@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Box from 'components/Box';
+import HelmetProvier from 'components/Helmet';
 import { commaNumber } from 'func/addComma';
 import { NextPage } from 'next';
 import Image from 'next/image';
@@ -81,6 +82,7 @@ const Cash:NextPage = () => {
     },[]);
     return(
         <Box>
+            <HelmetProvier title='토리 캐시 결제'/>
             {!loading && (
                 <>
                     <Title>
