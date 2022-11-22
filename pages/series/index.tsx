@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AOS from 'aos';
 import "aos/dist/aos.css";
 import cashSeriesData from '../../json/cashseries.json';
+import UseToriCash from 'components/popup/use-tori-cash';
 
 export default function Series() {
     const tabTitle = ["대여하기 1TC", "소장하기 2TC", "NFT IP 구매"];
@@ -15,6 +16,8 @@ export default function Series() {
     const [otherState, setOtherState] = React.useState<any>(0);
     const [hideReceipt, setHideReceipt] = React.useState<boolean>(false);
     const [mark, setMark] = React.useState(false);
+    // 결제 모달 보기
+    const [paymentWindow, setPaymentWindow] = React.useState<boolean>(false);
     const cashSeries = cashSeriesData;
 
     const OtherMoveLeft = () => {
@@ -45,7 +48,6 @@ export default function Series() {
     const handleSingleCheck = (checked: any, idx: any) => {
         if (checked) {
         // 단일 선택 시 체크된 아이템을 배열에 추가
-        console.log(checkItems);
         setCheckItems([...checkItems, idx]);
         } else {
         // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
@@ -87,6 +89,11 @@ export default function Series() {
     const markCheck = () => {
       mark ? alert("북마크 해제되었습니다") : alert("북마크 되었습니다");
       setMark((e) => !e);
+    }
+
+    // 모달 창 보기
+    const viewModal = () => {
+      setPaymentWindow(false);
     }
     React.useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
@@ -263,8 +270,8 @@ export default function Series() {
                         {content.score}&nbsp;&nbsp;&nbsp;&nbsp;{content.date}
                         </p>
                         <button
-                        className={content.free ? "freeBtn" : ""}
-                        onClick={() => console.log(checkItems)}
+                          className={content.free ? "freeBtn" : ""}
+                          onClick={() => console.log(checkItems)}
                         >
                         {content.free ? "무료보기" :
                             tabState === 0 ? "대여하기 (N)TC" : "소장하기 (N)TC"
@@ -319,14 +326,17 @@ export default function Series() {
                 >
                 <div className='top'>
                     <p>총 주문 금액</p>
-                    <p>100 TC</p>
-                    <p>총 2건</p>
+                    <p>{checkItems.length * 3} TC</p>
+                    <p>총 {checkItems.length}건</p>
                 </div>
-                <button>선택 구매</button>
+                <button onClick={()=> setPaymentWindow(true)}>선택 구매</button>
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={()=> setHideReceipt((e) => !e)} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menuOutline">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </ResultBox>
+            {paymentWindow && (
+              <UseToriCash item={checkItems} viewModal={viewModal}/>
+            )}
         </Container>
     )
 }
