@@ -1,11 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import AOS from 'aos';
 import "aos/dist/aos.css";
-import cashSeriesData from '../../json/cashseries.json';
 import UseToriCash from 'components/popup/use-tori-cash';
+import axios from 'axios';
+import { EpisodeType } from 'enum/data-type';
+import { useRouter } from 'next/router'
+import moment from 'moment';
 
-export default function Series() {
+export default function Series({routerIdx}:any) {
     const tabTitle = ["대여하기 1TC", "소장하기 2TC", "NFT IP 구매"];
     const ListSort = ["인기순", "업데이트순", "조회순", "별점순"];
     const [tabState, setTabState] = React.useState<number>(0);
@@ -16,9 +18,13 @@ export default function Series() {
     const [otherState, setOtherState] = React.useState<any>(0);
     const [hideReceipt, setHideReceipt] = React.useState<boolean>(false);
     const [mark, setMark] = React.useState(false);
+
+    const router = useRouter();
+    // 에피소드 정보
+    const [episode, setEpisode] = React.useState<EpisodeType[] | null>(null);
+
     // 결제 모달 보기
     const [paymentWindow, setPaymentWindow] = React.useState<boolean>(false);
-    const cashSeries = cashSeriesData;
 
     const OtherMoveLeft = () => {
         if ((-(otherData.length - 1) * 170) !== otherState) {
@@ -33,15 +39,15 @@ export default function Series() {
         }
     }
     // 체크 아이템 배열
-    const [checkItems, setCheckItems] = React.useState<Array<string>>([]);
+    const [checkItems, setCheckItems] = React.useState<Array<number>>([]);
     // 체크박스 전체 선택
     const handleAllCheck = (checked: boolean) => {
         if (checked) {
-        const idArray: any = [];
-        data.forEach((el) => idArray.push(el.idx));
-        setCheckItems(idArray);
+            const idArray: any = [];
+            data.forEach((el) => idArray.push(el.idx));
+            setCheckItems(idArray);
         } else {
-        setCheckItems([]);
+            setCheckItems([]);
         }
     }
     // 체크박스 단일 선택
@@ -86,19 +92,37 @@ export default function Series() {
     const handleClickOutside = () => {
         !listBoxRef.current[0] && setListOn(false);
     }
+
+    // bookmark-check
     const markCheck = () => {
       mark ? alert("북마크 해제되었습니다") : alert("북마크 되었습니다");
       setMark((e) => !e);
     }
 
-    // 모달 창 보기
+    // view-modal
     const viewModal = () => {
       setPaymentWindow(false);
     }
+    // get-series-episode
+    const getSeriseData = (idx:any) => {
+        axios({
+            method: 'GET',
+            url: `https://api-v2.storicha.in/api/cashseries/episode?series_idx=${idx}&page_no=1`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            withCredentials: true,
+        })
+        .then((response):any => {
+            setEpisode(response.data.response_data);
+        })
+    }
+    // page router info
     React.useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
-        console.log(cashSeries);
-        AOS.init();
+        // get Idx
+        const idx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
+        getSeriseData(idx);
     }, []);
     return (
         <Container>
@@ -133,11 +157,11 @@ export default function Series() {
                       </p>
                   </div>
                 </TitleImg>
-                <SubBox>
+                <SubBox onClick={()=> console.log(episode)}>
                     <p className='firstEpisode'>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                    </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                      </svg>
                         첫화 보기
                     </p>
                 </SubBox>
@@ -198,9 +222,9 @@ export default function Series() {
                     </button>
                 </MobileFirstView>
                 <SelectTab>
-                {tabTitle.map((title, i) => (
-                    <p key={i} className={tabState === Number(i) ? "tabChoice" : ""} onClick={() => setTabState(i)}>{title}</p>
-                ))}
+                    {tabTitle.map((title, i) => (
+                        <p key={i} className={tabState === Number(i) ? "tabChoice" : ""} onClick={() => setTabState(i)}>{title}</p>
+                    ))}
                 </SelectTab>
                 <ListTop>
                     <label htmlFor="allSelect">
@@ -229,57 +253,59 @@ export default function Series() {
                     </p>
                     <SortBox className={listOn ? "sortListView" : ""} ref={el => (listBoxRef.current[0] = el)}>
                         {listOn &&
-                        ListSort.map((content, i) => (
-                            <p className='sortValue' key={i} onClick={() => {
-                            SortSelect(content);
-                            }}>{content}</p>
-                        ))
+                            ListSort.map((content, i) => (
+                                <p className='sortValue' key={i} onClick={() => {
+                                SortSelect(content);
+                                }}>{content}</p>
+                            ))
                         }
                     </SortBox>
                 </ListTop>
                 <ContentBox className={moreView ? "moreView" : ""}>
-                {data.map((content, i) => (
-                    <ContentLine key={i}>
-                        <label htmlFor={`selectBox${i}`}>
-                            <div className='checkbox'>
-                                {checkItems.includes(content.idx) ? 
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                    </svg>
-                                : 
-                                    "" 
-                                }
-                            </div>
-                        </label>
-                        <input
-                            id={`selectBox${i}`}
-                            type="checkbox"
-                            onChange={(e) => handleSingleCheck(e.target.checked, content.idx)}
-                            checked={checkItems.includes(content.idx) ? true : false}
-                        />
-                    <ContentImageBox>
-                        <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-                    </ContentImageBox>
-                    <ContentTextLine className='mobileBoxCon'>
-                        <p className='ep'><b>EP</b>{content.episode}</p>
-                        <p className='epTitle'>{content.title.length < 10 ? content.title : content.title}</p>
-                        <p className='scoreDate'>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                            <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-                        </svg>
-                        {content.score}&nbsp;&nbsp;&nbsp;&nbsp;{content.date}
-                        </p>
-                        <button
-                          className={content.free ? "freeBtn" : ""}
-                          onClick={() => console.log(checkItems)}
-                        >
-                        {content.free ? "무료보기" :
-                            tabState === 0 ? "대여하기 (N)TC" : "소장하기 (N)TC"
-                        }
-                        </button>
-                    </ContentTextLine>
-                    </ContentLine>
-                ))}
+                    {(episode !== null && episode.length > 0) ? episode.map((content, i) => (
+                        <ContentLine key={i}>
+                            <label htmlFor={`selectBox${i}`}>
+                                <div className='checkbox'>
+                                    {checkItems.includes(content.event_idx) ? 
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                        </svg>
+                                    : 
+                                        "" 
+                                    }
+                                </div>
+                            </label>
+                            <input
+                                id={`selectBox${i}`}
+                                type="checkbox"
+                                onChange={(e) => handleSingleCheck(e.target.checked, content.event_idx)}
+                                checked={checkItems.includes(content.event_idx) ? true : false}
+                            />
+                            <ContentImageBox>
+                                <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
+                            </ContentImageBox>
+                            <ContentTextLine className='mobileBoxCon'>
+                                <p className='ep'><b>EP</b>{content.sort_order}</p>
+                                <p className='epTitle'>{content.supply_name.length < 10 ? content.supply_name : content.supply_name}</p>
+                                <p className='scoreDate'>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                    <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                                </svg>
+                                {'4.8'}&nbsp;&nbsp;&nbsp;&nbsp;{moment(content.create_date).format('YYYY-MM-DD')}
+                                </p>
+                                <button
+                                  className={content.keep_price === 0 ? "freeBtn" : ""}
+                                  onClick={() => console.log(checkItems)}
+                                >
+                                    {content.keep_price === 0 ? "무료보기" :
+                                        tabState === 0 ? `대여하기 ${content.rental_price}TC` : `소장하기 ${content.keep_price}TC`
+                                    }
+                                </button>
+                            </ContentTextLine>
+                        </ContentLine>
+                    )) : (
+                      <h1>데이터가 존재하지 않습니다.</h1>
+                    )}
                 </ContentBox>
                 <MoreViewBtn
                     className={moreView ? "moreViewHide" : ""}
@@ -342,73 +368,73 @@ export default function Series() {
 }
 
 const Container = styled.div`
-  padding: 0px 20px 30px 20px;
-  max-width: 1500px;
-  min-width: 1024px;
-  margin: 0 auto;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  z-index: 5;
-  color: var(--title);
-  @media screen and (max-width: 1000px) {
-    min-width: 400px;
-    padding: 0px 0px 30px 0px;
-    gap: 0;
-  }
-`
-const TopupBox = styled.div`
-  width: 100%;
-  padding: 24px 0;
-  font-family: 'NEXON Lv1 Gothic OTF';
-  background-color: var(--box1);
-  border-radius: 8px;
-  p{
-    text-align: center;
-    color: var(--title);
-    font-size: 24px;
-    font-weight: bold;
-  }
-  @media screen and (max-width: 1000px) {
-    display: none;
-  }
-`
-const Box = styled.div`
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: flex-end;
-  padding: 20px 30px 370px 350px;
-  background-color: var(--box1);
-  border-radius: 8px;
-  @media screen and (max-width: 1000px) {
-    width: 100%;
+    padding: 0px 20px 30px 20px;
+    max-width: 1500px;
+    min-width: 1024px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    border-radius: 0px;
-    padding: 0;
-  }
-  @media screen and (max-width: 500px) {
-    padding: 0px;
-  }
+    align-items: center;
+    gap: 12px;
+    z-index: 5;
+    color: var(--title);
+    @media screen and (max-width: 1000px) {
+        min-width: 400px;
+        padding: 0px 0px 30px 0px;
+        gap: 0;
+    }
+`
+const TopupBox = styled.div`
+    width: 100%;
+    padding: 24px 0;
+    font-family: 'NEXON Lv1 Gothic OTF';
+    background-color: var(--box1);
+    border-radius: 8px;
+    p{
+        text-align: center;
+        color: var(--title);
+        font-size: 24px;
+        font-weight: bold;
+    }
+    @media screen and (max-width: 1000px) {
+        display: none;
+    }
+`
+const Box = styled.div`
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 30px 370px 350px;
+    background-color: var(--box1);
+    border-radius: 8px;
+    @media screen and (max-width: 1000px) {
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 0px;
+        padding: 0;
+    }
+    @media screen and (max-width: 500px) {
+        padding: 0px;
+    }
 `
 
 const Left = styled.div`
-  position: absolute;
-  left: 30px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  @media screen and (max-width: 1000px) {
-    position: relative;
-    width: 100%;
-    left: 0;
-  }
+    position: absolute;
+    left: 30px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @media screen and (max-width: 1000px) {
+        position: relative;
+        width: 100%;
+        left: 0;
+    }
 `
 
 const TitleImg = styled.div`
@@ -419,50 +445,50 @@ const TitleImg = styled.div`
     align-items: center;
     overflow: hidden;
     border-radius: 8px;
-  img{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-  }
-  .mobileHead{
-      display: none;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      background-color: transparent;
-      background-image: linear-gradient(
-        180deg, 
-        transparent 0%, 
-        var(--box1) 100%
-      );
-      p{
-          left: 20px;
-      }
-      .mobileTitle{
-          position: absolute;
-          bottom: 50px;
-          font-size: 36px;
-          letter-spacing: -.8px;
-      }
-      .moblieSubTitle{
-          position: absolute;
-          bottom: 12px;
-          font-size: 24px;
-          display: flex;
-          gap: 16px;
-          span{
+    img{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .mobileHead{
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: transparent;
+        background-image: linear-gradient(
+            180deg, 
+            transparent 0%, 
+            var(--box1) 100%
+        );
+        p{
+            left: 20px;
+        }
+        .mobileTitle{
+            position: absolute;
+            bottom: 50px;
+            font-size: 36px;
+            letter-spacing: -.8px;
+        }
+        .moblieSubTitle{
+            position: absolute;
+            bottom: 12px;
+            font-size: 24px;
             display: flex;
-            align-items: center;
-          }
-          svg{
-              width: 20px;
-              height: 20px;
-              color: var(--point);
-              cursor: pointer;
-          }
-      }
-  }
+            gap: 16px;
+            span{
+                display: flex;
+                align-items: center;
+            }
+            svg{
+                width: 20px;
+                height: 20px;
+                color: var(--point);
+                cursor: pointer;
+            }
+        }
+    }
   @media screen and (max-width: 1000px) {
     border-radius: 0;
     height: 540px;
@@ -1102,7 +1128,9 @@ const ResultBox = styled.div`
         left: 50%;
         transform: translateX(-50%);
         @media screen and (max-width: 400px) {
-            top: -41px;
+            width: 100px;
+            top: -30px;
+            height: 30px;
         }
     }
     .menuOutline {
@@ -1115,6 +1143,9 @@ const ResultBox = styled.div`
         cursor: pointer;
         width: 28px;
         height: 28px;
+        @media screen and (max-width: 400px) {
+            top: -26px;
+        }
     }
     &.showResult{
       bottom: -500px;

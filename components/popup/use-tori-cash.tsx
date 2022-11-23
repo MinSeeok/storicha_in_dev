@@ -57,8 +57,8 @@ const UseToriCash = ({item, viewModal}:any) => {
                         </p>
                     </div>
                     <button>사용하기</button>
-                    <p className="chage-message">잔고가 부족합니다.<br/>다른 보유잔고를 선택하세요.</p>
-                    <button className="charging">충전하기</button>
+                    {/* <p className="chage-message">잔고가 부족합니다.<br/>다른 보유잔고를 선택하세요.</p>
+                    <button className="charging">충전하기</button> */}
                 </ContentBox>
             </Wrapper>
         </Container>
