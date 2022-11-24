@@ -19,6 +19,6 @@ const BackImage = styled.div`
     width: 100vw;
     height: 100vh;
     transform: translateY(0%) translateX(40%);
-    filter: blur(3px);
+    filter: blur(2px);
     z-index: 5;
 `

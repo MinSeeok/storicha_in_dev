@@ -3,14 +3,19 @@ import styled from 'styled-components';
 import "aos/dist/aos.css";
 import UseToriCash from 'components/popup/use-tori-cash';
 import axios from 'axios';
-import { EpisodeType } from 'enum/data-type';
+import { EpisodeType, SeriesType } from 'enum/data-type';
 import { useRouter } from 'next/router'
 import moment from 'moment';
+import { useSetRecoilState } from 'recoil';
+import { LoadingState } from 'recoil/loading';
 
-export default function Series({routerIdx}:any) {
-    const tabTitle = ["대여하기 1TC", "소장하기 2TC", "NFT IP 구매"];
+export default function Series() {
+    const tabTitle = ["대여하기", "소장하기", "NFT IP 구매"];
     const ListSort = ["인기순", "업데이트순", "조회순", "별점순"];
+
+    // 대여, 소장상태 선택
     const [tabState, setTabState] = React.useState<number>(0);
+
     const [listOn, setListOn] = React.useState<boolean>(false);
     const [sort, setSort] = React.useState<string>("업데이트순");
     const [moreView, setMoreview] = React.useState<boolean>(false);
@@ -19,8 +24,22 @@ export default function Series({routerIdx}:any) {
     const [hideReceipt, setHideReceipt] = React.useState<boolean>(false);
     const [mark, setMark] = React.useState(false);
 
+    // loading state
+    const setLoadState = useSetRecoilState(LoadingState);
+
+    // 정상가
+    const [regularPrice, setRegularPrice] = React.useState<number>(0);
+    // 대여가
+    const [rentalPrice, setRentalPrice] = React.useState<number>(0);
+    // 정상 할인가
+    const [discRegularPrice, setDiscRegularPrice] = React.useState<number>(0);
+    // 대여 할인가
+    const [discRentalPrice, setDiscRentalPrice] = React.useState<number>(0);
+
     const router = useRouter();
-    // 에피소드 정보
+    // series-info
+    const [series, setSeries] = React.useState<SeriesType | null>(null);
+    // episede-info
     const [episode, setEpisode] = React.useState<EpisodeType[] | null>(null);
 
     // 결제 모달 보기
@@ -44,38 +63,54 @@ export default function Series({routerIdx}:any) {
     const handleAllCheck = (checked: boolean) => {
         if (checked) {
             const idArray: any = [];
-            data.forEach((el) => idArray.push(el.idx));
+            // 위에서 부터 대여가격 / 정상가격 / 대여할인가 / 정상할인가
+            setRentalPrice(0);
+            setRegularPrice(0);
+            setDiscRentalPrice(0);
+            setDiscRegularPrice(0);
+            episode && episode.map((el, i) => {
+                idArray.push(el.event_idx);
+                // 위에서 부터 대여가격 / 정상가격 / 대여할인가 / 정상할인가
+                setRentalPrice((e) => e + el.rental_price);
+                setRegularPrice((e) => e  + el.keep_price);
+                setDiscRentalPrice((e) => e  + el.rental_dc_price);
+                setDiscRegularPrice((e) => e  + el.keep_dc_price);
+            });
+            
             setCheckItems(idArray);
         } else {
+            // 위에서 부터 배열비우기 / 대여가격 / 정상가격 / 대여할인가 / 정상할인가
             setCheckItems([]);
+            setRentalPrice(0);
+            setRegularPrice(0);
+            setDiscRentalPrice(0);
+            setDiscRegularPrice(0);
         }
     }
     // 체크박스 단일 선택
-    const handleSingleCheck = (checked: any, idx: any) => {
+    const handleSingleCheck = (checked: any, idx: any, rental_price: number, keep_price:number, rental_dc_price:number, keep_dc_price:number) => {
         if (checked) {
-        // 단일 선택 시 체크된 아이템을 배열에 추가
-        setCheckItems([...checkItems, idx]);
+            // 단일 선택 시 체크된 아이템을 배열에 추가
+            // 위에서 부터 대여가격 / 정상가격 / 대여할인가 / 정상할인가
+            setCheckItems([...checkItems, idx]);
+            setRentalPrice(rentalPrice + rental_price);
+            setRegularPrice(regularPrice + keep_price);
+            setDiscRentalPrice(discRentalPrice + rental_dc_price);
+            setDiscRegularPrice(discRegularPrice + keep_dc_price);
         } else {
-        // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
-        setCheckItems(checkItems.filter((el) => el !== idx));
+            // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+            // 위에서 부터 대여가격 / 정상가격 / 대여할인가 / 정상할인가
+            setCheckItems(checkItems.filter((el) => el !== idx));
+            setRentalPrice(rentalPrice - rental_price);
+            setRegularPrice(regularPrice - keep_price);
+            setDiscRentalPrice(discRentalPrice - rental_dc_price);
+            setDiscRegularPrice(discRegularPrice - keep_dc_price);
         }
     };
     const SortSelect = (content: string) => {
         setListOn((e) => !e);
         setSort(content);
     }
-    const data = [
-        { idx: "e1894d49-8483-4dcf-8436-aefb3449f9ce", episode: 1, title: "어느 겨울, 운명의 밤", score: 4.8, date: "22.06.22", free: true },
-        { idx: "189bccc4-1845-45b0-a596-6b12e4786b4d", episode: 2, title: "개막의 시각", score: 4.8, date: "22.06.22", free: true },
-        { idx: "710d58f5-948f-414f-9775-ba27be29399a", episode: 3, title: "전의의 소재", score: 4.8, date: "22.06.22", free: false },
-        { idx: "74a3edf5-13db-43ed-8210-74c5393c054c", episode: 4, title: "방과 후에 추는 춤", score: 4.8, date: "22.06.22", free: false },
-        { idx: "e9d9e6b7-66ff-46e2-81c8-a2bdc73afd24", episode: 5, title: "어느 겨울날, 마음이 머무는 곳", score: 4.8, date: "22.06.22", free: false },
-        { idx: "f1f426cb-32af-4d49-96d4-c72e352dedd3", episode: 6, title: "두 사람의 거리", score: 4.8, date: "22.06.22", free: false },
-        { idx: "b1ce70a8-986e-4ea4-b883-2f5d8a0a0ca5", episode: 7, title: "살며시 다가온 방문자", score: 4.8, date: "22.06.22", free: false },
-        { idx: "c680891e-2c65-4287-944a-595f5c5617d8", episode: 8, title: "어느 겨울날, 소원의 형태", score: 4.8, date: "22.06.22", free: false },
-        { idx: "6539a18a-5705-4f64-bb39-06925c9f63c4", episode: 9, title: "그 운명의 시작으로", score: 4.8, date: "22.06.22", free: false },
-        { idx: "4f310282-584f-4718-92ce-f3f56cf3eee0", episode: 10, title: "어느 겨울 날, 머나먼 귀로", score: 4.8, date: "22.06.22", free: false },
-    ]
     const otherData = [
         { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 1", genre: "판타지, 멜로" },
         { image: "09a7e223ee6ee40139b06ce506270868ac257d27.gif", title: "천재 뱀파이어 2", genre: "판타지, 멜로" },
@@ -103,6 +138,27 @@ export default function Series({routerIdx}:any) {
     const viewModal = () => {
       setPaymentWindow(false);
     }
+    // get-seires-data
+    const getSeries = (idx:any) => {
+        setLoadState(true);
+        console.log('Get Series Data...');
+        axios({
+            method: 'GET',
+            url: `https://api-v2.storicha.in/api/cashseries?series_idx=${idx}&page_no=1`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            withCredentials: true,
+        })
+        .then((response):any => {
+            setSeries(response.data.response_data);
+            console.log('Get Series Data End.');
+            setLoadState(false);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
     // get-series-episode
     const getSeriseData = (idx:any) => {
         axios({
@@ -116,234 +172,242 @@ export default function Series({routerIdx}:any) {
         .then((response):any => {
             setEpisode(response.data.response_data);
         })
+        .catch((error)=>{
+            console.log(error);
+        })
     }
     // page router info
     React.useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         // get Idx
         const idx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
+        getSeries(idx);
         getSeriseData(idx);
     }, []);
     return (
         <Container>
-            <TopupBox>
-                <p>양과 여우들의 밤</p>
+            <TopupBox onClick={()=>console.log(series)}>
+                <p>{series ? series.supply_name : '데이터가 존재하지 않습니다'}</p>
             </TopupBox>
             <Box>
-            <Left>
-                <TitleImg>
-                  <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-                  <div className='mobileHead'>
-                      <p className='mobileTitle'>양과 여우들의 밤</p>
-                      <p className='moblieSubTitle'>
-                      <span>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                          <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-                      </svg>
-                          4.3
-                      </span>
-                      <span className='moblieMarkIcon'>
-                          {mark ?
-                              <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} viewBox="0 0 24 24" fill="currentColor" className="bookMark">
-                                  <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
-                              </svg> 
-                              :
-                              <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="bookMark">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                              </svg>
-                          }
-                          10,262
-                      </span>
-                      </p>
-                  </div>
-                </TitleImg>
-                <SubBox onClick={()=> console.log(episode)}>
-                    <p className='firstEpisode'>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                      </svg>
-                        첫화 보기
-                    </p>
-                </SubBox>
-                <TitleHead>줄거리</TitleHead>
-                <TitleSubText>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</TitleSubText>
-                <SubBox style={{ paddingTop: "176px" }}>
-                    <WriterImg>
-                        <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-                    </WriterImg>
-                    <WriteInfo>
-                        <p className='title'>Richard Ottemant</p>
-                        <p className='tag'>@Illustrator</p>
-                        <WriteFollow>Follow</WriteFollow>
-                        <WriteSupport>Staking Support</WriteSupport>
-                    </WriteInfo>
-                </SubBox>
-                <SubBox style={{ flexDirection: "column" }}>
-                <p className='publicTitle'>작가의 공지</p>
-                <p className='public'>이전 주 연재가 조금 늦었습니다.<br />많은 양해 바랍니다.</p>
-                </SubBox>
-            </Left>
-            <Right>
-                <BookMark>
-                    {mark ?
-                        <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} viewBox="0 0 24 24" fill="currentColor" className="bookMark">
-                            <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
-                        </svg> 
-                        :
-                        <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="bookMark">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                        </svg>
-                    }
-                    북마크하기
-                </BookMark>
-                <InfoBox>
-                <div>
-                    <p>장르</p>
-                    <p>액션, 판타지</p>
-                </div>
-                <div>
-                    <p>에피소드</p>
-                    <p>148</p>
-                </div>
-                <div>
-                    <p>포멧라벨</p>
-                    <p>웹소설, 시나리오, 드라마대본</p>
-                </div>
-                </InfoBox>
-                <MoblieStory>
-                <p>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</p>
-                </MoblieStory>
-                <MobileFirstView>
-                    <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                        </svg>
-                        첫화보기
-                    </button>
-                </MobileFirstView>
-                <SelectTab>
-                    {tabTitle.map((title, i) => (
-                        <p key={i} className={tabState === Number(i) ? "tabChoice" : ""} onClick={() => setTabState(i)}>{title}</p>
-                    ))}
-                </SelectTab>
-                <ListTop>
-                    <label htmlFor="allSelect">
-                        <div className='checkbox'>
-                          {checkItems.length === data.length ? 
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                              </svg>
-                          : 
-                              "" 
-                          }
-                        </div>
-                        <input
-                            id='allSelect'
-                            type="checkbox"
-                            onChange={(e) => handleAllCheck(e.target.checked)}
-                            checked={checkItems.length === data.length ? true : false}
-                        />
-                        전체선택
-                    </label>
-                    <p className='sortList' onClick={() => setListOn((e) => !e)}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
-                        </svg>
-                        <span>{sort}</span>
-                    </p>
-                    <SortBox className={listOn ? "sortListView" : ""} ref={el => (listBoxRef.current[0] = el)}>
-                        {listOn &&
-                            ListSort.map((content, i) => (
-                                <p className='sortValue' key={i} onClick={() => {
-                                SortSelect(content);
-                                }}>{content}</p>
-                            ))
+                <Left>
+                    <TitleImg>
+                      <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
+                      <div className='mobileHead'>
+                          <p className='mobileTitle'>양과 여우들의 밤</p>
+                          <p className='moblieSubTitle'>
+                          <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                              <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                          </svg>
+                              4.3
+                          </span>
+                          <span className='moblieMarkIcon'>
+                              {mark ?
+                                  <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} viewBox="0 0 24 24" fill="currentColor" className="bookMark">
+                                      <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
+                                  </svg> 
+                                  :
+                                  <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="bookMark">
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                  </svg>
+                              }
+                              10,262
+                          </span>
+                          </p>
+                      </div>
+                    </TitleImg>
+                    <SubBox onClick={()=> console.log(episode)}>
+                        <p className='firstEpisode'>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                          </svg>
+                            첫화 보기
+                        </p>
+                    </SubBox>
+                    <TitleHead>줄거리</TitleHead>
+                    <TitleSubText>
+                        {/* 디비 제대로 업로드시 활성화 */}
+                        {/* {series?.supply_tag !== '' ? '' : series?.supply_tag} */}
+                        {series?.supply_tag !== '' ? '' : '「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!'}
+                    </TitleSubText>
+                    <SubBox style={{ paddingTop: "176px" }}>
+                        <WriterImg>
+                            <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
+                        </WriterImg>
+                        <WriteInfo>
+                            <p className='title'>Richard Ottemant</p>
+                            <p className='tag'>@Illustrator</p>
+                            <WriteFollow>Follow</WriteFollow>
+                            <WriteSupport>Staking Support</WriteSupport>
+                        </WriteInfo>
+                    </SubBox>
+                    <SubBox style={{ flexDirection: "column" }}>
+                    <p className='publicTitle'>작가의 공지</p>
+                    <p className='public'>이전 주 연재가 조금 늦었습니다.<br />많은 양해 바랍니다.</p>
+                    </SubBox>
+                </Left>
+                <Right>
+                    <BookMark>
+                        {mark ?
+                            <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} viewBox="0 0 24 24" fill="currentColor" className="bookMark">
+                                <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
+                            </svg> 
+                            :
+                            <svg xmlns="http://www.w3.org/2000/svg" onClick={markCheck} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="bookMark">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                            </svg>
                         }
-                    </SortBox>
-                </ListTop>
-                <ContentBox className={moreView ? "moreView" : ""}>
-                    {(episode !== null && episode.length > 0) ? episode.map((content, i) => (
-                        <ContentLine key={i}>
-                            <label htmlFor={`selectBox${i}`}>
-                                <div className='checkbox'>
-                                    {checkItems.includes(content.event_idx) ? 
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                        </svg>
-                                    : 
-                                        "" 
-                                    }
-                                </div>
-                            </label>
-                            <input
-                                id={`selectBox${i}`}
-                                type="checkbox"
-                                onChange={(e) => handleSingleCheck(e.target.checked, content.event_idx)}
-                                checked={checkItems.includes(content.event_idx) ? true : false}
-                            />
-                            <ContentImageBox>
-                                <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
-                            </ContentImageBox>
-                            <ContentTextLine className='mobileBoxCon'>
-                                <p className='ep'><b>EP</b>{content.sort_order}</p>
-                                <p className='epTitle'>{content.supply_name.length < 10 ? content.supply_name : content.supply_name}</p>
-                                <p className='scoreDate'>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                    <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-                                </svg>
-                                {'4.8'}&nbsp;&nbsp;&nbsp;&nbsp;{moment(content.create_date).format('YYYY-MM-DD')}
-                                </p>
-                                <button
-                                  className={content.keep_price === 0 ? "freeBtn" : ""}
-                                  onClick={() => console.log(checkItems)}
-                                >
-                                    {content.keep_price === 0 ? "무료보기" :
-                                        tabState === 0 ? `대여하기 ${content.rental_price}TC` : `소장하기 ${content.keep_price}TC`
-                                    }
-                                </button>
-                            </ContentTextLine>
-                        </ContentLine>
-                    )) : (
-                      <h1>데이터가 존재하지 않습니다.</h1>
-                    )}
-                </ContentBox>
-                <MoreViewBtn
-                    className={moreView ? "moreViewHide" : ""}
-                    onClick={() => setMoreview((e) => !e)}
-                    >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                    </svg>
-                    더보기
-                </MoreViewBtn>
-            </Right>
-            <OtherBox>
-                <p className='title' onClick={() => console.log(otherState)}>이 작가의 다른 작품 보기</p>
-                <OtherContentBox>
-                    <svg xmlns="http://www.w3.org/2000/svg" onClick={OtherMoveLeft} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 mr-3">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" onClick={OtherMoveRight} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                    </svg>
-                    <OtherLine>
-                        <OtherWrapper className='slideRef' ref={slideRef} style={listStyled}>
-                        {otherData.map((content, i) => (
-                            <OtherContent key={i}>
-                            <OtherImage>
-                                <img src={`/images/test/${content.image}`} alt="" />
-                            </OtherImage>
-                            <OtherTitle>{content.title.length < 10 ? content.title : content.title.slice(0, 10) + "..."}</OtherTitle>
-                            <OtherGenre>{content.genre}</OtherGenre>
-                            </OtherContent>
+                        북마크하기
+                    </BookMark>
+                    <InfoBox>
+                    <div>
+                        <p>장르</p>
+                        <p>{series?.genres_type_idxs ? series.genres_type_idxs : '액션, 판타지'}</p>
+                    </div>
+                    <div>
+                        <p>에피소드</p>
+                        <p>148</p>
+                    </div>
+                    <div>
+                        <p>포멧라벨</p>
+                        <p>웹소설, 시나리오, 드라마대본</p>
+                    </div>
+                    </InfoBox>
+                    <MoblieStory>
+                    <p>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</p>
+                    </MoblieStory>
+                    <MobileFirstView>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                            첫화보기
+                        </button>
+                    </MobileFirstView>
+                    <SelectTab>
+                        {tabTitle.map((title, i) => (
+                            <p key={i} className={tabState === Number(i) ? "tabChoice" : ""} onClick={() => setTabState(i)}>{title}</p>
                         ))}
-                        </OtherWrapper>
-                    </OtherLine>
-                </OtherContentBox>
-                <ListBackBtn>
-                <button><img src="/images/icons/backListBtn.svg" alt="" /> 목록으로</button>
-                </ListBackBtn>
-            </OtherBox>
+                    </SelectTab>
+                    <ListTop>
+                        <label htmlFor="allSelect">
+                            <div className='checkbox'>
+                              {episode && (checkItems.length === episode.length) ? 
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                  </svg>
+                              : 
+                                  "" 
+                              }
+                            </div>
+                            <input
+                                id='allSelect'
+                                type="checkbox"
+                                onChange={(e) => handleAllCheck(e.target.checked)}
+                                checked={episode && (checkItems.length === episode.length) ? true : false}
+                            />
+                            전체선택
+                        </label>
+                        <p className='sortList' onClick={() => setListOn((e) => !e)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                            </svg>
+                            <span>{sort}</span>
+                        </p>
+                        <SortBox className={listOn ? "sortListView" : ""} ref={el => (listBoxRef.current[0] = el)}>
+                            {listOn &&
+                                ListSort.map((content, i) => (
+                                    <p className='sortValue' key={i} onClick={() => {
+                                    SortSelect(content);
+                                    }}>{content}</p>
+                                ))
+                            }
+                        </SortBox>
+                    </ListTop>
+                    <ContentBox className={moreView ? "moreView" : ""}>
+                        {(episode !== null && episode.length > 0) ? episode.map((content, i) => (
+                            <ContentLine key={i}>
+                                <label htmlFor={`selectBox${i}`}>
+                                    <div className='checkbox'>
+                                        {checkItems.includes(content.event_idx) ? 
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                            </svg>
+                                        : 
+                                            "" 
+                                        }
+                                    </div>
+                                </label>
+                                <input
+                                    id={`selectBox${i}`}
+                                    type="checkbox"
+                                    onChange={(e) => handleSingleCheck(e.target.checked, content.event_idx, content.rental_price, content.keep_price, content.rental_dc_price, content.keep_dc_price)}
+                                    checked={checkItems.includes(content.event_idx) ? true : false}
+                                />
+                                <ContentImageBox>
+                                    <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
+                                </ContentImageBox>
+                                <ContentTextLine className='mobileBoxCon'>
+                                    <p className='ep'><b>EP</b>{content.sort_order}</p>
+                                    <p className='epTitle'>{content.supply_name.length < 10 ? content.supply_name : content.supply_name}</p>
+                                    <p className='scoreDate'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                            <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                                        </svg>
+                                        {'4.8'}&nbsp;&nbsp;&nbsp;&nbsp;{moment(content.create_date).format('YYYY-MM-DD')}
+                                    </p>
+                                    <button
+                                      className={content.keep_price === 0 ? "freeBtn" : ""}
+                                      onClick={() => console.log('단일 선택')}
+                                    >
+                                        {content.keep_price === 0 ? "무료보기" :
+                                            tabState === 0 ? `대여하기 ${content.rental_dc_price}TC` : `소장하기 ${content.keep_dc_price}TC`
+                                        }
+                                    </button>
+                                </ContentTextLine>
+                            </ContentLine>
+                        )) : (
+                          <h1 style={{marginTop: '48px', fontSize: '24px'}}>데이터가 존재하지 않습니다.</h1>
+                        )}
+                    </ContentBox>
+                    <MoreViewBtn
+                        className={moreView ? "moreViewHide" : ""}
+                        onClick={() => setMoreview((e) => !e)}
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                        더보기
+                    </MoreViewBtn>
+                </Right>
+                <OtherBox>
+                    <p className='title' onClick={() => console.log(otherState)}>이 작가의 다른 작품 보기</p>
+                    <OtherContentBox>
+                        <svg xmlns="http://www.w3.org/2000/svg" onClick={OtherMoveLeft} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 mr-3">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" onClick={OtherMoveRight} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                        <OtherLine>
+                            <OtherWrapper className='slideRef' ref={slideRef} style={listStyled}>
+                            {otherData.map((content, i) => (
+                                <OtherContent key={i}>
+                                <OtherImage>
+                                    <img src={`/images/test/${content.image}`} alt="" />
+                                </OtherImage>
+                                <OtherTitle>{content.title.length < 10 ? content.title : content.title.slice(0, 10) + "..."}</OtherTitle>
+                                <OtherGenre>{content.genre}</OtherGenre>
+                                </OtherContent>
+                            ))}
+                            </OtherWrapper>
+                        </OtherLine>
+                    </OtherContentBox>
+                    <ListBackBtn>
+                        <button><img src="/images/icons/backListBtn.svg" alt="" /> 목록으로</button>
+                    </ListBackBtn>
+                </OtherBox>
             </Box>
             <ResultBox
                 className={checkItems[0] ?
@@ -351,8 +415,8 @@ export default function Series({routerIdx}:any) {
                 }
                 >
                 <div className='top'>
-                    <p>총 주문 금액</p>
-                    <p>{checkItems.length * 3} TC</p>
+                    <p>총 주문 금액{tabState === 0 ? '(대여)' : '(소장)'}</p>
+                    <p>{tabState === 0 ? discRentalPrice : discRegularPrice} TC</p>
                     <p>총 {checkItems.length}건</p>
                 </div>
                 <button onClick={()=> setPaymentWindow(true)}>선택 구매</button>
@@ -361,7 +425,7 @@ export default function Series({routerIdx}:any) {
                 </svg>
             </ResultBox>
             {paymentWindow && (
-              <UseToriCash item={checkItems} viewModal={viewModal}/>
+              <UseToriCash kind={tabState === 0 ? '대여' : '소장'} price={tabState === 0 ? rentalPrice : regularPrice} sale={tabState === 0 ? discRentalPrice : discRegularPrice} item={checkItems} viewModal={viewModal}/>
             )}
         </Container>
     )
@@ -392,6 +456,8 @@ const TopupBox = styled.div`
     font-family: 'NEXON Lv1 Gothic OTF';
     background-color: var(--box1);
     border-radius: 8px;
+    margin-top: 12px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     p{
         text-align: center;
         color: var(--title);
@@ -410,6 +476,7 @@ const Box = styled.div`
     padding: 20px 30px 370px 350px;
     background-color: var(--box1);
     border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     @media screen and (max-width: 1000px) {
         width: 100%;
         flex-direction: column;
@@ -1078,7 +1145,7 @@ const ResultBox = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 999 !important;
-    transition: all .45s ease-in-out;
+    transition: all .15s ease-in-out;
     .top{
       width: 100%;
       display: flex;
@@ -1127,6 +1194,7 @@ const ResultBox = styled.div`
         z-index: 999 !important;
         left: 50%;
         transform: translateX(-50%);
+        transition: all .15s ease-in-out;
         @media screen and (max-width: 400px) {
             width: 100px;
             top: -30px;

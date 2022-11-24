@@ -1,11 +1,42 @@
+import axios from "axios";
+import { BalanceType } from "enum/data-type";
 import Image from "next/image";
+import * as React from "react";
 import styled from "styled-components";
 import ContentImage from '../../assets/images/4beab4b1b4486f76581b8b75d8041717a030eff8.gif';
 
-const UseToriCash = ({item, viewModal}:any) => {
+const UseToriCash = ({kind, price, sale,item, viewModal}:any) => {
+    const [balance, setBalance] = React.useState<BalanceType | null>(null);
+    const [useAmount, setUseAmount] = React.useState<number>(0);
+    const getBalance = () => {
+        axios({
+            method: 'GET',
+            url: `https://api-v2.storicha.in/api/cash-wallet/balance`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            withCredentials: true,
+        })
+        .then((response):any => {
+            setBalance(response.data.response_data[0]);
+            setUseAmount(response.data.response_data[0].balance_by_subscription);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+    const balanceChange = (event: any) => {
+        event.target.value === 'subscription' && setUseAmount(balance ? balance?.balance_by_subscription : 0);
+        event.target.value === 'topup' && setUseAmount(balance ? balance?.balance_by_topup : 0);
+        event.target.value === 'bonus' && setUseAmount(balance ? balance?.balance_by_bonus : 0);
+    }
     const modalClose = () => {
         viewModal(false);
     }
+    React.useEffect(()=>{
+        getBalance();
+        setUseAmount(balance ? balance.balance_by_topup : 0);
+    },[])
     return (
         <Container>
             <DarkBackground/>
@@ -17,17 +48,17 @@ const UseToriCash = ({item, viewModal}:any) => {
                     </svg>
                 </TitleHead>
                 <SelectBox>
-                    <select name="" className="select" defaultValue="1">
-                        <option value="1">충전액 보유잔고 10TC</option>
-                        <option value="2">월구독액 보유잔고 10TC</option>
-                        <option value="3">적립액 보유잔고 10TC</option>
+                    <select onChange={balanceChange} name="" className="select" defaultValue="1">
+                        <option value="topup">충전액 보유잔고 {balance ? balance.balance_by_topup : 0}TC</option>
+                        <option value="subscription">월구독액 보유잔고 {balance ? balance.balance_by_subscription : 0}TC</option>
+                        <option value="bonus">적립액 보유잔고 {balance ? balance.balance_by_bonus : 0}TC</option>
                     </select>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                     </svg>
                 </SelectBox>
                 <ContentBox>
-                    <h1 onClick={()=>console.log(typeof('123'))}>사용처</h1>
+                    <h1 onClick={()=>console.log(balance)}>사용처</h1>
                     <div className="content">
                         <div className="img">
                             <Image
@@ -38,8 +69,8 @@ const UseToriCash = ({item, viewModal}:any) => {
                             />
                         </div>
                         <div className="content-text">
-                            <p>양과 여우들의 밤</p>
-                            <p className="content-price">EP <span>{item.length * 3}</span> 개</p>
+                            <p>양과 여우들의 밤 ({kind})</p>
+                            <p className="content-price">EP <span>{item.length}</span> 개</p>
                         </div>
                     </div>
                     <ul>
@@ -49,16 +80,21 @@ const UseToriCash = ({item, viewModal}:any) => {
                     <div className="priceBox">
                         <p className="basis">
                             <span>가격</span>
-                            <span>{item.length * 3} TC</span>
+                            <span>{price} TC</span>
                         </p>
                         <p className="discount">
                             <span>할인가</span>
-                            <span>{item.length * 2} TC</span>
+                            <span>{sale} TC</span>
                         </p>
                     </div>
-                    <button>사용하기</button>
-                    {/* <p className="chage-message">잔고가 부족합니다.<br/>다른 보유잔고를 선택하세요.</p>
-                    <button className="charging">충전하기</button> */}
+                    {useAmount >= sale ? (
+                        <button>사용하기</button>
+                    ) : (
+                        <>
+                            <p className="chage-message">잔고가 부족합니다.<br/>다른 보유잔고를 선택하세요.</p>
+                            <button className="charging">충전하기</button>
+                        </>
+                    )}
                 </ContentBox>
             </Wrapper>
         </Container>
@@ -87,12 +123,13 @@ const DarkBackground = styled.div`
 const Wrapper = styled.div`
     min-width: 400px;
     padding: 16px;
-    background-color: #FFFFFF;
+    background-color: var(--bgColor);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     border-radius: 8px;
+    transition: all .15s ease-in-out;
 `
 const TitleHead = styled.div`
     width: 100%;
@@ -127,6 +164,7 @@ const SelectBox = styled.div`
         padding: 8px 8px;
         font-size: 16px;
         border-radius: 6px;
+        background: var(--boxColor2);
     }
     svg{
         position: absolute;
@@ -181,6 +219,7 @@ const ContentBox = styled.div`
         }
     }
     ul {
+        width: 100%;
         margin-top: 12px;
         border-top: 1.8px solid #cccccc;
         padding: 12px 14px;
@@ -222,8 +261,8 @@ const ContentBox = styled.div`
         margin-top: 18px;
         font-size: 18px;
         padding: 10px;
-        background-color: var(--title);
-        color: var(--bgColor);
+        background-color: var(--lineColor);
+        color: var(--textColor);
         border-radius: 28px;
         font-weight: bold;
         &.charging{
