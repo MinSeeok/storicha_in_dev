@@ -1,14 +1,16 @@
 import axios from "axios";
 import { BalanceType } from "enum/data-type";
 import Image from "next/image";
+import Router from "next/router";
 import * as React from "react";
 import styled from "styled-components";
 import ContentImage from '../../assets/images/4beab4b1b4486f76581b8b75d8041717a030eff8.gif';
 
-const UseToriCash = ({kind, price, sale,item, viewModal}:any) => {
+const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
     const [balance, setBalance] = React.useState<BalanceType | null>(null);
     const [useAmount, setUseAmount] = React.useState<number>(0);
     const getBalance = () => {
+        console.log('Balance Data Get..');
         axios({
             method: 'GET',
             url: `https://api-v2.storicha.in/api/cash-wallet/balance`,
@@ -18,10 +20,32 @@ const UseToriCash = ({kind, price, sale,item, viewModal}:any) => {
             withCredentials: true,
         })
         .then((response):any => {
+            console.log('Balance Data End..');
             setBalance(response.data.response_data[0]);
-            setUseAmount(response.data.response_data[0].balance_by_subscription);
+            setUseAmount(response.data.response_data[0].balance_by_topup);
         })
         .catch((error)=>{
+            console.log(error);
+        })
+    }
+    const postCart = () => {
+        console.log('Post Cart Start...');
+        axios({
+            method: 'POST',
+            url: `https://api-v2.storicha.in/api/cash-popup`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            data: {
+                series_idx: idx,
+                event_for_sale_idxs: check.join(),
+                purchase_type: kind === '소장' ? 'keep' : 'rental'
+            },
+            withCredentials: true,
+        }).then((response):any => {
+            console.log(response);
+            console.log('Post Cart End.');
+        }).catch((error)=> {
             console.log(error);
         })
     }
@@ -32,10 +56,26 @@ const UseToriCash = ({kind, price, sale,item, viewModal}:any) => {
     }
     const modalClose = () => {
         viewModal(false);
+        axios({
+            method: 'POST',
+            url: `https://api-v2.storicha.in/api/cash-popup/cancel`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            data: {
+                series_idx: idx,
+            },
+            withCredentials: true,
+        }).then((response):any => {
+            console.log(response);
+            console.log('Post Cart End.');
+        }).catch((error)=> {
+            console.log(error);
+        })
     }
     React.useEffect(()=>{
         getBalance();
-        setUseAmount(balance ? balance.balance_by_topup : 0);
+        postCart();
     },[])
     return (
         <Container>
@@ -92,7 +132,7 @@ const UseToriCash = ({kind, price, sale,item, viewModal}:any) => {
                     ) : (
                         <>
                             <p className="chage-message">잔고가 부족합니다.<br/>다른 보유잔고를 선택하세요.</p>
-                            <button className="charging">충전하기</button>
+                            <button className="charging" onClick={()=> Router.push("/cash/topup")}>충전하기</button>
                         </>
                     )}
                 </ContentBox>

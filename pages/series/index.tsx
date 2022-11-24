@@ -10,6 +10,10 @@ import { useSetRecoilState } from 'recoil';
 import { LoadingState } from 'recoil/loading';
 
 export default function Series() {
+    // get Idx
+    const router = useRouter();
+    const idx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
+
     const tabTitle = ["대여하기", "소장하기", "NFT IP 구매"];
     const ListSort = ["인기순", "업데이트순", "조회순", "별점순"];
 
@@ -36,7 +40,6 @@ export default function Series() {
     // 대여 할인가
     const [discRentalPrice, setDiscRentalPrice] = React.useState<number>(0);
 
-    const router = useRouter();
     // series-info
     const [series, setSeries] = React.useState<SeriesType | null>(null);
     // episede-info
@@ -69,7 +72,7 @@ export default function Series() {
             setDiscRentalPrice(0);
             setDiscRegularPrice(0);
             episode && episode.map((el, i) => {
-                idArray.push(el.event_idx);
+                idArray.push(el.event_for_sale_idx);
                 // 위에서 부터 대여가격 / 정상가격 / 대여할인가 / 정상할인가
                 setRentalPrice((e) => e + el.rental_price);
                 setRegularPrice((e) => e  + el.keep_price);
@@ -179,14 +182,29 @@ export default function Series() {
     // page router info
     React.useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
-        // get Idx
-        const idx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
+        // 장바구니 초기화(없어도 초기화 시도)
+        axios({
+            method: 'POST',
+            url: `https://api-v2.storicha.in/api/cash-popup/cancel`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            data: {
+                series_idx: idx,
+            },
+            withCredentials: true,
+        }).then((response):any => {
+            console.log(response);
+            console.log('Post Cart End.');
+        }).catch((error)=> {
+            console.log(error);
+        })
         getSeries(idx);
         getSeriseData(idx);
     }, []);
     return (
         <Container>
-            <TopupBox onClick={()=>console.log(series)}>
+            <TopupBox onClick={()=>console.log(checkItems)}>
                 <p>{series ? series.supply_name : '데이터가 존재하지 않습니다'}</p>
             </TopupBox>
             <Box>
@@ -217,7 +235,7 @@ export default function Series() {
                           </p>
                       </div>
                     </TitleImg>
-                    <SubBox onClick={()=> console.log(episode)}>
+                    <SubBox>
                         <p className='firstEpisode'>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
@@ -236,8 +254,8 @@ export default function Series() {
                             <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
                         </WriterImg>
                         <WriteInfo>
-                            <p className='title'>Richard Ottemant</p>
-                            <p className='tag'>@Illustrator</p>
+                            <p className='title'>{series ? series.sale_user_info.nick_name : ''}</p>
+                            <p className='tag'>{series ? series.sale_user_info.user_id : ''}</p>
                             <WriteFollow>Follow</WriteFollow>
                             <WriteSupport>Staking Support</WriteSupport>
                         </WriteInfo>
@@ -330,7 +348,7 @@ export default function Series() {
                             <ContentLine key={i}>
                                 <label htmlFor={`selectBox${i}`}>
                                     <div className='checkbox'>
-                                        {checkItems.includes(content.event_idx) ? 
+                                        {checkItems.includes(content.event_for_sale_idx) ? 
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                             </svg>
@@ -342,8 +360,8 @@ export default function Series() {
                                 <input
                                     id={`selectBox${i}`}
                                     type="checkbox"
-                                    onChange={(e) => handleSingleCheck(e.target.checked, content.event_idx, content.rental_price, content.keep_price, content.rental_dc_price, content.keep_dc_price)}
-                                    checked={checkItems.includes(content.event_idx) ? true : false}
+                                    onChange={(e) => handleSingleCheck(e.target.checked, content.event_for_sale_idx, content.rental_price, content.keep_price, content.rental_dc_price, content.keep_dc_price)}
+                                    checked={checkItems.includes(content.event_for_sale_idx) ? true : false}
                                 />
                                 <ContentImageBox>
                                     <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
@@ -425,7 +443,7 @@ export default function Series() {
                 </svg>
             </ResultBox>
             {paymentWindow && (
-              <UseToriCash kind={tabState === 0 ? '대여' : '소장'} price={tabState === 0 ? rentalPrice : regularPrice} sale={tabState === 0 ? discRentalPrice : discRegularPrice} item={checkItems} viewModal={viewModal}/>
+              <UseToriCash idx={idx ? idx : 0} check={checkItems !== undefined ? checkItems : null} kind={tabState === 0 ? '대여' : '소장'} price={tabState === 0 ? rentalPrice : regularPrice} sale={tabState === 0 ? discRentalPrice : discRegularPrice} item={checkItems} viewModal={viewModal}/>
             )}
         </Container>
     )

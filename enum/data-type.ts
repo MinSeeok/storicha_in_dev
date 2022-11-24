@@ -44,7 +44,7 @@ export interface SeriesType {
 export interface EpisodeType {
     create_date?: string;
     event_code?: string;
-    event_for_sale_idx?: number;
+    event_for_sale_idx: number;
     event_idx: number;
     keep_price: number;
     publish_yn?: string;
