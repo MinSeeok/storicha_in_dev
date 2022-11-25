@@ -64,3 +64,29 @@ export interface BalanceType {
     balance_by_subscription: number;
     balance_by_topup: number;
 }
+
+// topup-data
+interface TopupResponseData{
+    cash_buy_type?:string; 
+    cash_fillup_amount?:number;
+    cash_price_policy_idx?:number;
+    cash_product_idx?:number;
+    cash_product_title?:string;
+    product_dc_price?:number;
+    product_dc_price_yn?:string;
+    product_price?: number;
+    vat_percent?: number;
+}
+interface TopupResponseOption{
+    option_use_yn?:string;
+    paging_use_yn?:string;
+} 
+
+export interface TopupProductData{
+    response_code?: string;
+    response_data?: Array<TopupResponseData>;
+    response_data_count?:number;
+    response_message?:string;
+    response_option?:TopupResponseOption;
+    response_status?:string;
+}

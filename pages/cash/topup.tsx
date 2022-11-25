@@ -1,84 +1,102 @@
 import axios from 'axios';
 import Box from 'components/Box';
 import HelmetProvier from 'components/Helmet';
+import { TopupProductData } from 'enum/data-type';
 import { commaNumber } from 'func/addComma';
 import { NextPage } from 'next';
 import Image from 'next/image';
+import Router from 'next/router';
 import * as React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { LoadingState } from 'recoil/loading';
 import { LoginState } from 'recoil/user';
 import styled from 'styled-components';
-import ProductData from '../../json/cash/product.json'
-
-interface responseData{
-    cash_buy_type?:string; 
-    cash_fillup_amount?:number;
-    cash_price_policy_idx?:number;
-    cash_product_idx?:number;
-    cash_product_title?:string;
-    product_dc_price?:number;
-    product_dc_price_yn?:string;
-    product_price?: number;
-    vat_percent?: number;
-}
-interface responseOption{
-    option_use_yn?:string;
-    paging_use_yn?:string;
-} 
-
-interface ProductData{
-    response_code?: string;
-    response_data?: Array<responseData>;
-    response_data_count?:number;
-    response_message?:string;
-    response_option?:responseOption;
-    response_status?:string;
-}
 
 const Cash:NextPage = () => {
-    const [inputValue, setInputValue] = React.useState<any>("0");
+    const [inputValue, setInputValue] = React.useState<string>('');
     const [selectNumber, setSelectNumber] = React.useState<number>(0);
     const login = useRecoilValue(LoginState);
+    const [idx, setIdx] = React.useState<number>(0);
+    const [price, setPrice] = React.useState<number>(0);
+    const [dcPrice, setDcPrice] = React.useState<number>(0);
+
+    const [productIdx, setProductIdx] = React.useState<number | undefined>(0);
+    const [pricePolicy, setPricePolicy] = React.useState<number | undefined>(0);
+    const [fillupAmount, setFillupAmount] = React.useState<number>(0);
+    const [cashBuyType, setCashBuyType] = React.useState<string>('Direct');
+
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
-        const onlyNumber = value.replace(/[^0-9]/g, '');
-        return setInputValue(onlyNumber);
+        setPrice(Number(value.replace(',', '')));
+        setDcPrice(Number(value.replace(',', '')));
+        setFillupAmount(Number(value.replace(',', '')));
+        const onlyNumber = value.replace(/[^0-9]/g, '').replace(/(^0+)/, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        setInputValue(onlyNumber);
     }
-    const coinSelect = (number: number) => {
-        return setSelectNumber(number);
+    const coinSelect = (number: number, price:number , dcPrice:number) => {
+        setSelectNumber(number);
+        setInputValue(String(price).replace(/[^0-9]/g, '').replace('/^0/','').replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        setPrice(price);
+        setDcPrice(dcPrice);
     }
     const regex = /[^0-9]/gi;
 
-    const [fetchData, setFetchData] = React.useState<ProductData | null>(null);
-    const [loading, setLoading] = React.useState(false);
+    // topup-data
+    const [topupData, setTopupData] = React.useState<TopupProductData | null>(null);
+    // loading state
+    const loading = useRecoilValue(LoadingState);
+    const setLoadState = useSetRecoilState(LoadingState);
     const [error, setError] = React.useState<any>(null);
+
     const fetchDatas = async () => {
         if(login !== null){
             console.log('fetch Data start...');
             try {
                 // error, data 초기화
                 setError(null);
-                setFetchData(null);
+                setTopupData(null);
                 // loading state true
-                setLoading(true);
+                setLoadState(true);
                 const getData = await axios.get(
                     'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
                 )
-                setFetchData(getData.data);
+                setTopupData(getData.data);
             } catch(e) {
                 setError(e);
                 console.log(error);
             }
         }
-        setLoading(false);
+        setLoadState(false);
     };
+    const nextPage = () => {
+        axios({
+            method: 'POST',
+            url: `https://api-v2.storicha.in/api/product-order`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            data: {
+                cash_product_idx: productIdx,
+                cash_price_policy_idx: pricePolicy,
+                cash_fillup_amount: fillupAmount,
+            },
+            withCredentials: true,
+        }).then((response):any => {
+            Router.push(`/cash/checkout?idx=${response.data.response_data[0].cash_product_order_idx}&bp=${response.data.response_data[0].cash_fillup_amount}&vatin=${response.data.response_data[0].actual_buy_price}`);
+        }).catch((error)=> {
+            console.log(error);
+        })
+    }
+
     React.useEffect(()=> {
         console.log('login change');
-        login !== null ? fetchDatas() : setFetchData(null);
+        login !== null ? fetchDatas() : setTopupData(null);
     },[login]);
     React.useEffect(()=>{
-        console.log('component lender')
-        login !== null ? fetchDatas() : setFetchData(null);
+        console.log('component lender');
+        let useParams = new URLSearchParams(window.location.search);
+        setIdx(Number(useParams.get('idx')));
+        login !== null ? fetchDatas() : setTopupData(null);
     },[]);
     return(
         <Box>
@@ -95,23 +113,46 @@ const Cash:NextPage = () => {
                         />
                         &nbsp;
                         50,00,222,111 
-                        <span onClick={fetchDatas}>TC</span>
+                        <span onClick={()=> console.log(productIdx, pricePolicy, fillupAmount, cashBuyType)}>TC</span>
                     </Title>
                     <TopupBoxTop>
                         <Directly
                             placeholder='0'
                             type="text"
                             onChange={onChange}
+                            onClick={()=> 
+                                {
+                                    setInputValue('0');
+                                    coinSelect(0,0,0);
+                                    setCashBuyType('Direct');
+                                    setPricePolicy(topupData?.response_data  && topupData.response_data[0].cash_price_policy_idx);
+                                    setProductIdx(topupData?.response_data  && topupData.response_data[0].cash_product_idx); 
+
+                                }
+                            }
                             value={inputValue}
                         />
-                        <button onClick={()=> console.log(fetchData)}>구매하기</button>
+                        <button onClick={()=> {
+                            nextPage();
+                        }}>구매하기</button>
                         <span><b>CASH</b>직접입력</span>
                     </TopupBoxTop>
                     <TopupBox>
-                        {fetchData !== null && fetchData.response_data?.map((content, i) => {
+                        {topupData !== null && topupData.response_data?.map((content, i) => {
                             if(content.cash_buy_type === "Suggeted")
                                 return (
-                                    <CoinBox id={`CoinBox${i}`} key={i} onClick={() => coinSelect(content.cash_product_idx ? content.cash_product_idx : 0)} className={selectNumber === content.cash_product_idx ? "select" : ""}>
+                                    <CoinBox 
+                                        id={`CoinBox${i}`} 
+                                        key={i} 
+                                        onClick={() => {
+                                            setFillupAmount(Number(content.cash_fillup_amount));
+                                            setPricePolicy(content.cash_price_policy_idx);
+                                            setProductIdx(content.cash_product_idx); 
+                                            setCashBuyType('Suggeted');
+                                            coinSelect(content.cash_product_idx ? content.cash_product_idx : 0, content.product_price ? content.product_price : 0, content.product_dc_price ? content.product_dc_price : 0)} 
+                                        }
+                                            className={selectNumber === content.cash_product_idx ? "select" : ""}
+                                    >
                                         <div className='left'>
                                             <Image
                                                 src={'/images/toriCoin.png'}
@@ -143,13 +184,36 @@ const Cash:NextPage = () => {
                             }
                         )}
                     </TopupBox>
-                    {fetchData !== null && fetchData.response_data?.map((content, i)=>{
+                    {topupData !== null && topupData.response_data?.map((content, i)=>{
                         if(content.cash_buy_type === "Autotopup")
                             return(
-                                <Semen key={i}>
+                                <Semen key={i} onClick={async ()=> {
+                                    // setFillupAmount(Number(content.cash_fillup_amount))
+                                    // setPricePolicy(content.cash_price_policy_idx)
+                                    // setProductIdx(content.cash_product_idx)
+                                    setCashBuyType('Autotopup');
+                                    await axios({
+                                        method: 'POST',
+                                        url: `https://api-v2.storicha.in/api/product-order`,
+                                        headers: {
+                                            "Content-Type": "multipart/form-data"
+                                        },
+                                        data: {
+                                            cash_product_idx: content.cash_product_idx,
+                                            cash_price_policy_idx: content.cash_price_policy_idx,
+                                            cash_fillup_amount: content.cash_fillup_amount,
+                                        },
+                                        withCredentials: true,
+                                    }).then((response):any => {
+                                        console.log(response.data.response_data[0]);
+                                        Router.push(`/cash/checkout?idx=${response.data.response_data[0].cash_product_order_idx}&bp=${response.data.response_data[0].cash_fillup_amount}&vatin=${response.data.response_data[0].actual_buy_price}`);
+                                    }).catch((error)=> {
+                                        console.log(error);
+                                    })
+                                }}>
                                     <p>월 자동 충전권</p>
-                                    <p><span>{content.product_price ? commaNumber(content.product_price) : ''}</span>CASH</p>
-                                    <p><span>{content.product_price ? commaNumber(content.product_price) : ''}원</span>(VAT포함)</p>
+                                    <p><span>{content.cash_fillup_amount ? commaNumber(content.cash_fillup_amount) : ''}</span>CASH</p>
+                                    <p><span>{content.product_price ? commaNumber(content.product_price) : ''}원</span>(VAT별도)</p>
                                 </Semen>
                             )
                     })}
@@ -243,7 +307,7 @@ const Directly = styled.input`
     color: var(--title);
     background-color: var(--box1);
     &:focus{
-        border: 1.8px solid var(--lineColor);
+        border: 1.8px solid var(--point);
     }
 `
 
@@ -411,12 +475,5 @@ const SubText = styled.div`
         font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
         color: var(--sub);
     }
-`
-
-const LoginBtn = styled.div`
-    padding: 4px;
-    font-size: 18px;
-    width: auto;
-    border: 2px solid red;
 `
 export default Cash;

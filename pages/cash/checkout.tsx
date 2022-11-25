@@ -6,10 +6,8 @@ import { useRecoilValue } from 'recoil';
 import { LoginState } from 'recoil/user';
 import styled from 'styled-components';
 
-interface title {
-    title: string;
-}
-export default function Checkout(title:title){
+
+export default function Checkout(){
     const [ meansChange, setMeansChange ] = React.useState<boolean>(false);
     const ClickMeansTab = () => {
         setMeansChange((e) => !e);
@@ -19,6 +17,11 @@ export default function Checkout(title:title){
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<any>(null);
     const login = useRecoilValue(LoginState);
+
+    // cash, amount 
+    const [cash, setCash] = React.useState<string | null>('');
+    const [amount, setAmount] = React.useState<string | null>('');
+    const [subscription, setSubscription] = React.useState<boolean>(false);
     const fetchDatas = async () => {
         try {
             // error, data 초기화
@@ -36,8 +39,15 @@ export default function Checkout(title:title){
         }
         setLoading(false);
     };
+
+    // add comma
+    const commaRegex = /\B(?=(\d{3})+(?!\d))/g;
     React.useEffect(()=> {
         login  ? fetchDatas() : setFetchData(null); 
+        let useParams = new URLSearchParams(window.location.search);
+        setCash(useParams.get('bp') !== null ? useParams.get('bp') : '');
+        setAmount(useParams.get('vatin') !== null ? useParams.get('vatin') : '');
+        setSubscription(useParams.get('subscription') === 'false' ?  false : true);
     },[]);
     React.useEffect(()=> {
       login  ? fetchDatas() : setFetchData(null); 
@@ -50,15 +60,15 @@ export default function Checkout(title:title){
           ): (
             <>
               <HelmetProvider>
-                  <Helmet title={title.title}/>
+                  <Helmet title={'결제수단 선택'}/>
               </HelmetProvider>
               <Box>
-                  <TopTitle onClick={()=> console.log(fetchData)}>구매 상품명</TopTitle>
+                  <TopTitle>구매 상품명</TopTitle>
                   <TopTitleLine/>
                   <PaymentTitle>결제</PaymentTitle>
                   <PaymentInfo>
-                      <p><span>TC</span> 100</p>
-                      <p>11,000원</p>
+                      <p><span>TC</span> {cash?.replace(commaRegex,',')} {subscription && '(정기 결제)'}</p>
+                      <p>{amount?.replace(commaRegex,',')}원(VAT포함)</p>
                   </PaymentInfo>
                   <MeansSelect onClick={ClickMeansTab}>
                       <p>{fetchData !== null ? fetchData.response_data[Number(means.replace(regex, ""))].code_name : '데이터가 존재하지 않습니다.'}</p>
@@ -151,7 +161,7 @@ const PaymentInfo = styled.div`
   align-items: center;
   font-size: 20px;
   span{
-    font-size: 14px;
+    font-size: 18px;
     color: var(--point);
   }
 `

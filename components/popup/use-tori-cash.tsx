@@ -132,7 +132,7 @@ const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
                     ) : (
                         <>
                             <p className="chage-message">잔고가 부족합니다.<br/>다른 보유잔고를 선택하세요.</p>
-                            <button className="charging" onClick={()=> Router.push("/cash/topup")}>충전하기</button>
+                            <button className="charging" onClick={()=> Router.push(`/cash/topup/?idx=${idx}`)}>충전하기</button>
                         </>
                     )}
                 </ContentBox>
