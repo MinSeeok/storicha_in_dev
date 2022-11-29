@@ -2,6 +2,8 @@ import { GlobalStyle } from '@src/styles/global-styled';
 import BackLogoImage from 'components/BackLogoImage';
 import Container from 'components/Container';
 import Devtools from 'components/dev/devtools';
+import FooterContainer from 'components/index/Bottom';
+import Navigation from 'components/index/Navigation';
 import LoadingContainer from 'components/LoadingBox';
 import type { AppProps } from 'next/app';
 import * as React from 'react';
@@ -22,6 +24,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                         <BackLogoImage/>
                         <Component {...pageProps}/>
                         <LoadingContainer/>
+                        <FooterContainer/>
+                        <Navigation/>
                     </Container>
                 </QueryClientProvider>
             </RecoilRoot>

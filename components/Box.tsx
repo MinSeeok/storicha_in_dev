@@ -29,5 +29,4 @@ const Container = styled.div`
     margin-top: 0px;
     border-radius: 0px;
   }
-  margin: 40px 0;
 `

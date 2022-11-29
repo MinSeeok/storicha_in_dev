@@ -39,15 +39,15 @@ const Devtools = () => {
         setLoadState(false);
     }
     React.useEffect(()=>{
-        login === null ? setLoginState(true) : setLoginState(false);
+        login === null ? setLoginState(false) : setLoginState(true);
     },[]);
     React.useEffect(()=>{
-        login === null ? setLoginState(true) : setLoginState(false);
+        login === null ? setLoginState(false) : setLoginState(true);
     },[login]);
     return (
         <Wrarpper>
             <Container onClick={cookieSet}>
-                {loginState ? '로그인하기' : '로그아웃하기'}
+                {loginState ? '로그아웃하기' : '로그인하기'}
             </Container>
             <Box onClick={()=> console.log(login)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

@@ -82,7 +82,18 @@ const Cash:NextPage = () => {
             },
             withCredentials: true,
         }).then((response):any => {
-            Router.push(`/cash/checkout?idx=${response.data.response_data[0].cash_product_order_idx}&bp=${response.data.response_data[0].cash_fillup_amount}&vatin=${response.data.response_data[0].actual_buy_price}`);
+            // Router.push(`/cash/checkout?idx=${response.data.response_data[0].cash_product_order_idx}&bp=${response.data.response_data[0].cash_fillup_amount}&vatin=${response.data.response_data[0].actual_buy_price}`);
+            const res_idx = response.data.response_data[0].cash_product_order_idx;
+            const res_bp = response.data.response_data[0].cash_fillup_amount;
+            const res_vatin = response.data.response_data[0].actual_buy_price;
+            Router.push({
+                pathname: '/cash/checkout',
+                query: {
+                    res_idx, 
+                    res_bp, 
+                    res_vatin
+                }
+            },'/cash/checkout');
         }).catch((error)=> {
             console.log(error);
         })
@@ -205,8 +216,15 @@ const Cash:NextPage = () => {
                                         },
                                         withCredentials: true,
                                     }).then((response):any => {
-                                        console.log(response.data.response_data[0]);
-                                        Router.push(`/cash/checkout?idx=${response.data.response_data[0].cash_product_order_idx}&bp=${response.data.response_data[0].cash_fillup_amount}&vatin=${response.data.response_data[0].actual_buy_price}`);
+                                        console.log(response);
+                                        const res_idx = response && response.data.response_data[0].cash_product_order_idx;
+                                        const res_bp = response && response.data.response_data[0].cash_fillup_amount;
+                                        const res_vatin = response && response.data.response_data[0].actual_buy_price;
+                                        // Router.push(`/cash/checkout?idx=${response.data.response_data[0].cash_product_order_idx}&bp=${response.data.response_data[0].cash_fillup_amount}&vatin=${response.data.response_data[0].actual_buy_price}`);
+                                        Router.push({
+                                            pathname: '/cash/checkout',
+                                            query: {res_idx, res_bp, res_vatin}
+                                        },'/cash/checkout');
                                     }).catch((error)=> {
                                         console.log(error);
                                     })

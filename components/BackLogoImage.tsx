@@ -20,5 +20,5 @@ const BackImage = styled.div`
     height: 100vh;
     transform: translateY(0%) translateX(40%);
     filter: blur(2px);
-    z-index: 5;
+    pointer-events: none;
 `

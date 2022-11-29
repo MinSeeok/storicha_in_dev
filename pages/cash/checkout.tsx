@@ -1,13 +1,24 @@
+import type { NextPage } from 'next';
 import axios from 'axios';
 import Box from 'components/Box';
 import * as React from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useRecoilValue } from 'recoil';
-import { LoginState } from 'recoil/user';
 import styled from 'styled-components';
+import { LoginState } from 'recoil/user';
+import { useRouter } from 'next/router';
 
 
-export default function Checkout(){
+const Checkout: NextPage = () =>{
+    const router = useRouter();
+    const {
+      query: {res_idx, res_bp, res_vatin},
+    } = router;
+    const props = {
+      res_idx,
+      res_bp,
+      res_vatin,
+    }
     const [ meansChange, setMeansChange ] = React.useState<boolean>(false);
     const ClickMeansTab = () => {
         setMeansChange((e) => !e);
@@ -63,12 +74,12 @@ export default function Checkout(){
                   <Helmet title={'결제수단 선택'}/>
               </HelmetProvider>
               <Box>
-                  <TopTitle>구매 상품명</TopTitle>
+                  <TopTitle onClick={()=> console.log(props && props.res_bp)}>구매 상품명</TopTitle>
                   <TopTitleLine/>
                   <PaymentTitle>결제</PaymentTitle>
                   <PaymentInfo>
-                      <p><span>TC</span> {cash?.replace(commaRegex,',')} {subscription && '(정기 결제)'}</p>
-                      <p>{amount?.replace(commaRegex,',')}원(VAT포함)</p>
+                      <p><span>TC</span> {props.res_bp ? String(props.res_bp).replace(commaRegex,',') : ''} {subscription && '(정기 결제)'}</p>
+                      <p>{props.res_vatin ? String(props.res_vatin).replace(commaRegex,',') : ''}원(VAT포함)</p>
                   </PaymentInfo>
                   <MeansSelect onClick={ClickMeansTab}>
                       <p>{fetchData !== null ? fetchData.response_data[Number(means.replace(regex, ""))].code_name : '데이터가 존재하지 않습니다.'}</p>
@@ -117,6 +128,8 @@ export default function Checkout(){
         </>
     )
 }
+
+export default Checkout;
 
 const TopTitle = styled.span`
     font-size: 18px;

@@ -203,7 +203,7 @@ export default function Series() {
         getSeriseData(idx);
     }, []);
     return (
-        <Container>
+        <>
             <TopupBox onClick={()=>console.log(checkItems)}>
                 <p>{series ? series.supply_name : '데이터가 존재하지 않습니다'}</p>
             </TopupBox>
@@ -445,7 +445,7 @@ export default function Series() {
             {paymentWindow && (
               <UseToriCash idx={idx ? idx : 0} check={checkItems !== undefined ? checkItems : null} kind={tabState === 0 ? '대여' : '소장'} price={tabState === 0 ? rentalPrice : regularPrice} sale={tabState === 0 ? discRentalPrice : discRegularPrice} item={checkItems} viewModal={viewModal}/>
             )}
-        </Container>
+        </>
     )
 }
 
@@ -453,6 +453,7 @@ const Container = styled.div`
     padding: 0px 20px 30px 20px;
     max-width: 1500px;
     min-width: 1024px;
+    height: auto;
     margin: 0 auto;
     position: relative;
     display: flex;
@@ -469,12 +470,13 @@ const Container = styled.div`
     }
 `
 const TopupBox = styled.div`
-    width: 100%;
     padding: 24px 0;
+    max-width: 1500px;
+    min-width: 1024px;
     font-family: 'NEXON Lv1 Gothic OTF';
     background-color: var(--box1);
     border-radius: 8px;
-    margin-top: 12px;
+    margin-top: 24px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     p{
         text-align: center;
@@ -487,13 +489,16 @@ const TopupBox = styled.div`
     }
 `
 const Box = styled.div`
-    width: 100%;
+    max-width: 1500px;
+    min-width: 1024px;
     height: auto;
     display: flex;
     justify-content: flex-end;
     padding: 20px 30px 370px 350px;
     background-color: var(--box1);
     border-radius: 8px;
+    margin-bottom: 260px;
+    margin-top: 24px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     @media screen and (max-width: 1000px) {
         width: 100%;

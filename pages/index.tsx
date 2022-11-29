@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import HelmetProvier from 'components/Helmet';
 import Container from 'components/Container';
-import { Navigation } from 'components/index/Navigation';
 import { ThemeNavigation } from 'components/index/ThemeChangeBtn';
 import styled from 'styled-components';
 import axios from 'axios';
+import HelmetProvier from 'components/Helmet';
 
 export default function Home(){
     const [loading, setLoading] = React.useState(false);
@@ -30,8 +29,7 @@ export default function Home(){
     },[])
     return (
         <>
-            <HelmetProvier title='STORICHAIN'/>
-            <Navigation/>
+            <HelmetProvier title='토리 캐시 결제'/>
             <ThemeNavigation/>
             <Box>
                 {loading ? (
@@ -40,15 +38,15 @@ export default function Home(){
                     <div onClick={() => console.log(cash)}>Load Data End!!</div>
                 )}
             </Box>
-            <Container/>
         </>
     )
 }
 
 const Box = styled.div`
     padding: 20px;
+    width: 100vw;
+    min-height: calc(100vh - 252px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999999;
 `

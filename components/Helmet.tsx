@@ -7,6 +7,7 @@ interface title {
 }
 
 export default function HelmetProvier({title}: title){
+    console.log(title);
     return (
         <HelmetProvider>
             <Helmet>
