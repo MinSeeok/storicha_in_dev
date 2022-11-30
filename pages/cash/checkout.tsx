@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 
 const Checkout: NextPage = () =>{
     const router = useRouter();
+    const idx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
     const {
       query: {res_idx, res_bp, res_vatin},
     } = router;
@@ -33,6 +34,8 @@ const Checkout: NextPage = () =>{
     const [cash, setCash] = React.useState<string | null>('');
     const [amount, setAmount] = React.useState<string | null>('');
     const [subscription, setSubscription] = React.useState<boolean>(false);
+
+
     const fetchDatas = async () => {
         try {
             // error, data 초기화
@@ -54,11 +57,11 @@ const Checkout: NextPage = () =>{
     // add comma
     const commaRegex = /\B(?=(\d{3})+(?!\d))/g;
     React.useEffect(()=> {
-        login  ? fetchDatas() : setFetchData(null); 
-        let useParams = new URLSearchParams(window.location.search);
-        setCash(useParams.get('bp') !== null ? useParams.get('bp') : '');
-        setAmount(useParams.get('vatin') !== null ? useParams.get('vatin') : '');
-        setSubscription(useParams.get('subscription') === 'false' ?  false : true);
+        login !== null  ? fetchDatas() : setFetchData(null); 
+        // let useParams = new URLSearchParams(window.location.search);
+        // setCash(useParams.get('bp') !== null ? useParams.get('bp') : '');
+        // setAmount(useParams.get('vatin') !== null ? useParams.get('vatin') : '');
+        // setSubscription(useParams.get('subscription') === 'false' ?  false : true);
     },[]);
     React.useEffect(()=> {
       login  ? fetchDatas() : setFetchData(null); 
@@ -108,7 +111,7 @@ const Checkout: NextPage = () =>{
                   </MeansBox>
                   <ButtonBox>
                       <button>결제하기</button>
-                      <button>취소하기</button>
+                      <button onClick={() => router.push(`/cash/topup/?idx=${idx}`)}>취소하기</button>
                   </ButtonBox>
                   <SubulTitle>구매 전 필수 유의사항</SubulTitle>
                   <Subul>

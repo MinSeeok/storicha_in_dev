@@ -12,13 +12,14 @@ export default Box;
 
 const Container = styled.div`
   box-sizing: border-box;
+  position: relative;
   min-width: 428px;
   max-width: 500px;
   padding: 40px 30px;
   border-radius: 12px;
   position: relative;
   z-index: 999;
-  margin: 40px 0 0 0;
+  margin: 40px 0 40px 0;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   color: var(--title);
   @media screen and (max-width: 500px) {

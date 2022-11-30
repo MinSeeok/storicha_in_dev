@@ -10,31 +10,31 @@ const Devtools = () => {
     const setLogin = useSetRecoilState(LoginState);
     const setLoadState = useSetRecoilState(LoadingState);
     const [loginState, setLoginState] = React.useState<boolean>(false);
-    const cookieSet = async () => {
+    const cookieSet = () => {
         if(login === null){
-            try{
-              setLoadState(true);
-                console.log('로그인 하는중 ...');
-                const request = await axios.get(
-                  'https://api-v2.storicha.in/api/User/SiteSnsLogin?site_user_id=testkwy@test.com&pwd=1234QWER!',
-                  { withCredentials: true },
-                )
-                setLogin(request);
-            } catch (error) {
-                console.log(error);
-            }
+            setLoadState(true);
+            console.log('login begin...');
+            axios({
+                method: 'GET',
+                url: `https://api-v2.storicha.in/api/User/SiteSnsLogin?site_user_id=testkwy@test.com&pwd=1234QWER!`,
+                withCredentials: true,
+            })
+            .then((response):any => {
+                console.log('login complete..')
+                setLogin(response ? response.data.response_data[0] : null);
+            })
         } else {
-            try {
-              setLoadState(true);
-              console.log('로그아웃 하는중...');
-              await axios.get(
-                'https://api-v2.storicha.in/api/User/Logout',
-                { withCredentials: true },
-              )
-              setLogin(null);
-            } catch(error) {
-              console.log(error);
-            }
+            console.log('logout begin');
+            setLoadState(true);
+            axios({
+                method: 'GET',
+                url: 'https://api-v2.storicha.in/api/User/Logout',
+                withCredentials: true,
+            })
+            .then((response):any => {
+                console.log(response);
+                setLogin(null);
+            }) 
         }
         setLoadState(false);
     }
@@ -49,7 +49,7 @@ const Devtools = () => {
             <Container onClick={cookieSet}>
                 {loginState ? '로그아웃하기' : '로그인하기'}
             </Container>
-            <Box onClick={()=> console.log(login)}>
+            <Box onClick={()=> console.log(login.site_user_id && login.site_user_id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                 </svg>

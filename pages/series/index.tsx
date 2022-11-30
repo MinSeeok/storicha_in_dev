@@ -174,6 +174,7 @@ export default function Series() {
         })
         .then((response):any => {
             setEpisode(response.data.response_data);
+            console.log(response.data.response_data);
         })
         .catch((error)=>{
             console.log(error);
@@ -194,7 +195,6 @@ export default function Series() {
             },
             withCredentials: true,
         }).then((response):any => {
-            console.log(response);
             console.log('Post Cart End.');
         }).catch((error)=> {
             console.log(error);
@@ -279,18 +279,18 @@ export default function Series() {
                         북마크하기
                     </BookMark>
                     <InfoBox>
-                    <div>
-                        <p>장르</p>
-                        <p>{series?.genres_type_idxs ? series.genres_type_idxs : '액션, 판타지'}</p>
-                    </div>
-                    <div>
-                        <p>에피소드</p>
-                        <p>148</p>
-                    </div>
-                    <div>
-                        <p>포멧라벨</p>
-                        <p>웹소설, 시나리오, 드라마대본</p>
-                    </div>
+                        <div>
+                            <p>장르</p>
+                            <p>{series?.genres_type_idxs ? series.genres_type_idxs : '액션, 판타지'}</p>
+                        </div>
+                        <div>
+                            <p>에피소드</p>
+                            <p>148</p>
+                        </div>
+                        <div>
+                            <p>포멧라벨</p>
+                            <p>웹소설, 시나리오, 드라마대본</p>
+                        </div>
                     </InfoBox>
                     <MoblieStory>
                     <p>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</p>
@@ -400,7 +400,7 @@ export default function Series() {
                     </MoreViewBtn>
                 </Right>
                 <OtherBox>
-                    <p className='title' onClick={() => console.log(otherState)}>이 작가의 다른 작품 보기</p>
+                    <p className='title'>이 작가의 다른 작품 보기</p>
                     <OtherContentBox>
                         <svg xmlns="http://www.w3.org/2000/svg" onClick={OtherMoveLeft} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 mr-3">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -443,7 +443,7 @@ export default function Series() {
                 </svg>
             </ResultBox>
             {paymentWindow && (
-              <UseToriCash idx={idx ? idx : 0} check={checkItems !== undefined ? checkItems : null} kind={tabState === 0 ? '대여' : '소장'} price={tabState === 0 ? rentalPrice : regularPrice} sale={tabState === 0 ? discRentalPrice : discRegularPrice} item={checkItems} viewModal={viewModal}/>
+                <UseToriCash idx={idx ? idx : 0} check={checkItems !== undefined ? checkItems : null} kind={tabState === 0 ? '대여' : '소장'} price={tabState === 0 ? rentalPrice : regularPrice} sale={tabState === 0 ? discRentalPrice : discRegularPrice} item={checkItems} viewModal={viewModal}/>
             )}
         </>
     )
@@ -634,6 +634,7 @@ const TitleHead = styled.p`
   margin-top: 32px;
   font-size: 18px;
   font-weight: bold;
+  color: var(--title);
   @media screen and (max-width: 1000px) {
     display: none;
   }
@@ -643,6 +644,7 @@ const TitleSubText = styled.p`
   font-size: 16px;
   margin-top: 18px;
   line-height: 26px;
+  color: var(--title);
   @media screen and (max-width: 1000px) {
     display: none;
   }
@@ -751,6 +753,7 @@ const InfoBox = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  color: var(--title);
   background-color: var(--box2);
   border-radius: 6px;
   div{
@@ -842,7 +845,7 @@ const SelectTab = styled.div`
     }
     .tabChoice{
         border-bottom: 3px solid var(--point);
-        font-size: 22px;
+        color: var(--title);
     }
     @media screen and (max-width: 1000px) {
         margin-top: 14px;
@@ -853,10 +856,11 @@ const SelectTab = styled.div`
 `
 const ListTop = styled.div`
     width: 100%;
-    padding: 4.5px 0;
+    padding: 10.5px 0;
+    color: var(--title);
     background-color: var(--box2);
     margin-top: 18px;
-    border-radius: 6px;
+    border-radius: 4px;
     #allSelect{
         display: none;
     }
@@ -1014,6 +1018,7 @@ const ContentTextLine = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 12px;
+  color: var(--title);
   .ep{
     font-size: 22px;
     color: var(--placeholder);
@@ -1144,6 +1149,7 @@ const MoreViewBtn = styled.div`
   border-radius: 24px;
   z-index: 999;
   cursor: pointer;
+  color: var(--title);
   svg {
     color: var(--title);
     margin-right: 4px;
@@ -1157,6 +1163,7 @@ const ResultBox = styled.div`
     left: 0;
     bottom: 0px;
     padding: 24px 20px 22px 20px;
+    color: var(--title);
     background-color: var(--modalSlideBg);
     width: 100%;
     border: 2px solid var(--borderLine);
@@ -1272,6 +1279,7 @@ const OtherBox = styled.div`
     .title{
         font-size: 20px;
         font-weight: bold;
+        color: var(--title);
     }
     @media screen and (max-width: 1000px) {
         position: relative;
@@ -1326,6 +1334,7 @@ const OtherLine = styled.div`
   height: 100%;
   overflow-x: hidden;
   height: auto;
+  color: var(--title);
   @media screen and (max-width: 1024px) {
     width: calc(100% - 16px);
     background-color: var(--box1);

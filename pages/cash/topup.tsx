@@ -5,7 +5,7 @@ import { TopupProductData } from 'enum/data-type';
 import { commaNumber } from 'func/addComma';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import * as React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoadingState } from 'recoil/loading';
@@ -24,6 +24,9 @@ const Cash:NextPage = () => {
     const [pricePolicy, setPricePolicy] = React.useState<number | undefined>(0);
     const [fillupAmount, setFillupAmount] = React.useState<number>(0);
     const [cashBuyType, setCashBuyType] = React.useState<string>('Direct');
+
+    const router = useRouter();
+    const routerIdx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
@@ -69,6 +72,10 @@ const Cash:NextPage = () => {
         setLoadState(false);
     };
     const nextPage = () => {
+        if(pricePolicy === 0){
+            alert('CASH 상품을 선택 후 진행하세요');
+            return;
+        }
         axios({
             method: 'POST',
             url: `https://api-v2.storicha.in/api/product-order`,
@@ -76,24 +83,23 @@ const Cash:NextPage = () => {
                 "Content-Type": "multipart/form-data"
             },
             data: {
-                cash_product_idx: productIdx,
-                cash_price_policy_idx: pricePolicy,
-                cash_fillup_amount: fillupAmount,
+                prd_idx: productIdx,
+                policy_idx: pricePolicy,
+                fill_qty: fillupAmount,
             },
             withCredentials: true,
         }).then((response):any => {
-            // Router.push(`/cash/checkout?idx=${response.data.response_data[0].cash_product_order_idx}&bp=${response.data.response_data[0].cash_fillup_amount}&vatin=${response.data.response_data[0].actual_buy_price}`);
             const res_idx = response.data.response_data[0].cash_product_order_idx;
             const res_bp = response.data.response_data[0].cash_fillup_amount;
             const res_vatin = response.data.response_data[0].actual_buy_price;
             Router.push({
-                pathname: '/cash/checkout',
+                pathname: `/cash/checkout`,
                 query: {
                     res_idx, 
                     res_bp, 
                     res_vatin
                 }
-            },'/cash/checkout');
+            },`/cash/checkout?idx=${routerIdx}`);
         }).catch((error)=> {
             console.log(error);
         })
@@ -210,9 +216,9 @@ const Cash:NextPage = () => {
                                             "Content-Type": "multipart/form-data"
                                         },
                                         data: {
-                                            cash_product_idx: content.cash_product_idx,
-                                            cash_price_policy_idx: content.cash_price_policy_idx,
-                                            cash_fillup_amount: content.cash_fillup_amount,
+                                            prd_idx: content.cash_product_idx,
+                                            policy_idx: content.cash_price_policy_idx,
+                                            fill_qty: content.cash_fillup_amount,
                                         },
                                         withCredentials: true,
                                     }).then((response):any => {
@@ -220,7 +226,6 @@ const Cash:NextPage = () => {
                                         const res_idx = response && response.data.response_data[0].cash_product_order_idx;
                                         const res_bp = response && response.data.response_data[0].cash_fillup_amount;
                                         const res_vatin = response && response.data.response_data[0].actual_buy_price;
-                                        // Router.push(`/cash/checkout?idx=${response.data.response_data[0].cash_product_order_idx}&bp=${response.data.response_data[0].cash_fillup_amount}&vatin=${response.data.response_data[0].actual_buy_price}`);
                                         Router.push({
                                             pathname: '/cash/checkout',
                                             query: {res_idx, res_bp, res_vatin}

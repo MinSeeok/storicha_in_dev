@@ -9,25 +9,6 @@ import ContentImage from '../../assets/images/4beab4b1b4486f76581b8b75d8041717a0
 const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
     const [balance, setBalance] = React.useState<BalanceType | null>(null);
     const [useAmount, setUseAmount] = React.useState<number>(0);
-    const getBalance = () => {
-        console.log('Balance Data Get..');
-        axios({
-            method: 'GET',
-            url: `https://api-v2.storicha.in/api/cash-wallet/balance`,
-            headers: {
-                "Content-Type": "multipart/form-data"
-            },
-            withCredentials: true,
-        })
-        .then((response):any => {
-            console.log('Balance Data End..');
-            setBalance(response.data.response_data[0]);
-            setUseAmount(response.data.response_data[0].balance_by_topup);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
-    }
     const postCart = () => {
         console.log('Post Cart Start...');
         axios({
@@ -44,6 +25,9 @@ const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
             withCredentials: true,
         }).then((response):any => {
             console.log(response);
+            console.log(response.data);
+            // setBalance(response.data.response_data[0]);
+            // setUseAmount(response.data.response_data[0].balance_by_topup);
             console.log('Post Cart End.');
         }).catch((error)=> {
             console.log(error);
@@ -74,7 +58,7 @@ const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
         })
     }
     React.useEffect(()=>{
-        getBalance();
+        // getBalance();
         postCart();
     },[])
     return (

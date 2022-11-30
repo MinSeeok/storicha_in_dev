@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isPointThemeAtom } from 'recoil/theme';
 import Image from 'next/image';
 import ProfileImage from '../../assets/images/img1.daumcdn.jpg';
@@ -8,6 +8,9 @@ import Logo from '../../assets/icon/appstore-anticon.svg';
 import LogoSS from '../../assets/icon/ssymbol.svg';
 import userImage from '../../assets/images/IMG_1835.jpg';
 import { LoginState } from 'recoil/user';
+import LoginBox from './Login';
+import axios from 'axios';
+import { LoadingState } from 'recoil/loading';
 
 const Navigation = () => {
     const isPointTheme = useRecoilValue(isPointThemeAtom);
@@ -16,6 +19,36 @@ const Navigation = () => {
     const login = useRecoilValue(LoginState);
     const [leftView, setLeftView] = React.useState<boolean>(true);
     const [topMore, setTopMore] = React.useState<boolean>(false);
+    const [loginState, setLoginState] = React.useState<any | null>(null);
+    const [loginModal, setLoginModal] = React.useState<boolean>(false);
+
+    const setLogin = useSetRecoilState(LoginState);
+    const setLoadState = useSetRecoilState(LoadingState);
+
+    const loginViewState = (value:any) => {
+        setLoginModal(value);
+    }
+    const doLogout = () => {
+        setLoadState(true);
+        axios({
+            method: 'GET',
+            url: 'https://api-v2.storicha.in/api/User/Logout',
+            withCredentials: true,
+        })
+        .then((response):any => {
+            console.log(response);
+            setLogin(null);
+        }) 
+        setLoadState(false);
+    }
+    React.useEffect(()=>{
+        login === null ? setLoginState(false) : setLoginState(true);
+        setTopMore(false);
+    },[]);
+    React.useEffect(()=>{
+        login === null ? setLoginState(false) : setLoginState(true);
+        setTopMore(false);
+    },[login]);
     return(
         <>
             <TopContainer>
@@ -37,7 +70,7 @@ const Navigation = () => {
                             alt="logo"
                         />
                     </div>
-                    <span className="title">IP Manager</span>
+                    <span className="title" onClick={()=> console.log(loginState)}>IP Manager</span>
                     <div className="search">
                         <input type="text" placeholder="search.."/>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -46,7 +79,7 @@ const Navigation = () => {
                     </div>
                 </div>
                 <div className="right">
-                    {/* {login ? (
+                    {loginState === true ? (
                         <div className="right-container">
                             <div className="image">
                                 <Image
@@ -57,7 +90,7 @@ const Navigation = () => {
                                 />
                             </div>
                             <span onClick={()=> setTopMore(e => !e)}>
-                                {login.data && login.data.response_data[0].email}
+                                {loginState !== null && login.site_user_id}
                                 <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                 </svg>
@@ -100,11 +133,17 @@ const Navigation = () => {
                                     </svg>
                                     부가 정보
                                 </div>
+                                <div style={{borderTop: '1px solid #c8c8c8'}} onClick={doLogout}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                                    </svg>
+                                    로그아웃
+                                </div>
                             </div>
                         </div>
                     ) : (
-                        <p className="login">로그인</p>
-                    )} */}
+                        <p className="login" onClick={()=> setLoginModal(true)}>로그인</p>
+                    )}
                 </div>
             </TopContainer>
             <Container color={isPointTheme} style={leftView ? {left: '0px'} : {left: '-300px'}}>
@@ -253,6 +292,7 @@ const Navigation = () => {
                     </PlusMenu>
                 </MenuBox>
             </Container>
+            {loginModal && <LoginBox loginViewState={loginViewState}/>}
         </>
     )
 }
@@ -322,6 +362,7 @@ const TopContainer = styled.div`
             overflow: hidden;
             transition: all .2s ease-in-out;
             div{
+                width: 100%;
                 color: var(--title);
                 font-size: 16px;
                 padding: 11.5px 16px;
@@ -400,9 +441,9 @@ const TopContainer = styled.div`
 
 const Container = styled.div`
     position: fixed;
-    left: 0;
+    left: 0px;
     width: 280px;
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;

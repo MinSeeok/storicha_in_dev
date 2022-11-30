@@ -1,7 +1,6 @@
 import { GlobalStyle } from '@src/styles/global-styled';
 import BackLogoImage from 'components/BackLogoImage';
 import Container from 'components/Container';
-import Devtools from 'components/dev/devtools';
 import FooterContainer from 'components/index/Bottom';
 import Navigation from 'components/index/Navigation';
 import LoadingContainer from 'components/LoadingBox';
@@ -20,13 +19,12 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <QueryClientProvider client={queryClient}>
                     <GlobalStyle />
                     <Container>
-                        <Devtools/>
                         <BackLogoImage/>
                         <Component {...pageProps}/>
                         <LoadingContainer/>
-                        <FooterContainer/>
                         <Navigation/>
                     </Container>
+                    <FooterContainer/>
                 </QueryClientProvider>
             </RecoilRoot>
         </>

@@ -45,7 +45,7 @@ const FooterContainer = () => {
     )
 }
 const Footer = styled.div`
-    position: absolute;
+    position: relative;
     left: 0px;
     bottom: 0px;
     width: 100vw;
@@ -80,7 +80,7 @@ const Footer = styled.div`
         .address{
             margin-top: 18px;
             color: #FFFFFF;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 20px;
         }
         .copyright{
@@ -88,7 +88,7 @@ const Footer = styled.div`
             left: 40px;
             bottom: 20px;
             color: #FFFFFF;
-            font-size: 16px;
+            font-size: 14px;
         }
     }
     .right {
@@ -103,10 +103,10 @@ const Footer = styled.div`
             justify-content: flex-start;
             align-items: flex-start;
             color: #FFFFFF;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             .title {
-                font-size: 20px;
+                font-size: 18px;
                 margin: 0;
             }
             .top {
