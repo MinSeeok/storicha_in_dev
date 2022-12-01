@@ -21,4 +21,7 @@ const BackImage = styled.div`
     transform: translateY(0%) translateX(40%);
     filter: blur(2px);
     pointer-events: none;
+    @media screen and (max-width: 1024px) {
+        display: none;
+    }
 `

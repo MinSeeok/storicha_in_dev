@@ -90,7 +90,7 @@ const Navigation = () => {
                                     alt='user'
                                 />
                             </div>
-                            <span onClick={()=> setTopMore(e => !e)}>
+                            <span className='email' onClick={()=> setTopMore(e => !e)}>
                                 {loginState !== null && login?.site_user_id}
                                 <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -347,7 +347,21 @@ const TopContainer = styled.div`
                 margin-left: 4px;
                 margin-top: 2px;
             }
+            @media screen and (max-width: 500px) {
+                .image{
+                    width: 26px;
+                    height: 26px;
+                }
+                span {
+                    font-size: 14px;
+                }
+            }
         }
+        @media screen and (max-width: 500px) {
+    .mobileBoxCon{
+      width: calc(100% - 100px);
+    }
+  }
         .right-more{
             position: absolute;
             width: calc(100% + 8px);

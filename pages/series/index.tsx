@@ -774,32 +774,32 @@ const InfoBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   color: var(--title);
   background-color: var(--box2);
   border-radius: 6px;
   div{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
   }
   p{
-    font-size: 18px;
+      font-size: 18px;
   }
   .info-box-title{
-    font-size: 20px;
-    color: var(--sub);
+      font-size: 20px;
+      color: var(--sub);
   }
   @media screen and (max-width: 1000px) {
-    margin-top: 8px;
-    width: calc(100% - 24px);
-    padding: 20px;
+      margin-top: 8px;
+      width: calc(100% - 24px);
+      padding: 20px;
   }
   @media screen and (max-width: 500px) {
-    padding: 12px;
+      padding: 12px;
   }
 `
 const MoblieStory = styled.div`
@@ -952,11 +952,6 @@ const ListTop = styled.div`
             @media screen and (max-width: 500px) {
               width: 20px;
               margin-right: 2px;
-            }
-        }
-        span {
-            @media screen and (max-width: 500px) {
-              font-size: 16px;
             }
         }
     }
@@ -1471,16 +1466,20 @@ const ListBackBtn = styled.div`
         align-items: center;
         width: 400px;
         padding: 8px;
-        img{
-        margin-right: 12px;
-        width: 20px;
-        }
         font-size: 20px;
         border-radius: 28px;
         background-color: var(--box2);
         outline: none;
         border: none;
         color: var(--title);
+        transition: all .15s ease-in-out;
+        img{
+            margin-right: 12px;
+            width: 20px;
+        }
+        :hover{
+          background-color: var(--icon1);
+        }
     }
     @media screen and (max-width: 1000px) {
         margin-top: 18px;
