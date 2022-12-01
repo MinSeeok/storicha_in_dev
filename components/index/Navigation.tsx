@@ -29,6 +29,7 @@ const Navigation = () => {
         setLoginModal(value);
     }
     const doLogout = () => {
+        console.log('123');
         setLoadState(true);
         axios({
             method: 'GET',
@@ -90,7 +91,7 @@ const Navigation = () => {
                                 />
                             </div>
                             <span onClick={()=> setTopMore(e => !e)}>
-                                {loginState !== null && login.site_user_id}
+                                {loginState !== null && login?.site_user_id}
                                 <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                 </svg>
@@ -389,6 +390,9 @@ const TopContainer = styled.div`
         height: 34px;
         transform: translateY(calc(-50% + 3px));
         cursor: pointer;
+        @media screen and (max-width: 1000px) {
+            display: none;
+        }
     }
     .logo-two{
         position: absolute;
@@ -398,12 +402,21 @@ const TopContainer = styled.div`
         height: 28px;
         transform: translateY(calc(-50%));
         pointer-events: none;
+        @media screen and (max-width: 1000px) {
+            left: 0px;
+        }
     }
     .title{
         margin-left: 74px;
         color: #FFFFFF;
         font-size: 24px;
         font-weight: bold;
+        @media screen and (max-width: 1000px) {
+            margin-left: 32px;
+        }
+        @media screen and (max-width: 500px) {
+            font-size: 18px;
+        }
     }
     .search{
         width: 300px;
@@ -424,6 +437,9 @@ const TopContainer = styled.div`
             top: 50%;
             transform: translateY(-50%);
         }
+        @media screen and (max-width: 1060px) {
+            display: none;
+        }
     }
     p.login {
         background-color: #FFFFFF;
@@ -435,6 +451,12 @@ const TopContainer = styled.div`
         cursor: pointer;
         :hover{
             background-color: #dedede;
+        }
+    }
+    @media screen and (max-width: 500px) {
+        padding-left: 8px;
+        .right{
+            padding: 0;
         }
     }
 `

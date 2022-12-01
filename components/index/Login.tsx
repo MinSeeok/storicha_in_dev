@@ -1,11 +1,10 @@
 import axios from "axios";
 import Image from "next/image";
 import * as React from 'react';
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { LoadingState } from "recoil/loading";
 import { LoginState } from "recoil/user";
 import styled from "styled-components";
-import LogoSS from '../../assets/icon/ssymbol.svg';
 
 const LoginBox = ({loginViewState}:any) => {
     const loginBoxRef = React.useRef<any>(null);
@@ -13,8 +12,6 @@ const LoginBox = ({loginViewState}:any) => {
     const [inputPassword, setInputPassword] = React.useState('');
     const [errorMassage, setErrorMessage] = React.useState<string>('');
 
-    // login-state
-    const login = useRecoilValue(LoginState);
     const setLogin = useSetRecoilState(LoginState);
     // loading-state
     const setLoadState = useSetRecoilState(LoadingState);
@@ -69,12 +66,21 @@ const LoginBox = ({loginViewState}:any) => {
             <DarkBox/>
             <Box ref={loginBoxRef}>
                 <div className="logo">
-                    <Image
-                        src={LogoSS}
-                        layout="fill"
-                        objectFit="cover"
-                        alt="logo"
-                    />
+                    {localStorage.theme === 'light' ? 
+                        <Image
+                            src={'/images/logo/dark-logo.png'}
+                            layout="fill"
+                            objectFit="cover"
+                            alt="logo"
+                        />
+                    : (
+                        <Image
+                            src={'/images/logo/white-logo.png'}
+                            layout="fill"
+                            objectFit="cover"
+                            alt="logo"
+                        />
+                    )}
                 </div>
                 <h1 className="title">SIGN IN<br/>TO CONTINUE</h1>
                     <input 
@@ -132,14 +138,15 @@ const Box = styled.div`
     align-items: center;
     gap: 8px;
     .logo{
-        width: 105px;
-        height: 105px;
+        width: 70px;
+        height: 90px;
     }
     .title{
         text-align: center;
         font-size: 18px;
         letter-spacing: .25px;
         margin-top: 12px;
+        color: var(--title);
     }
     input {
         background-color: #d7d7d7;
@@ -147,8 +154,9 @@ const Box = styled.div`
         padding: 10.5px 20px;
         width: 300px;
         border-radius: 28px;
+        color: #000000;
         ::placeholder{
-            color: var(--textColor2);
+            color: #464646;
         }
     }
     .error{
@@ -169,10 +177,15 @@ const Box = styled.div`
         font-size: 16px;
         margin-top: 12px;
         letter-spacing: -.2px;
+        color: var(--title);
         :hover{
             text-decoration: underline;
             cursor: pointer;
         }
+    }
+    @media screen and (max-width: 500px) {
+        width: calc(100vw - 40px);
+        min-width: 300px;
     }
 `
 

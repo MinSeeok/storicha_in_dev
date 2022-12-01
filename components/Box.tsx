@@ -25,9 +25,9 @@ const Container = styled.div`
   @media screen and (max-width: 500px) {
     width: 100%;
     min-width: 350px;
-    min-height: 100vh;
+    min-height: auto;
     padding: 30px 16px 60px 16px;
-    margin-top: 0px;
+    margin: 0;
     border-radius: 0px;
   }
 `

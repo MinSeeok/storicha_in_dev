@@ -46,6 +46,7 @@ export const DarkState = atom({
         modalSlideBg: '#242528',
         titleBold: '#1A1B1C',
         iconAccent: '#FFBE7C',
+        loginLogo: 'images/logo/dark-logo.png',
     },
 })
 
@@ -95,6 +96,7 @@ export const LightState = atom({
         modalSlideBg: '#F6F8FA',
         titleBold: '#1A1B1C',
         iconAccent: '#E45059',
+        loginLogo: 'images/logo/dark-logo.png',
     },
 })
 

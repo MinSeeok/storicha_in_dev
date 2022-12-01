@@ -24,6 +24,9 @@ const Container = ({children}:any) => {
 const Wrapper = styled.div`
     width: 100vw;
     min-height: calc(100vh);
+    @media screen and (max-width: 500px) {
+        min-height: auto;
+    }
 `
 
 

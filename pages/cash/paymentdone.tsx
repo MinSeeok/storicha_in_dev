@@ -1,8 +1,9 @@
+import Router from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
 export default function PaymentDone(){
-  return(
+    return(
         <Box>
             <TopTitle>결제 완료</TopTitle>
             <TopTitleLine/>
@@ -29,8 +30,8 @@ export default function PaymentDone(){
                 <div>결제 아이디</div>
                 <div>moon@storicha.in</div>
             </ProductName>
-                <button>나의 캐시 지갑 보기</button>
-            <BackP>
+                <button onClick={()=> Router.push('/cash/cashwallet')}>나의 캐시 지갑 보기</button>
+            <BackP onClick={()=> Router.push('/')}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                 </svg>
@@ -137,8 +138,8 @@ const ProductName = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        border-top: 1px solid var(--line);
-        border-bottom: 1px solid var(--line);
+        border-top: 1px solid var(--icon1);
+        border-bottom: 1px solid var(--icon1);
         height: 100%;
         padding: 10px 0;
         font-weight: 500;

@@ -6,18 +6,23 @@ import axios from 'axios';
 import { EpisodeType, SeriesType } from 'enum/data-type';
 import { useRouter } from 'next/router'
 import moment from 'moment';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoadingState } from 'recoil/loading';
+import HelmetProvier from 'components/Helmet';
+import { LoginState } from 'recoil/user';
 
 export default function Series() {
     // get Idx
     const router = useRouter();
     const idx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
 
-    const tabTitle = ["대여하기", "소장하기", "NFT IP 구매"];
-    const ListSort = ["인기순", "업데이트순", "조회순", "별점순"];
+    // login-state
+    const login = useRecoilValue(LoginState);
 
-    // 대여, 소장상태 선택
+    const tabTitle = ["대여하기", "소장하기", "NFT IP 구매"];
+    const ListSort = ["최신순", "오래된순", "조회순", ];
+
+    // type-select
     const [tabState, setTabState] = React.useState<number>(0);
 
     const [listOn, setListOn] = React.useState<boolean>(false);
@@ -180,6 +185,14 @@ export default function Series() {
             console.log(error);
         })
     }
+
+    const checkLogin = () => {
+        if(login === null){
+            alert('로그인 후 이용할 수 있습니다');
+            return;
+        }
+        setPaymentWindow(true);
+    }
     // page router info
     React.useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
@@ -201,10 +214,12 @@ export default function Series() {
         })
         getSeries(idx);
         getSeriseData(idx);
+        setListOn(false);
     }, []);
     return (
         <>
-            <TopupBox onClick={()=>console.log(checkItems)}>
+            <HelmetProvier title={series?.supply_name ? series.supply_name : 'None Series'}/>
+            <TopupBox>
                 <p>{series ? series.supply_name : '데이터가 존재하지 않습니다'}</p>
             </TopupBox>
             <Box>
@@ -212,10 +227,10 @@ export default function Series() {
                     <TitleImg>
                       <img src="/images/test/4beab4b1b4486f76581b8b75d8041717a030eff8.gif" alt="" />
                       <div className='mobileHead'>
-                          <p className='mobileTitle'>양과 여우들의 밤</p>
+                          <p className='mobileTitle'>{series?.supply_name ? series.supply_name : 'None Series'}</p>
                           <p className='moblieSubTitle'>
                           <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                               <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
                           </svg>
                               4.3
@@ -280,20 +295,20 @@ export default function Series() {
                     </BookMark>
                     <InfoBox>
                         <div>
-                            <p>장르</p>
+                            <p className='info-box-title'>장르</p>
                             <p>{series?.genres_type_idxs ? series.genres_type_idxs : '액션, 판타지'}</p>
                         </div>
                         <div>
-                            <p>에피소드</p>
+                            <p className='info-box-title'>에피소드</p>
                             <p>148</p>
                         </div>
                         <div>
-                            <p>포멧라벨</p>
+                            <p className='info-box-title'>포멧라벨</p>
                             <p>웹소설, 시나리오, 드라마대본</p>
                         </div>
                     </InfoBox>
                     <MoblieStory>
-                    <p>「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!</p>
+                        {series?.supply_tag !== '' ? '' : '「패왕을 보았다」의 작가 추공. 이번에는 레이드의 진수를 보여준다! 『나 혼자만 레벨업』 재능 없는 만년 E급의 헌터, 성진우. 기이한 던전에서 죽음을 목전에 두지만 위기는 언제나 기회와 함께 찾아오는 법! [플레이어가 되실 자격을 획득하셨습니다.] “플레이어? 내가 레벨업을 할 수 있다고?” 전 세계 헌터 중 유일무이, 전무후무 시스템과 레벨업 능력을 각성한 진우. 세상을 향해 자유를 선포한다!'}
                     </MoblieStory>
                     <MobileFirstView>
                         <button>
@@ -312,7 +327,7 @@ export default function Series() {
                         <label htmlFor="allSelect">
                             <div className='checkbox'>
                               {episode && (checkItems.length === episode.length) ? 
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                  <svg className='all-select-check'  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                   </svg>
                               : 
@@ -333,14 +348,12 @@ export default function Series() {
                             </svg>
                             <span>{sort}</span>
                         </p>
-                        <SortBox className={listOn ? "sortListView" : ""} ref={el => (listBoxRef.current[0] = el)}>
-                            {listOn &&
-                                ListSort.map((content, i) => (
-                                    <p className='sortValue' key={i} onClick={() => {
+                        <SortBox style={ listOn ? { maxHeight:'300px',border:'1.4px solid var(--title)' } : { maxHeight: '0px' }} ref={el => (listBoxRef.current[0] = el)}>
+                            {ListSort.map((content, i) => (
+                                <p className='sortValue' key={i} onClick={() => {
                                     SortSelect(content);
-                                    }}>{content}</p>
-                                ))
-                            }
+                                }}>{content}</p>
+                            ))}
                         </SortBox>
                     </ListTop>
                     <ContentBox className={moreView ? "moreView" : ""}>
@@ -349,7 +362,7 @@ export default function Series() {
                                 <label htmlFor={`selectBox${i}`}>
                                     <div className='checkbox'>
                                         {checkItems.includes(content.event_for_sale_idx) ? 
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                             </svg>
                                         : 
@@ -423,7 +436,7 @@ export default function Series() {
                         </OtherLine>
                     </OtherContentBox>
                     <ListBackBtn>
-                        <button><img src="/images/icons/backListBtn.svg" alt="" /> 목록으로</button>
+                        <button onClick={()=> router.push('/')}><img src="/images/icons/backListBtn.svg" alt="" /> 목록으로</button>
                     </ListBackBtn>
                 </OtherBox>
             </Box>
@@ -437,7 +450,7 @@ export default function Series() {
                     <p>{tabState === 0 ? discRentalPrice : discRegularPrice} TC</p>
                     <p>총 {checkItems.length}건</p>
                 </div>
-                <button onClick={()=> setPaymentWindow(true)}>선택 구매</button>
+                <button onClick={checkLogin}>선택 구매</button>
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={()=> setHideReceipt((e) => !e)} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="menuOutline">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
@@ -500,12 +513,15 @@ const Box = styled.div`
     margin-bottom: 260px;
     margin-top: 24px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1024px) {
         width: 100%;
         flex-direction: column;
         justify-content: center;
         border-radius: 0px;
         padding: 0;
+        margin-top: 0;
+        min-width: 100%;
+        margin-bottom: 0;
     }
     @media screen and (max-width: 500px) {
         padding: 0px;
@@ -535,6 +551,7 @@ const TitleImg = styled.div`
     align-items: center;
     overflow: hidden;
     border-radius: 8px;
+    color: var(--title);
     img{
         position: absolute;
         width: 100%;
@@ -558,13 +575,13 @@ const TitleImg = styled.div`
         .mobileTitle{
             position: absolute;
             bottom: 50px;
-            font-size: 36px;
+            font-size: 24px;
             letter-spacing: -.8px;
         }
         .moblieSubTitle{
             position: absolute;
             bottom: 12px;
-            font-size: 24px;
+            font-size: 20px;
             display: flex;
             gap: 16px;
             span{
@@ -577,6 +594,11 @@ const TitleImg = styled.div`
                 color: var(--point);
                 cursor: pointer;
             }
+        }
+        .all-select-check{
+          position: absolute;
+          left: 50%;
+          height: 50%;
         }
     }
   @media screen and (max-width: 1000px) {
@@ -747,7 +769,7 @@ const BookMark = styled.p`
 `
 const InfoBox = styled.div`
   width: 100%;
-  padding: 20px 0;
+  padding: 20px 12px;
   margin-top: 18px;
   display: flex;
   flex-direction: row;
@@ -763,14 +785,13 @@ const InfoBox = styled.div`
     justify-content: center;
     align-items: center;
     gap: 12px;
-
   }
-  div :nth-child(1){
+  p{
     font-size: 18px;
-    color: var(--sub);
   }
-  div :nth-child(2){
-    font-size: 16px;
+  .info-box-title{
+    font-size: 20px;
+    color: var(--sub);
   }
   @media screen and (max-width: 1000px) {
     margin-top: 8px;
@@ -784,6 +805,10 @@ const InfoBox = styled.div`
 const MoblieStory = styled.div`
   width: calc(100% - 32px);
   display: none;
+  color: var(--title);
+  font-size: 18px;
+  margin-top: 24px;
+  line-height: 26px;
   p{
     width: 100%;
     color: var(--title);
@@ -807,7 +832,7 @@ const MobileFirstView = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 8.5px 0;
+        padding: 11.5px 0;
         border: none;
         outline: none;
         cursor: pointer;
@@ -815,6 +840,8 @@ const MobileFirstView = styled.div`
         svg{
             color: var(--title);
             margin-right: 8px;
+            width: 24px;
+            height: 24px;
         }
         color: var(--title);
         font-size: 20px;
@@ -850,7 +877,12 @@ const SelectTab = styled.div`
     @media screen and (max-width: 1000px) {
         margin-top: 14px;
         p{
-            font-size: 16px;
+            font-size: 24px;
+        }
+    }
+    @media screen and (max-width: 400px) {
+        p{
+            font-size: 20px;
         }
     }
 `
@@ -875,6 +907,15 @@ const ListTop = styled.div`
         @media screen and (max-width: 500px) {
             font-size: 18px;
             padding-left: 4px;
+            left: 0;
+        }
+        .all-select-check{
+          position: absolute;
+          left: 50%;
+          height: 50%;
+          width: 20px;
+          height: 20px;
+          transform: translateX(-50%);
         }
         svg{
             margin-right: 6px;
@@ -925,27 +966,27 @@ const ListTop = styled.div`
     }
 `
 const SortBox = styled.div`
-  position: absolute;
-  right: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  background-color: var(--box2);
-  color: var(--title);
-  border-radius: 6px;
-  z-index: 999999;
-  p{
-    padding: 14.5px 18px;
-    cursor: pointer;
-    transition: all .1s ease-in-out;
-  }
-  p:hover{
-    color: var(--pink);
-  }
-  &.sortListView{
-    border: 2px solid var(--title);
-  }
+    position: absolute;
+    right: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: var(--box2);
+    color: var(--title);
+    border-radius: 6px;
+    z-index: 999999;
+    overflow: hidden;
+    transition: all .15s ease-in-out;
+    p{
+        padding: 10.5px 18px;
+        cursor: pointer;
+        transition: all .1s ease-in-out;
+        font-size: 18px;
+    }
+    p:hover{
+        color: var(--point);
+    }
 `
 const ContentBox = styled.div`
   width: 100%;
@@ -1003,7 +1044,9 @@ const ContentLine = styled.div`
             align-items: center;
             cursor: pointer;
             svg{
-              margin: 0;
+              position: absolute;
+              width: 22px;
+              height: 22px;
             }
         }
     }
@@ -1034,7 +1077,7 @@ const ContentTextLine = styled.div`
       margin-left: 12px;
     }
     @media screen and (max-width: 500px) {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
   .epTitle{
@@ -1286,6 +1329,7 @@ const OtherBox = styled.div`
         margin-top: 54px;
         width: 100%;
         .title{
+            margin-left: 14px;
             font-size: 24px;
         }
     }

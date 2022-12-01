@@ -117,6 +117,43 @@ const Footer = styled.div`
             }
         }
     }
+    @media screen and (max-width: 1000px) {
+        justify-content: flex-start;
+        flex-direction: column;
+        .left, .right{
+            padding: 12px 20px;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .left{
+            p{
+                width: 100%;
+            }
+            .copyright{
+                padding: 0 20px;
+                left: 0;
+            }
+        }
+        .right{
+            gap: 18px;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            .wrapper{
+                min-width: 40%;
+                .title{
+                    font-size: 18px;
+                }
+                span{
+                    margin-top: 8px;
+                }
+                .top{
+                    margin-top: 14px;
+                }
+            }
+        }
+    }
 `
 
 export default FooterContainer;

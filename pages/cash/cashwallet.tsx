@@ -56,22 +56,22 @@ export default function CashWallet(){
             <HaveCash onClick={()=> console.log(usageDetails)}>1,000,000 TC</HaveCash>
 
             <PaymentDetail>
-            <Detail>
-                <img src="/images/icons/won.svg" alt=""/>
-                <p>충전액 &gt;</p>
-                <p><b>10</b>TC</p>
-            </Detail>
-            <Detail>
-                <img id="cash_icon" src="/images/icons/coinplus.svg" alt=""/>
-                <p>월구독액 &gt;</p>
-                <p><b>10</b>TC</p>
-                <span>소멸예정 D30</span>
-            </Detail>
-            <Detail>
-                <img id="cash_icon2" src="/images/icons/CoinPlus2.svg" alt=""/>
-                <p>적립액 &gt;</p>
-                <p><b>10</b>TC</p>
-            </Detail>
+                <Detail>
+                    <img src="/images/icons/won.svg" alt=""/>
+                    <p>충전액 &gt;</p>
+                    <p><b>10</b>TC</p>
+                </Detail>
+                <Detail>
+                    <img id="cash_icon" src="/images/icons/coinplus.svg" alt=""/>
+                    <p>월구독액 &gt;</p>
+                    <p><b>10</b>TC</p>
+                    <span>소멸예정 D30</span>
+                </Detail>
+                <Detail>
+                    <img id="cash_icon2" src="/images/icons/CoinPlus2.svg" alt=""/>
+                    <p>적립액 &gt;</p>
+                    <p><b>10</b>TC</p>
+                </Detail>
             </PaymentDetail>
             <Tab className={selectTab === "payment" ? "payment" : "use"}>
                 <TabBox className={selectTab === "payment" ? "active" : ""} onClick={()=>setSelectTab("payment")}>결제내역</TabBox>
@@ -147,6 +147,7 @@ const HaveCash = styled.p`
 const PaymentDetail = styled.div`
     position: relative;
     padding-top: 20px;
+    padding-bottom: 12px;
     width: 100%;
     height: auto;
     background-color: #3B3B3B;
