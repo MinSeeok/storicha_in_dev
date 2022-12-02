@@ -2,11 +2,11 @@ import React from 'react';
 import { ThemeNavigation } from 'components/index/ThemeChangeBtn';
 import styled from 'styled-components';
 import HelmetProvier from 'components/Helmet';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import axios from 'axios';
 
 export default function Home(props:any){
-    console.log(props.data.dataseries);
+    console.log(props);
     return (
         <>
             <HelmetProvier title='IP Manager'/>
@@ -37,11 +37,14 @@ const Box = styled.div`
     }
 `
 
-export async function getStaticPaths(){
-    const posts = await axios.get(`https://jsonplaceholder.typicode.com/posts`);
-    const paths = posts.data.dataseries.map(({id}:any) => ({params: {id: `${id}`}}));
-    return {
-        paths,
-        fallback: true,
-    };
+// export async function getServerSideProps() {
+//     const res = await axios.get(`http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=json`)
+//     const data = res.data
+  
+//     return { props: { data } }
+// }
+export async function getServerSideProps(context:any) {
+
+    // const cookies = context.req ? context.req.headers.cookie : "";
+    return { props: { context } }
 }
