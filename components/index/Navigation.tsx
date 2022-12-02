@@ -272,6 +272,7 @@ const Navigation = () => {
                         <div 
                             className={`head ${more ? 'focus' : ''}`} 
                             onClick={()=> setMore(e => !e)}
+                            style={{marginTop: '8px'}}
                         >
                             <div className='background'/>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="left">
@@ -792,5 +793,5 @@ const PlusMenu = styled.div`
         }
     }
 `
-
 export default Navigation;
+

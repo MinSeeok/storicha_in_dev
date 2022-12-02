@@ -3,8 +3,10 @@ import { ThemeNavigation } from 'components/index/ThemeChangeBtn';
 import styled from 'styled-components';
 import HelmetProvier from 'components/Helmet';
 import Router, { useRouter } from 'next/router';
+import axios from 'axios';
 
-export default function Home(){
+export default function Home(props:any){
+    console.log(props.data.dataseries);
     return (
         <>
             <HelmetProvier title='IP Manager'/>
@@ -34,3 +36,12 @@ const Box = styled.div`
         }
     }
 `
+
+export async function getStaticPaths(){
+    const posts = await axios.get(`https://jsonplaceholder.typicode.com/posts`);
+    const paths = posts.data.dataseries.map(({id}:any) => ({params: {id: `${id}`}}));
+    return {
+        paths,
+        fallback: true,
+    };
+}
