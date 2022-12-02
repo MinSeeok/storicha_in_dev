@@ -66,7 +66,7 @@ const LoginBox = ({loginViewState}:any) => {
             <DarkBox/>
             <Box ref={loginBoxRef}>
                 <div className="logo">
-                    {localStorage.theme === 'light' ? 
+                    {localStorage.theme !== 'light' ? 
                         <Image
                             src={'/images/logo/dark-logo.png'}
                             layout="fill"

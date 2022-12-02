@@ -19,6 +19,7 @@ const Cash:NextPage = () => {
     const [idx, setIdx] = React.useState<number>(0);
     const [price, setPrice] = React.useState<number>(0);
     const [dcPrice, setDcPrice] = React.useState<number>(0);
+    const [balance, setBalance] = React.useState<number>(0);
 
     const [productIdx, setProductIdx] = React.useState<number | undefined>(0);
     const [pricePolicy, setPricePolicy] = React.useState<number | undefined>(0);
@@ -64,6 +65,18 @@ const Cash:NextPage = () => {
                     'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
                 )
                 setTopupData(getData.data);
+                axios({
+                    method: 'GET',
+                    url: `https://api-v2.storicha.in/api/cash-wallet?InfoType=2`,
+                    withCredentials: true,
+                }).then((response):any => {
+                    if(response.data === undefined){
+                        setBalance(0);
+                        alert('잔액이 존재하지 않습니다');
+                        return;
+                    }
+                    setBalance(response.data && response.data.response_data.Topup + response.data.response_data.Subscription + response.data.response_data.Bonus);
+                })
             } catch(e) {
                 setError(e);
                 console.log(error);
@@ -116,150 +129,152 @@ const Cash:NextPage = () => {
         login !== null ? fetchDatas() : setTopupData(null);
     },[]);
     return(
-        <Box>
+        <>
             <HelmetProvier title='토리 캐시 결제'/>
-            {!loading && (
-                <>
-                    <Title>
-                        나의 토리 캐시 잔액 &nbsp;
-                        <Image
-                            src={'/images/icons/toriCoin.png'}
-                            width={'20px'}
-                            height={'20px'}
-                            alt='Image'
-                        />
-                        &nbsp;
-                        50,00,222,111 
-                        <span onClick={()=> console.log(productIdx, pricePolicy, fillupAmount, cashBuyType)}>TC</span>
-                    </Title>
-                    <TopupBoxTop>
-                        <Directly
-                            placeholder='0'
-                            type="text"
-                            onChange={onChange}
-                            onClick={()=> 
-                                {
-                                    setInputValue('0');
-                                    coinSelect(0,0,0);
-                                    setCashBuyType('Direct');
-                                    setPricePolicy(topupData?.response_data  && topupData.response_data[0].cash_price_policy_idx);
-                                    setProductIdx(topupData?.response_data  && topupData.response_data[0].cash_product_idx); 
+            <Box>
+                {!loading && (
+                    <>
+                        <Title>
+                            나의 토리 캐시 잔액 &nbsp;
+                            <Image
+                                src={'/images/icons/toriCoin.png'}
+                                width={'20px'}
+                                height={'20px'}
+                                alt='Image'
+                            />
+                            &nbsp;
+                            {String(balance).replace(/[^0-9]/g, '').replace(/(^0+)/, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            <span onClick={()=> console.log(productIdx, pricePolicy, fillupAmount, cashBuyType)}>TC</span>
+                        </Title>
+                        <TopupBoxTop>
+                            <Directly
+                                placeholder='0'
+                                type="text"
+                                onChange={onChange}
+                                onClick={()=> 
+                                    {
+                                        setInputValue('0');
+                                        coinSelect(0,0,0);
+                                        setCashBuyType('Direct');
+                                        setPricePolicy(topupData?.response_data  && topupData.response_data[0].cash_price_policy_idx);
+                                        setProductIdx(topupData?.response_data  && topupData.response_data[0].cash_product_idx); 
 
+                                    }
                                 }
-                            }
-                            value={inputValue}
-                        />
-                        <button onClick={()=> {
-                            nextPage();
-                        }}>구매하기</button>
-                        <span><b>CASH</b>직접입력</span>
-                    </TopupBoxTop>
-                    <TopupBox>
-                        {topupData !== null && topupData.response_data?.map((content, i) => {
-                            if(content.cash_buy_type === "Suggeted")
-                                return (
-                                    <CoinBox 
-                                        id={`CoinBox${i}`} 
-                                        key={i} 
-                                        onClick={() => {
-                                            setFillupAmount(Number(content.cash_fillup_amount));
-                                            setPricePolicy(content.cash_price_policy_idx);
-                                            setProductIdx(content.cash_product_idx); 
-                                            setCashBuyType('Suggeted');
-                                            coinSelect(content.cash_product_idx ? content.cash_product_idx : 0, content.product_price ? content.product_price : 0, content.product_dc_price ? content.product_dc_price : 0)} 
-                                        }
-                                            className={selectNumber === content.cash_product_idx ? "select" : ""}
-                                    >
-                                        <div className='left'>
-                                            <Image
-                                                src={'/images/toriCoin.png'}
-                                                width={'20px'}
-                                                height={'20px'}
-                                                alt='image'
-                                            />
-                                        </div>
-                                        <div className='right'>
-                                            <p>{content.product_price ? commaNumber(content.product_price) + "캐쉬" : ""}</p>
-                                        </div>
-                                        <div className='left'>
-                                            {content.product_dc_price_yn === "Y" ? (
-                                                <p>{content.product_price && content.product_dc_price ? ((content.product_price - content.product_dc_price) / content.product_price * 100).toFixed(0) + '% 할인' : ""}</p>
-                                            ) : (
-                                                <p></p>
-                                            )}
-                                        </div>
-                                        <div className='right'>
-                                            {content.product_dc_price_yn === "Y" ? (
-                                                <p>₩{commaNumber(Number(content.product_dc_price))}</p>                                        
-                                            ) : (
-                                                <p>{content.cash_product_title ? '₩'+commaNumber(Number(content.cash_product_title.replace(regex, ""))) : ""}</p>
-                                                
-                                            )}
-                                        </div>
-                                    </CoinBox>
+                                value={inputValue}
+                            />
+                            <button onClick={()=> {
+                                nextPage();
+                            }}>구매하기</button>
+                            <span><b>CASH</b>직접입력</span>
+                        </TopupBoxTop>
+                        <TopupBox>
+                            {topupData !== null && topupData.response_data?.map((content, i) => {
+                                if(content.cash_buy_type === "Suggeted")
+                                    return (
+                                        <CoinBox 
+                                            id={`CoinBox${i}`} 
+                                            key={i} 
+                                            onClick={() => {
+                                                setFillupAmount(Number(content.cash_fillup_amount));
+                                                setPricePolicy(content.cash_price_policy_idx);
+                                                setProductIdx(content.cash_product_idx); 
+                                                setCashBuyType('Suggeted');
+                                                coinSelect(content.cash_product_idx ? content.cash_product_idx : 0, content.product_price ? content.product_price : 0, content.product_dc_price ? content.product_dc_price : 0)} 
+                                            }
+                                                className={selectNumber === content.cash_product_idx ? "select" : ""}
+                                        >
+                                            <div className='left'>
+                                                <Image
+                                                    src={'/images/toriCoin.png'}
+                                                    width={'20px'}
+                                                    height={'20px'}
+                                                    alt='image'
+                                                />
+                                            </div>
+                                            <div className='right'>
+                                                <p>{content.product_price ? commaNumber(content.product_price) + "캐쉬" : ""}</p>
+                                            </div>
+                                            <div className='left'>
+                                                {content.product_dc_price_yn === "Y" ? (
+                                                    <p>{content.product_price && content.product_dc_price ? ((content.product_price - content.product_dc_price) / content.product_price * 100).toFixed(0) + '% 할인' : ""}</p>
+                                                ) : (
+                                                    <p></p>
+                                                )}
+                                            </div>
+                                            <div className='right'>
+                                                {content.product_dc_price_yn === "Y" ? (
+                                                    <p>₩{commaNumber(Number(content.product_dc_price))}</p>                                        
+                                                ) : (
+                                                    <p>{content.cash_product_title ? '₩'+commaNumber(Number(content.cash_product_title.replace(regex, ""))) : ""}</p>
+                                                    
+                                                )}
+                                            </div>
+                                        </CoinBox>
+                                    )
+                                }
+                            )}
+                        </TopupBox>
+                        {topupData !== null && topupData.response_data?.map((content, i)=>{
+                            if(content.cash_buy_type === "Autotopup")
+                                return(
+                                    <Semen key={i} onClick={async ()=> {
+                                        // setFillupAmount(Number(content.cash_fillup_amount))
+                                        // setPricePolicy(content.cash_price_policy_idx)
+                                        // setProductIdx(content.cash_product_idx)
+                                        setCashBuyType('Autotopup');
+                                        await axios({
+                                            method: 'POST',
+                                            url: `https://api-v2.storicha.in/api/product-order`,
+                                            headers: {
+                                                "Content-Type": "multipart/form-data"
+                                            },
+                                            data: {
+                                                prd_idx: content.cash_product_idx,
+                                                policy_idx: content.cash_price_policy_idx,
+                                                fill_qty: content.cash_fillup_amount,
+                                            },
+                                            withCredentials: true,
+                                        }).then((response):any => {
+                                            console.log(response);
+                                            const res_idx = response && response.data.response_data[0].cash_product_order_idx;
+                                            const res_bp = response && response.data.response_data[0].cash_fillup_amount;
+                                            const res_vatin = response && response.data.response_data[0].actual_buy_price;
+                                            Router.push({
+                                                pathname: '/cash/checkout',
+                                                query: {res_idx, res_bp, res_vatin}
+                                            },'/cash/checkout');
+                                        }).catch((error)=> {
+                                            console.log(error);
+                                        })
+                                    }}>
+                                        <p>월 자동 충전권</p>
+                                        <p><span>{content.cash_fillup_amount ? commaNumber(content.cash_fillup_amount) : ''}</span>CASH</p>
+                                        <p><span>{content.product_price ? commaNumber(content.product_price) : ''}원</span>(VAT별도)</p>
+                                    </Semen>
                                 )
-                            }
-                        )}
-                    </TopupBox>
-                    {topupData !== null && topupData.response_data?.map((content, i)=>{
-                        if(content.cash_buy_type === "Autotopup")
-                            return(
-                                <Semen key={i} onClick={async ()=> {
-                                    // setFillupAmount(Number(content.cash_fillup_amount))
-                                    // setPricePolicy(content.cash_price_policy_idx)
-                                    // setProductIdx(content.cash_product_idx)
-                                    setCashBuyType('Autotopup');
-                                    await axios({
-                                        method: 'POST',
-                                        url: `https://api-v2.storicha.in/api/product-order`,
-                                        headers: {
-                                            "Content-Type": "multipart/form-data"
-                                        },
-                                        data: {
-                                            prd_idx: content.cash_product_idx,
-                                            policy_idx: content.cash_price_policy_idx,
-                                            fill_qty: content.cash_fillup_amount,
-                                        },
-                                        withCredentials: true,
-                                    }).then((response):any => {
-                                        console.log(response);
-                                        const res_idx = response && response.data.response_data[0].cash_product_order_idx;
-                                        const res_bp = response && response.data.response_data[0].cash_fillup_amount;
-                                        const res_vatin = response && response.data.response_data[0].actual_buy_price;
-                                        Router.push({
-                                            pathname: '/cash/checkout',
-                                            query: {res_idx, res_bp, res_vatin}
-                                        },'/cash/checkout');
-                                    }).catch((error)=> {
-                                        console.log(error);
-                                    })
-                                }}>
-                                    <p>월 자동 충전권</p>
-                                    <p><span>{content.cash_fillup_amount ? commaNumber(content.cash_fillup_amount) : ''}</span>CASH</p>
-                                    <p><span>{content.product_price ? commaNumber(content.product_price) : ''}원</span>(VAT별도)</p>
-                                </Semen>
-                            )
-                    })}
-                    <SubText>
-                        <p>매월 결제 금액만큼 자동 충전 됩니다.</p>
-                        <p>결제를 취소하실 경우 익월 취소로 승인 됩니다.</p>
-                        <p>월자동충전권으로 결제한 캐쉬는 1개월간만 유효하며, 사용하지 않은 만큼 자동 소멸됩니다.</p>
-                    </SubText>
-                    <SubulTitle>구매 전 필수 유의사항</SubulTitle>
-                    <Subul>
-                        <li>구매한 캐시의 유효기간은 구입일로부터 5년간 입니다.</li>
-                        <li>캐시 구매/ 이용내역은 마이 페이지 토리캐시 지갑에서 확인이 가능합니다.</li>
-                        <li>150개 이상 구매시 결제 방법에 따라 보너스 캐시를 제공할 수 있습니다. <br />(신용카드1%,계좌이체2%,가상계좌2%,무통장입금3%)</li>
-                        <li>캐시구매 한도가 초과한 경우 구매 불가 합니다. (일 :10,000개 / 월 : 400,000개)</li>
-                        <li>캐시구매 한도가 초과한 경우 선물이 불가합니다. (일 : 95,000개 / 월 : 300,000개)당일 한도는 23시59분59초 / 당월 한도는 매월 말일까지 적용 됩니다.</li>
-                        <li>미성년자 가입자는 캐시 및 유료 아이템을 구매할 수 없습니다.</li>
-                        <li>법정 대리인의 동의 없이 미성년자 명의로 결제한 캐시는 환불이 가능합니다.</li>
-                        <li>사용하지 않은 캐시에 한에 구매 후 7일 이내 청약철회가 가능하며, 1:1문의 게시판에 신청해 주시기 바랍니다.</li>
-                        <li>유료아이템의 내용 표시. 광고의 내용과 다르거나 계약 내용과 다게 이행된 경우에는 해당 유료 아이템을 공급받은 날부터 3개월 이내, 그 사실을 안 날 또는 알수 있었던 날부터 30일 이내 청약 철회가 가능 합니다.</li>
-                    </Subul>
-                </>
-            )}
-        </Box>
+                        })}
+                        <SubText>
+                            <p>매월 결제 금액만큼 자동 충전 됩니다.</p>
+                            <p>결제를 취소하실 경우 익월 취소로 승인 됩니다.</p>
+                            <p>월자동충전권으로 결제한 캐쉬는 1개월간만 유효하며, 사용하지 않은 만큼 자동 소멸됩니다.</p>
+                        </SubText>
+                        <SubulTitle>구매 전 필수 유의사항</SubulTitle>
+                        <Subul>
+                            <li>구매한 캐시의 유효기간은 구입일로부터 5년간 입니다.</li>
+                            <li>캐시 구매/ 이용내역은 마이 페이지 토리캐시 지갑에서 확인이 가능합니다.</li>
+                            <li>150개 이상 구매시 결제 방법에 따라 보너스 캐시를 제공할 수 있습니다. <br />(신용카드1%,계좌이체2%,가상계좌2%,무통장입금3%)</li>
+                            <li>캐시구매 한도가 초과한 경우 구매 불가 합니다. (일 :10,000개 / 월 : 400,000개)</li>
+                            <li>캐시구매 한도가 초과한 경우 선물이 불가합니다. (일 : 95,000개 / 월 : 300,000개)당일 한도는 23시59분59초 / 당월 한도는 매월 말일까지 적용 됩니다.</li>
+                            <li>미성년자 가입자는 캐시 및 유료 아이템을 구매할 수 없습니다.</li>
+                            <li>법정 대리인의 동의 없이 미성년자 명의로 결제한 캐시는 환불이 가능합니다.</li>
+                            <li>사용하지 않은 캐시에 한에 구매 후 7일 이내 청약철회가 가능하며, 1:1문의 게시판에 신청해 주시기 바랍니다.</li>
+                            <li>유료아이템의 내용 표시. 광고의 내용과 다르거나 계약 내용과 다게 이행된 경우에는 해당 유료 아이템을 공급받은 날부터 3개월 이내, 그 사실을 안 날 또는 알수 있었던 날부터 30일 이내 청약 철회가 가능 합니다.</li>
+                        </Subul>
+                    </>
+                )}
+            </Box>
+        </>
     )
 }
 

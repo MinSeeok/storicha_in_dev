@@ -38,7 +38,7 @@ const FooterContainer = () => {
                     <span className="top">Story Creation</span>
                     <span>Story Viewer</span>
                     <span>Story Co-Work</span>
-                    <span>NFT manager IPMS</span>
+                    <span>IP Manager</span>
                 </div>
             </div>
         </Footer>

@@ -27,11 +27,13 @@ export default class MyDocument extends Document {
   render() {
     return (
         <Html>
-          <Head />
-          <body>
-            <Main />
-            <NextScript />
-          </body>
+            <Head>
+                <link rel="shorcut icon" href="/images/static/favicon.ico" />
+            </Head>
+            <body>
+                <Main />
+                <NextScript />
+            </body>
         </Html>
     );
   }

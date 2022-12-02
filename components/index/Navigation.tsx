@@ -11,6 +11,7 @@ import { LoginState } from 'recoil/user';
 import LoginBox from './Login';
 import axios from 'axios';
 import { LoadingState } from 'recoil/loading';
+import Router from 'next/router';
 
 const Navigation = () => {
     const isPointTheme = useRecoilValue(isPointThemeAtom);
@@ -134,7 +135,7 @@ const Navigation = () => {
                                     </svg>
                                     부가 정보
                                 </div>
-                                <div style={{borderTop: '1px solid #c8c8c8'}} onClick={doLogout}>
+                                <div style={{borderTop: '1px solid #c8c8c8', justifyContent: 'center'}} onClick={doLogout}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                                     </svg>
@@ -216,8 +217,11 @@ const Navigation = () => {
                             onClick={()=> setClaim(e => !e)}
                         >
                             <div className='background'/>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="left">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+                            </svg>
                             <p>권리관계</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <svg className='right' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </div>
@@ -268,16 +272,18 @@ const Navigation = () => {
                         <div 
                             className={`head ${more ? 'focus' : ''}`} 
                             onClick={()=> setMore(e => !e)}
-                            style={{marginTop: '24px'}}
                         >
                             <div className='background'/>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="left">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                             <p>More</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className='right'>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </div>
                         <div className='content-box' style={more ? {maxHeight: '100vh'} : {}}>
-                            <div className='content'>
+                            <div className='content' onClick={() => Router.push('https://storicha.in/home')}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" />
                                 </svg>
@@ -364,7 +370,7 @@ const TopContainer = styled.div`
   }
         .right-more{
             position: absolute;
-            width: calc(100% + 8px);
+            width: 180px;
             top: calc(100% + 8px);
             right: -4px;
             background-color: var(--boxColor);
@@ -607,7 +613,6 @@ const MenuBox = styled.div`
             cursor: pointer;
             overflow: hidden;
             border-radius: 8px;
-            
             svg{
                 width: 22px;
                 height: 22px;
@@ -695,7 +700,6 @@ const MenuBox = styled.div`
 `
 
 const PlusMenu = styled.div`
-    padding: 8px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -705,55 +709,68 @@ const PlusMenu = styled.div`
         width: 100%;
         padding: 12px;
         border-radius: 8px;
-        color: #FFFFFF;
+        color: var(--title);
         font-size: 18px;
         overflow: hidden;
         cursor: pointer;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         .background{
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: ${props => props.color};
             opacity: 0.825;
             transition: all .15s ease-in-out;
         }
         svg{
-            position: absolute;
-            top: 50%;
-            right: 12px;
-            color: #FFFFFF;
+            position: relative;
+            color: var(--title);
             width: 20px;
             height: 20px;
-            transform: translateY(-50%);
+            transform: translateY(0%);
             transition: all .15s ease-in-out;
+            &.left{
+                margin-right: 6px;
+            }
+            &.right{
+                position: absolute;
+                right: 12px;
+            }
         }
         &.focus{
             .background{
-                opacity: 1;
+                opacity: 0.4;
+                background: ${props => props.color};
             }
-            svg{
-                transform: translateY(-50%) rotate(180deg);
+            svg.right{
+                transform: rotate(180deg);
             }
         }
         :hover{
             .background{
-                opacity: 1;
+                opacity: 0.4;
+                background: ${props => props.color};
+            }
+            svg.left{
+                top: 0;
+                animation: shakeIcon 1s linear infinite;
             }
         }
     }
     .content-box{
         width: 100%;
-        margin-top: 12px;
         max-height: 0px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        gap: 4px;
+        gap: 6px;
         transition: all .3s ease-in-out;
+        padding: 0px 8px;
         .content{
             display: flex;
             justify-content: flex-start;

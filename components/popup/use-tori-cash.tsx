@@ -7,10 +7,16 @@ import styled from "styled-components";
 import ContentImage from '../../assets/images/4beab4b1b4486f76581b8b75d8041717a030eff8.gif';
 
 const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
-    const [balance, setBalance] = React.useState<BalanceType | null>(null);
+    const [balance, setBalance] = React.useState<BalanceType | null>({
+        balance: 0,
+        balance_by_bonus: 0,
+        balance_by_subscription: 0,
+        balance_by_topup: 0,
+    });
     const [useAmount, setUseAmount] = React.useState<number>(0);
     const postCart = () => {
         console.log('Post Cart Start...');
+        console.log(idx, check.join(), kind);
         axios({
             method: 'POST',
             url: `https://api-v2.storicha.in/api/cash-popup`,
@@ -24,10 +30,17 @@ const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
             },
             withCredentials: true,
         }).then((response):any => {
-            console.log(response);
-            console.log(response.data);
-            // setBalance(response.data.response_data[0]);
-            // setUseAmount(response.data.response_data[0].balance_by_topup);
+            console.log(response.data.response_data);
+            if(response.data.response_data === undefined){
+                alert('데이터를 불러오는데 문제가 발생하셨습니다.');
+            }
+            setBalance({
+                balance: Number(response.data.response_data.userWallet.bonus)+Number(response.data.response_data.userWallet.subscription)+Number(response.data.response_data.userWallet.topup),
+                balance_by_bonus: Number(response.data.response_data.userWallet.bonus),
+                balance_by_subscription: Number(response.data.response_data.userWallet.subscription),
+                balance_by_topup: Number(response.data.response_data.userWallet.topup),
+            });
+            setUseAmount(Number(response.data.response_data.userWallet.topup));
             console.log('Post Cart End.');
         }).catch((error)=> {
             console.log(error);
@@ -154,6 +167,11 @@ const Wrapper = styled.div`
     align-items: flex-start;
     border-radius: 8px;
     transition: all .15s ease-in-out;
+    color: var(--title);
+    @media screen and (max-width: 500px) {
+       min-width: auto;
+       margin: 12px;
+    }
 `
 const TitleHead = styled.div`
     width: 100%;
