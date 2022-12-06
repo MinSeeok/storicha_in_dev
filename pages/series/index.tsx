@@ -54,7 +54,7 @@ export default function Series() {
     const [paymentWindow, setPaymentWindow] = React.useState<boolean>(false);
 
     const OtherMoveLeft = () => {
-        if ((-(otherData.length - 1) * 170) !== otherState) {
+        if ((-(otherData.length - 5) * 170) !== otherState) {
             slideRef.current.style.transform = `translateX(${otherState - 170}px)`;
             setOtherState(otherState - 170);
         }
@@ -179,7 +179,6 @@ export default function Series() {
         })
         .then((response):any => {
             setEpisode(response.data.response_data);
-            console.log(response.data.response_data);
         })
         .catch((error)=>{
             console.log(error);
@@ -1486,7 +1485,7 @@ const ListBackBtn = styled.div`
             width: 20px;
         }
         :hover{
-          background-color: var(--icon1);
+          background-color: #DCDCDC;
         }
     }
     @media screen and (max-width: 1000px) {
