@@ -49,53 +49,53 @@ export default function SalePolicy(){
                     <p><span>진행현황</span> 진행중</p>
                 </TopLightBox>
             </TopLine>
-                <ProgressBarBox>
-                    {Progress.map((progress, i) => {
-                        if(progress.complete === 0){
-                            return (
-                            <Line  key={i}>
-                                <ProgressBox>
-                                    <EllipseFill/>
-                                    <p>{progress.state}</p>
-                                </ProgressBox>
-                                {i !== 5 ?
-                                (<BarLine className={i === 2 ? "opacityLine" : ""}>
-                                    <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
-                                </BarLine>): ""
-                                }
-                            </Line>
-                            )
-                        } else if (progress.complete === 1){
-                            return (
-                            <Line  key={i}>
-                                <ProgressBox>
-                                <EllipseFill/>
-                                <p>{progress.state}</p>
-                                </ProgressBox>
-                                {i !== 5 ?
-                                (<BarLine className={i === 2 ? "opacityLine" : ""}>
-                                    <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
-                                </BarLine>): ""
-                                }
-                            </Line>
-                            )
-                        } else if (progress.complete === 2){
-                            return (
-                            <Line  key={i}>
-                                <ProgressBox>
-                                    <Ellipse/>
-                                    <p>{progress.state}</p>
-                                </ProgressBox>
-                                {i !== 5 ?
-                                (<BarLine className={i === 2 ? "opacityLine" : ""}>
-                                    <Bar className={progress.request === 1 ? "ongoingMax" : progress.request === 2 ? "ongoing" : ""}/>
-                                </BarLine>): ""
-                                }
-                            </Line>
+            <ProgressBarBox>
+                {Progress.map((progress, i) => (
+                    <>
+                        {
+                            progress.complete === 0 && (
+                                <Line key={i}>
+                                    <ProgressBox>
+                                        <Empty/>
+                                        <p>{progress.state}</p>
+                                    </ProgressBox>
+                                </Line>
                             )
                         }
-                    })}
-                </ProgressBarBox>
+                        {
+                            progress.complete === 1 && (
+                                <Line key={i}>
+                                    <ProgressBox>
+                                        <FullCircle/>
+                                        <p>{progress.state}</p>
+                                    </ProgressBox>
+                                </Line>
+                            )
+                        }
+                        {
+                            progress.complete === 2 && (
+                                <Line key={i}>
+                                    <ProgressBox>
+                                    <FullCircle>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                        </svg>
+                                    </FullCircle>
+                                        <p>{progress.state}</p>
+                                    </ProgressBox>
+                                </Line>
+                            )
+                        }
+                        {
+                            i !== 5 && (
+                                <BarLine id={i === 2 ? 'center' : ''}>
+                                    <div className={`line${progress.complete}`}/>
+                                </BarLine>
+                            )
+                        }
+                    </>
+                ))}
+            </ProgressBarBox>
             <SalePolicyBox kind={"basic"}/>
         </Area>
     )
@@ -208,28 +208,20 @@ const TopLightBox = styled.div`
 const ProgressBarBox = styled.div`
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin-top: 24px;
+    padding: 20px;
     @media screen and (max-width: 1024px) {
-        max-width: 400px;
+        width: calc(100% - 40px);
+        max-width: 700px;
         flex-wrap: wrap;
         left: 50%;
+        row-gap: 28px;
         transform: translateX(-50%);
-        gap: 16px;
-        margin: 0;
-        margin-top: 18px;
-        div{
-            margin-bottom: 4px;
-            gap: 8px;
-        }
-        .opacityLine{
-            display: none;
-        }
     }
-    @media screen and (max-width: 500px) {
-        max-width: 350px;
-        min-width: 350px;
+    @media screen and (max-width: 300px) {
+        width: calc(100% - 8px);
     }
 `
 const Line = styled.div`
@@ -243,8 +235,6 @@ const Line = styled.div`
         color: var(--point);
         fill: var(--point);
     }
-    @media screen and (max-width: 1000px) {
-    }
 `
 const ProgressBox = styled.div`
     display: flex;
@@ -253,43 +243,88 @@ const ProgressBox = styled.div`
     align-items: center;
     min-width: 100px;
     gap: 8px;
-    @media screen and (max-width: 1000px) {
-        min-width: auto;
+    font-size: 18px;
+    @media screen and (max-width: 500px) {
+        min-width: 60px;
+    }
+    @media screen and (max-width: 300px) {
+        min-width: 40px;
+        font-size: 14px;
+    }
+`
+
+const Empty = styled.div`
+    width: 58px;
+    height: 58px;
+    border: 3px solid var(--point);
+    border-radius: 50%;
+    margin-bottom: 4px;
+    @media screen and (max-width: 500px) {
+        width: 48px;
+        height: 48px;
+    }
+    @media screen and (max-width: 300px) {
+        width: 34px;
+        height: 34px;
+    }
+`
+const FullCircle = styled.div`
+    width: 58px;
+    height: 58px;
+    border: 3px solid var(--point);
+    background-color: var(--point);
+    border-radius: 50%;
+    margin-bottom: 4px;
+    svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: #FFFFFF;
+    }
+    @media screen and (max-width: 500px) {
+        width: 48px;
+        height: 48px;
+    }
+    @media screen and (max-width: 300px) {
+        width: 34px;
+        height: 34px;
     }
 `
 
 const BarLine = styled.div`
-    width: 100%;
+    margin-top: -28px;
+    width: calc((100% - 600px) / 5);
     height: 4px;
-    margin-top: 30px;
-    min-width: 42px;
-    background-color: var(--sub);
-    .ongoingMax{
-        width: 100%;
-    }
-    .ongoing{
-        width: 55%;
+    background-color: var(--unchecked);
+    @media screen and (max-width: 1024px) {
+        width: calc((100% - 300px) / 2);
+        &#center{
+            display: none;
+        }
     }
     @media screen and (max-width: 500px) {
-        min-width: 50px;
+        width: calc((100% - 200px) / 2);
     }
-`
-const Bar = styled.div`
-    width: 0;
-    height: 100%;
-    background-color: var(--point);
-`
-
-const Ellipse = styled.div`
-    width: 54px;
-    height: 54px;
-    border: 4px solid var(--point);
-    border-radius: 50%;
-`
-const EllipseFill = styled.div`
-    width: 54px;
-    height: 54px;
-    border: 4px solid var(--point);
-    border-radius: 50%;
-    background-color: var(--point);
+    @media screen and (max-width: 300px) {
+        width: calc((100% - 150px) / 2);
+    }
+    div{
+        position: absolute;
+        width: 0%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: var(--point);
+        &.line0{
+            width: 0%;
+        }
+        &.line1{
+            width: 66%;
+        }
+        &.line2{
+            width: 100%;
+        }
+    }
 `

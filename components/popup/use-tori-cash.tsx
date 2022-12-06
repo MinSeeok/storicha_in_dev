@@ -3,10 +3,14 @@ import { BalanceType } from "enum/data-type";
 import Image from "next/image";
 import Router from "next/router";
 import * as React from "react";
+import { useSetRecoilState } from "recoil";
+import { LoginMadalState } from "recoil/loginModal";
 import styled from "styled-components";
 import ContentImage from '../../assets/images/4beab4b1b4486f76581b8b75d8041717a030eff8.gif';
 
 const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
+    // login-modal
+    const setLoginModal = useSetRecoilState(LoginMadalState);
     const [balance, setBalance] = React.useState<BalanceType | null>({
         balance: 0,
         balance_by_bonus: 0,
@@ -33,6 +37,7 @@ const UseToriCash = ({idx, check, kind, price, sale, item, viewModal}:any) => {
             console.log(response.data.response_data);
             if(response.data.response_data === undefined){
                 alert('데이터를 불러오는데 문제가 발생하셨습니다.');
+                setLoginModal(true);
             }
             setBalance({
                 balance: Number(response.data.response_data.userWallet.bonus)+Number(response.data.response_data.userWallet.subscription)+Number(response.data.response_data.userWallet.topup),
@@ -285,7 +290,7 @@ const ContentBox = styled.div`
         align-items: center;
         gap: 8px;
         p{
-            width: 100px;
+            width: 124px;
             display: flex;
             justify-content: space-between;
             align-items: center;

@@ -4,10 +4,11 @@ import Image from "next/image";
 import * as React from 'react';
 import { useSetRecoilState } from "recoil";
 import { LoadingState } from "recoil/loading";
+import { LoginMadalState } from "recoil/loginModal";
 import { LoginState } from "recoil/user";
 import styled from "styled-components";
 
-const LoginBox = ({loginViewState}:any) => {
+const LoginBox = () => {
     const loginBoxRef = React.useRef<any>(null);
     const [inputEmail, setInputEmail] = React.useState('');
     const [inputPassword, setInputPassword] = React.useState('');
@@ -17,10 +18,14 @@ const LoginBox = ({loginViewState}:any) => {
     // loading-state
     const setLoadState = useSetRecoilState(LoadingState);
 
+    // login-madal-state
+    const setLoginModal = useSetRecoilState(LoginMadalState);
+
     const stateChange = (event:any) => {
         event.target.name === 'email' && setInputEmail(event.target.value);
         event.target.name === 'password' && setInputPassword(event.target.value);
     }
+
     // login-set
     const setLoginState = () => {
         setLoadState(true);
@@ -42,7 +47,7 @@ const LoginBox = ({loginViewState}:any) => {
             }
             setLogin(response ? response.data.response_data[0] : null);
             setErrorMessage('');
-            loginViewState(false);
+            setLoginModal(false);
         })
         .catch((error):any=> {
             console.log('error: ',error);
@@ -59,7 +64,7 @@ const LoginBox = ({loginViewState}:any) => {
     // outside-click-function
     const clickModalOutside = (event:any) => {
         if(!loginBoxRef.current.contains(event.target)){
-            loginViewState(false);
+            setLoginModal(false);
         }
     }
     return (

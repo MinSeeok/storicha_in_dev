@@ -3,10 +3,8 @@ import { ThemeNavigation } from 'components/index/ThemeChangeBtn';
 import styled from 'styled-components';
 import HelmetProvier from 'components/Helmet';
 import Router from 'next/router';
-import { GetServerSideProps } from 'next';
 
 export default function Home(props:any){
-    console.log(props);
     return (
         <>
             <HelmetProvier title='IP Manager'/>

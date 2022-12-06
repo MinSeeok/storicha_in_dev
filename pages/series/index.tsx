@@ -10,6 +10,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoadingState } from 'recoil/loading';
 import HelmetProvier from 'components/Helmet';
 import { LoginState } from 'recoil/user';
+import { LoginMadalState } from 'recoil/loginModal';
 
 export default function Series() {
     // get Idx
@@ -18,6 +19,7 @@ export default function Series() {
 
     // login-state
     const login = useRecoilValue(LoginState);
+    
 
     const tabTitle = ["대여하기", "소장하기", "NFT IP 구매"];
     const ListSort = ["최신순", "오래된순", "조회순", ];
@@ -53,6 +55,9 @@ export default function Series() {
     // 결제 모달 보기
     const [paymentWindow, setPaymentWindow] = React.useState<boolean>(false);
 
+    // login-modal
+    const setLoginModel = useSetRecoilState(LoginMadalState);
+
     const OtherMoveLeft = () => {
         if ((-(otherData.length - 5) * 170) !== otherState) {
             slideRef.current.style.transform = `translateX(${otherState - 170}px)`;
@@ -69,6 +74,7 @@ export default function Series() {
     const [checkItems, setCheckItems] = React.useState<Array<number>>([]);
     // 체크박스 전체 선택
     const handleAllCheck = (checked: boolean) => {
+        console.log(tabState);
         if (checked) {
             const idArray: any = [];
             // 위에서 부터 대여가격 / 정상가격 / 대여할인가 / 정상할인가
@@ -81,8 +87,8 @@ export default function Series() {
                 // 위에서 부터 대여가격 / 정상가격 / 대여할인가 / 정상할인가
                 setRentalPrice((e) => e + el.rental_price);
                 setRegularPrice((e) => e  + el.keep_price);
-                setDiscRentalPrice((e) => e  + el.rental_dc_price);
-                setDiscRegularPrice((e) => e  + el.keep_dc_price);
+                setDiscRentalPrice((e) => el.discount_yn === 'Y' ? e  + el.rental_dc_price : e + el.rental_price);
+                setDiscRegularPrice((e) => el.discount_yn === 'Y' ? e  + el.keep_dc_price : e + el.keep_price);
             });
             
             setCheckItems(idArray);
@@ -97,6 +103,7 @@ export default function Series() {
     }
     // 체크박스 단일 선택
     const handleSingleCheck = (checked: any, idx: any, rental_price: number, keep_price:number, rental_dc_price:number, keep_dc_price:number) => {
+        console.log(rental_dc_price);
         if (checked) {
             // 단일 선택 시 체크된 아이템을 배열에 추가
             // 위에서 부터 대여가격 / 정상가격 / 대여할인가 / 정상할인가
@@ -144,7 +151,22 @@ export default function Series() {
 
     // view-modal
     const viewModal = () => {
-      setPaymentWindow(false);
+        axios({
+            method: 'POST',
+            url: `https://api-v2.storicha.in/api/cash-popup/cancel`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            data: {
+                series_idx: idx,
+            },
+            withCredentials: true,
+        }).then((response):any => {
+            console.log('Post Cart End.');
+            setPaymentWindow(false);
+        }).catch((error)=> {
+            console.log(error);
+        })
     }
     // get-seires-data
     const getSeries = (idx:any) => {
@@ -188,6 +210,7 @@ export default function Series() {
     const checkLogin = () => {
         if(login === null){
             alert('로그인 후 이용할 수 있습니다');
+            setLoginModel(true);
             return;
         }
         setPaymentWindow(true);
@@ -215,6 +238,9 @@ export default function Series() {
         getSeriseData(idx);
         setListOn(false);
     }, []);
+    React.useEffect(()=>{
+        setPaymentWindow(false);
+    },[login])
     return (
         <>
             <HelmetProvier title={series?.supply_name ? series.supply_name : 'None Series'}/>
@@ -378,7 +404,16 @@ export default function Series() {
                                 <input
                                     id={`selectBox${i}`}
                                     type="checkbox"
-                                    onChange={(e) => handleSingleCheck(e.target.checked, content.event_for_sale_idx, content.rental_price, content.keep_price, content.rental_dc_price, content.keep_dc_price)}
+                                    onChange={(e) => {
+                                        handleSingleCheck(
+                                            e.target.checked, 
+                                            content.event_for_sale_idx, 
+                                            content.rental_price, 
+                                            content.keep_price, 
+                                            content.discount_yn === 'Y' ? content.rental_dc_price : content.rental_price, 
+                                            content.discount_yn === 'Y' ? content.keep_dc_price : content.keep_price
+                                        )
+                                    }}
                                     checked={checkItems.includes(content.event_for_sale_idx) ? true : false}
                                 />
                                 <ContentImageBox>
