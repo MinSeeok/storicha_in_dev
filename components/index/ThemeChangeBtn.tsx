@@ -100,7 +100,7 @@ const Container = styled.div`
         z-index: 9999999;
         padding: 7.2px 8px;
         border-radius: 8px;
-        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         transition: all .15s ease-in-out;

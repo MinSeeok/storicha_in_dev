@@ -3,7 +3,7 @@ import { ThemeNavigation } from 'components/index/ThemeChangeBtn';
 import styled from 'styled-components';
 import HelmetProvier from 'components/Helmet';
 import Router from 'next/router';
-import axios from 'axios';
+import { GetServerSideProps } from 'next';
 
 export default function Home(props:any){
     console.log(props);
@@ -36,15 +36,3 @@ const Box = styled.div`
         }
     }
 `
-
-// export async function getServerSideProps() {
-//     const res = await axios.get(`http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=json`)
-//     const data = res.data
-  
-//     return { props: { data } }
-// }
-export async function getServerSideProps(context:any) {
-
-    // const cookies = context.req ? context.req.headers.cookie : "";
-    return { props: { context } }
-}

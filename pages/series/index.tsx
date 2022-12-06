@@ -320,7 +320,13 @@ export default function Series() {
                     </MobileFirstView>
                     <SelectTab>
                         {tabTitle.map((title, i) => (
-                            <p key={i} className={tabState === Number(i) ? "tabChoice" : ""} onClick={() => setTabState(i)}>{title}</p>
+                            <p key={i} className={tabState === Number(i) ? "tabChoice" : ""} onClick={() => {
+                              if(i===2){
+                                alert('준비중인 메뉴입니다');
+                                return;
+                              }
+                              setTabState(i);
+                            }}>{title}</p>
                         ))}
                     </SelectTab>
                     <ListTop>
@@ -390,10 +396,12 @@ export default function Series() {
                                     </p>
                                     <button
                                       className={content.keep_price === 0 ? "freeBtn" : ""}
-                                      onClick={() => console.log('단일 선택')}
                                     >
                                         {content.keep_price === 0 ? "무료보기" :
-                                            tabState === 0 ? `대여하기 ${content.rental_dc_price}TC` : `소장하기 ${content.keep_dc_price}TC`
+                                            (tabState === 0) && (content.discount_yn === 'Y') ? `대여하기 ${content.rental_dc_price}TC (DC)` : 
+                                            (tabState === 0) && (content.discount_yn === 'N') ? `대여하기 ${content.rental_price}TC` :
+                                            (tabState === 1) && (content.discount_yn === 'Y') ? `소장하기 ${content.keep_dc_price}TC (DC)` : 
+                                            (tabState === 1) && (content.discount_yn === 'N') && `소장하기 ${content.keep_price}TC` 
                                         }
                                     </button>
                                 </ContentTextLine>
@@ -1123,7 +1131,7 @@ const ContentTextLine = styled.div`
   }
   button{
     position: absolute;
-    padding: 5px 24px;
+    padding: 5px 14px;
     right: 8px;
     bottom: 0px;
     border-radius: 28px;

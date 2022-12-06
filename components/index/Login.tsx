@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import * as React from 'react';
 import { useSetRecoilState } from "recoil";
@@ -188,5 +189,15 @@ const Box = styled.div`
         min-width: 300px;
     }
 `
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+    // get the cookies
+    const res = await fetch(`https://go-apod.herokuapp.com/apod`);
+    const data = await res.json();
+    ctx.res.setHeader('set-Cookie', 'test-cookie');
+    return {
+        props: { data }
+    }
+}
 
 export default LoginBox;
