@@ -141,7 +141,7 @@ const TitleTextBox = styled.div`
     p {
         margin-top: 18px;
         line-height: 24px;
-        font-size: 16px;
+        font-size: 18px;
         color: var(--title2);
     }
     @media screen and (max-width: 768px) {
@@ -167,7 +167,7 @@ const TopLightBox = styled.div`
     padding: 12px 12px 0 0;
     button {
         padding: 6px 14px;
-        font-size: 16px;
+        font-size: 18px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -188,6 +188,7 @@ const TopLightBox = styled.div`
         margin-bottom: 18px;
     }
     p {
+        font-size: 18px;
         color: var(--title);
         span {
             color: var(--sub);
@@ -220,8 +221,9 @@ const ProgressBarBox = styled.div`
         row-gap: 28px;
         transform: translateX(-50%);
     }
-    @media screen and (max-width: 300px) {
+    @media screen and (max-width: 500px) {
         width: calc(100% - 8px);
+        padding: 8px 0;
     }
 `
 const Line = styled.div`

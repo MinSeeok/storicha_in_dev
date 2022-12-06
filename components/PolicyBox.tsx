@@ -285,7 +285,7 @@ export default function SalePolicyBox({kind}:kind){
                             {!onModify ? "수정하기" : "수정완료"}
                             </button>
                         <button>삭제하기</button>
-                        </BtnLine>
+                    </BtnLine>
                     </PolicyBox>
                 </ExceptionBox>
                 <BottomBtnBox>
@@ -317,7 +317,7 @@ const Title = styled.div`
 `
 const SubTitle = styled.p`
     max-width: 780px;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 20px;
     margin-top: 24px;
     color: var(--sub);
@@ -428,75 +428,75 @@ const PolicyBox = styled.div`
             color: var(--title);
             font-weight: 500;
             font-size: 18px;
-        .unit{
-            position: absolute;
-            right: 14px;
-            bottom: 50%;
-            transform: translateY(50%);
-            color: var(--title);
-        }
-        .toggler-wrapper {
-            display: block;
-            width: 40px;
-            height: 20px;
-            margin-right: 20px;
-            cursor: pointer;
-            input[type="checkbox"] {
-                display: none;
-            }
-            input[type="checkbox"]:checked+.toggler-slider {
-                background-color: var(--point);
-            }
-            .toggler-slider{
-                background-color: #7d7d7d;
+            .unit{
                 position: absolute;
-                border-radius: 100px;
-                top: 0;
-                left: 10px;
-                width: 100%;
-                height: 100%;
-                -webkit-transition: all 300ms ease;
-                transition: all 300ms ease;
+                right: 14px;
+                bottom: 50%;
+                transform: translateY(50%);
+                color: var(--title);
             }
-        }
-        .toggler-wrapper.style-1 {
-            input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
-                left: calc(100% - 14px - 3px);
+            .toggler-wrapper {
+                display: block;
+                width: 40px;
+                height: 20px;
+                margin-right: 20px;
+                cursor: pointer;
+                input[type="checkbox"] {
+                    display: none;
+                }
+                input[type="checkbox"]:checked+.toggler-slider {
+                    background-color: var(--point);
+                }
+                .toggler-slider{
+                    background-color: #7d7d7d;
+                    position: absolute;
+                    border-radius: 100px;
+                    top: 0;
+                    left: 10px;
+                    width: 100%;
+                    height: 100%;
+                    -webkit-transition: all 300ms ease;
+                    transition: all 300ms ease;
+                }
             }
-            .toggler-knob {
-                width: calc(20px - 6px);
-                height: calc(20px - 6px);
-                border-radius: 50%;
-                left: 3px;
-                top: 3px;
-                background-color: #fff;
+            .toggler-wrapper.style-1 {
+                input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+                    left: calc(100% - 14px - 3px);
+                }
+                .toggler-knob {
+                    width: calc(20px - 6px);
+                    height: calc(20px - 6px);
+                    border-radius: 50%;
+                    left: 3px;
+                    top: 3px;
+                    background-color: #fff;
+                }
             }
-        }
-        p {
-            line-height: 20px;
-            margin-top: 2px;
-        }
-        input {
-            background-color: transparent;
-            border: none;
-            outline: none;
-            text-align: right;
-            color: var(--title);
-            font-size: 18px;
-            &.rightUnit{
-            padding-right: 24px;
+            p {
+                line-height: 20px;
+                margin-top: 2px;
             }
-            ::placeholder{
-            color: var(--title);
+            input {
+                background-color: transparent;
+                border: none;
+                outline: none;
+                text-align: right;
+                color: var(--title);
+                font-size: 18px;
+                &.rightUnit{
+                    padding-right: 24px;
+                }
+                ::placeholder{
+                    color: var(--title);
+                }
             }
-        }
-        @media screen and (max-width: 768px) {
-            width: calc(100% - 200px);
-            font-size: 16px;
-        }
-        @media screen and (max-width: 500px) {
-            width: calc(100% - 130px);
-        }
+            @media screen and (max-width: 768px) {
+                width: calc(100% - 200px);
+                font-size: 16px;
+            }
+            @media screen and (max-width: 500px) {
+                width: calc(100% - 130px);
+            }
         }
         .toggler-wrapper {
             display: block;
@@ -545,6 +545,9 @@ const PolicyBox = styled.div`
     .hot {
         color: var(--point);
     }
+    @media screen and (max-width: 500px) {
+        padding: 8px;
+    }
 `
 const BtnLine = styled.div`
     width: 100%;
@@ -560,7 +563,7 @@ const BtnLine = styled.div`
         font-size: 18px;
         padding: 6.5px 64px;
         border-radius: 6px;
-        background-color: var(--box1);
+        background-color: var(--placeholder);
         border: 1.8px solid var(--line);
         @media screen and (max-width: 500px) {
             padding: 4px 32px;
