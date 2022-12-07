@@ -91,3 +91,28 @@ export interface TopupProductData{
     response_option?:TopupResponseOption;
     response_status?:string;
 }
+
+interface SalePolicyImage {
+    image_height: number;
+    image_id: string;
+    image_idx: number;
+    image_key: string;
+    image_seq: number;
+    image_url: string;
+    image_width: number;
+    mime_type: string;
+}
+
+export interface SalePolicyEnum{
+    corporate_idx: number;
+    examin_yn: string;
+    image_idx: number;
+    sale_title: string;
+    selling_start_date: string;
+    selling_stop_date: string;
+    selling_yn: string;
+    series_title: string;
+    set_idx: number;
+    supply_images: SalePolicyImage[];
+    update_date: string;
+}

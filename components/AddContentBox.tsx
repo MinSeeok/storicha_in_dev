@@ -83,7 +83,7 @@ const AddContent = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background-color: var(--bgColor);
+  background-color: var(--boxColor);
   margin-top: 12px;
   .left{
     width: 100%;

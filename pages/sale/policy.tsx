@@ -1,6 +1,10 @@
+import axios from 'axios';
 import Area from 'components/Area';
 import SalePolicyBox from 'components/PolicyBox';
+import { SalePolicyEnum } from 'enum/data-type';
+import moment from 'moment';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import styled from "styled-components";
 
@@ -11,7 +15,11 @@ type IProgress = {
 };
 
 export default function SalePolicy(){
-    const [contentData, setContentData] = React.useState('');
+    // get Idx
+    const router = useRouter();
+    const idx = router.asPath.substring(router.asPath.indexOf('idx=') !== -1 ? router.asPath.indexOf('idx=')+4 : router.asPath.length);
+
+    const [contentData, setContentData] = React.useState<SalePolicyEnum | null>(null);
     const Progress: IProgress[] = [
         {state: "작성중", complete: 2, request: 1},
         {state: "검수중", complete: 2, request: 1},
@@ -20,9 +28,23 @@ export default function SalePolicy(){
         {state: "판매시작", complete: 0, request: 0},
         {state: "판매중지", complete: 0, request: 0},
     ]
-
     React.useEffect(()=>{
-        setContentData('사랑과 악마');
+        // a wrong approach
+        if(idx === ''){
+            alert('올바르지 않은 접근입니다.')
+            router.push('/');
+        }
+        axios({
+            method: 'GET',
+            url:`https://api-v2.storicha.in/api/saleset?series_idx=${idx}`,
+            withCredentials: true,
+        })
+        .then((response):any => {
+            setContentData(response.data.response_data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     },[]);
     return(
         <Area>
@@ -35,8 +57,11 @@ export default function SalePolicy(){
                     />
                 </TitleImgBox>
                 <TitleTextBox>
-                    <h2>{contentData}</h2>
-                    <p onClick={()=>console.log(contentData)}>최종 임시 저장일 2022-06-31 11:00<br/>최종 판매 승인일 2022-06-31 11:00</p>
+                    <h2>{contentData?.series_title ? contentData?.series_title : 'None-Title'}</h2>
+                    <p>
+                        최종 임시 저장일 &nbsp;&nbsp;{contentData?.selling_start_date ? moment(contentData.selling_start_date).format('YYYY-MM-DD HH:SS') : 'NONE-DATE'}<br/>
+                        최종 판매 승인일 &nbsp;&nbsp;{contentData?.update_date ? moment(contentData.update_date).format('YYYY-MM-DD HH:SS') : 'NONE-DATE'}
+                    </p>
                 </TitleTextBox>
                 <TopLightBox>
                     <button>
@@ -45,7 +70,7 @@ export default function SalePolicy(){
                         </svg>
                         내 책상
                     </button>
-                    <p><span>배급사</span> 씨엠닉스</p>
+                    <p onClick={()=>console.log(contentData)}><span>배급사</span> 씨엠닉스</p>
                     <p><span>진행현황</span> 진행중</p>
                 </TopLightBox>
             </TopLine>
@@ -96,7 +121,10 @@ export default function SalePolicy(){
                     </>
                 ))}
             </ProgressBarBox>
-            <SalePolicyBox kind={"basic"}/>
+            <SalePolicyBox 
+                kind={"basic"} 
+                idx={123}
+            />
         </Area>
     )
 }
@@ -123,6 +151,14 @@ const TitleImgBox = styled.div`
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+    @media screen and (max-width: 768px) {
+        width: 300px;
+        height: 435px;
+    }
+    @media screen and (max-width: 500px) {
+        width: 100%;
+        height: 120vw;
     }
 `
 const TitleTextBox = styled.div`

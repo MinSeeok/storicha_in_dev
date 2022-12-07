@@ -167,38 +167,40 @@ export default function SaleEpisode(){
                 </div>
                 </div>
                 {storyList.map((content, i) => (
-                <ContentLine key={i}>
-                    <ContentLineBox>
-                    <ContentImg>
-                        <Image
-                            src={`/images/test/${content.img}`}
-                            layout='fill'
-                            objectFit='contain'
-                        />
-                    </ContentImg>
-                    <p className='title'>
-                        {content.title.length > 10 ? content.title.slice(0,10)+"..." : content.title}&nbsp;
-                        <span>
-                        {/* public: 0-공개 / 1-비공개 / 2-팔로워에게만공개 / 3-초대된사람만 */}
-                        {
-                            content.public === 0 ? "( 공개 )" :
-                            content.public === 1 ? "( 비공개 )" :
-                            content.public === 2 ? "( 팔로워에게만 공개 )" :
-                            content.public === 3 && "( 초대된 사람만 )"
-                        }
-                        </span>
-                    </p>
-                    </ContentLineBox>
-                    <ContentLineBox className='secondBox'>
-                      <span className='link'>{content.link}</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="copyOutline" onClick={copyLink}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-                      </svg>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="AddCircleOutline">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </ContentLineBox>
-                </ContentLine>
+                    <ContentLine key={i}>
+                        <ContentLineBox>
+                            <ContentImg>
+                                <Image
+                                    src={`/images/test/${content.img}`}
+                                    layout='fill'
+                                    objectFit='contain'
+                                />
+                            </ContentImg>
+                            <p className='title'>
+                                {content.title.length > 9 ? content.title.slice(0,9)+"..." : content.title}&nbsp;
+                                <span>
+                                {/* public: 0-공개 / 1-비공개 / 2-팔로워에게만공개 / 3-초대된사람만 */}
+                                {
+                                    content.public === 0 ? "( 공개 )" :
+                                    content.public === 1 ? "( 비공개 )" :
+                                    content.public === 2 ? "( 팔로워 공개 )" :
+                                    content.public === 3 && "( 초대된 사람 )"
+                                }
+                                </span>
+                            </p>
+                        </ContentLineBox>
+                        <ContentLineBox className='secondBox'>
+                            <span className='link'>{content.link}</span>
+                            <div className='svg-box'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="copyOutline" onClick={copyLink}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="AddCircleOutline">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </ContentLineBox>
+                    </ContentLine>
                 ))}
                 <p className='pagingList'>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -260,7 +262,7 @@ const TopBox = styled.div`
     }
   @media screen and (max-width: 1024px) {
     .pagingList{
-      margin-top: 18px;
+      margin-top: 38px;
     }
   }
   @media screen and (max-width: 500px) {
@@ -314,10 +316,9 @@ const ContentBox = styled.div`
       align-items: center;
       padding: 12px 0;
       input {
-        width: 999%;
         min-width: 300px;
         max-height: 500px;
-        padding: 8px 60px 8px 20px;
+        padding: 5.5px 60px 5.5px 20px;
         font-size: 20px;
         border-radius: 28px;
         border: 2px solid var(--title);
@@ -372,19 +373,20 @@ const ContentBox = styled.div`
       }
     }
     @media screen and (max-width:1024px) {
-      padding-bottom: 60px;
-      .center{
-        bottom: 0;
-        input{
-          font-size: 16px;
-          left: 0px;
-          transform: translateX(0%);
+        padding-bottom: 80px;
+        display: flex;
+        .center{
+            bottom: 0;
+            input{
+              font-size: 16px;
+              left: 0px;
+              transform: translateX(0%);
+            }
         }
-      }
-      .AddCircleOutline{
-        width: 20px;
-        height: 20px;
-      }
+        .AddCircleOutline{
+            width: 20px;
+            height: 20px;
+        }
     }
   }
   .pagingList{
@@ -421,7 +423,7 @@ const ContentLine = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--sub);
+  border-bottom: 2px solid var(--boxColor2);
   .secondBox{
     justify-content: flex-end;
   }
@@ -436,62 +438,76 @@ const ContentLine = styled.div`
   }
 `
 const ContentLineBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .title{
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--title);
-    letter-spacing: -.7px;
-    span {
-      font-size: 16px;
-      color: var(--sub);
-      fill:  var(--title);
-      letter-spacing: -.35px;
-    }
-  }
-  .link {
-    font-size: 16px;
-    color: var(--sub);
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  .copyOutline{
-    color: var(--title);
-    margin-left: 8px;
-    cursor: pointer;
-    width: 28px;
-    height: 28px;
-  }
-  .AddCircleOutline{
-    width: 28px;
-    height: 28px;
-    margin-left: 4px;
-    color: var(--point);
-  }
-  @media screen and (max-width:1024px) {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
     .title{
-      position: absolute;
-      top: 0;
-      left: 80px;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--title);
+        letter-spacing: -.7px;
+        span {
+            font-size: 16px;
+            color: var(--sub);
+            fill:  var(--title);
+            letter-spacing: -.35px;
+        }
     }
-    
-  }
-  @media screen and (max-width:500px) {
-    .link{
-      font-size: 13.5px;
+    .link {
+        font-size: 16px;
+        color: var(--sub);
+        text-decoration: underline;
+        cursor: pointer;
     }
-    svg{
-      width: 26px;
+    .svg-box{
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 14px;
+        svg{
+          width: 28px;
+          height: 28px;
+        }
+        .copyOutline{
+          color: var(--title);
+        }
+        .AddCircleOutline{
+          color: var(--point);
+        }
     }
-  }
+    @media screen and (max-width:1024px) {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        .title{
+            position: absolute;
+            top: 0;
+            left: 80px;
+        }
+        .svg-box{
+            position: absolute;
+            right: 0;
+        }
+      
+    }
+    @media screen and (max-width:500px) {
+        .title{
+            position: absolute;
+            top: 4px;
+            font-size: 16px;
+            left: 72px;
+        }
+        .link{
+            font-size: 12px;
+        }
+        svg{
+            width: 26px;
+        }
+    }
 `
 const ContentImg = styled.div`
   width: 60px;

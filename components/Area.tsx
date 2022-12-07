@@ -2,13 +2,14 @@ import styled from "styled-components";
 
 const Area = ({children}:any) => {
     return (
-        <Container className='bg-[#FFFFFF] dark:bg-[#17171A]'>
+        <Container>
             {children}
         </Container>
     )
 }
 
 const Container = styled.div`
+    max-width: 1200px;
     width: 100%;
     padding: 40px 12px 60px 12px;
     display: flex;
@@ -16,6 +17,7 @@ const Container = styled.div`
     justify-content: flex-start;
     align-content: center;
     z-index: 10;
+    background-color: var(--box1);
 `
 
 export default Area;

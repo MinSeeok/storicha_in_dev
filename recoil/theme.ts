@@ -47,6 +47,8 @@ export const DarkState = atom({
         titleBold: '#1A1B1C',
         iconAccent: '#FFBE7C',
         loginLogo: 'images/logo/dark-logo.png',
+
+        // stori-color
     },
 })
 
@@ -54,7 +56,7 @@ export const LightState = atom({
     key: 'light',
     default: {
         bgColor: '#F6F5F3',
-        boxColor: '#EFEFEF',
+        boxColor: '#EAEAEA',
         boxColor2: '#FAFAFA',
         textColor: '#141414',
         textColor2: '#626262',

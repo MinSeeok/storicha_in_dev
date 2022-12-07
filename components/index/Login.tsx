@@ -72,7 +72,7 @@ const LoginBox = () => {
             <DarkBox/>
             <Box ref={loginBoxRef}>
                 <div className="logo">
-                    {localStorage.theme !== 'light' ? 
+                    {localStorage.theme === 'light' ? 
                         <Image
                             src={'/images/logo/dark-logo.png'}
                             layout="fill"
@@ -88,7 +88,7 @@ const LoginBox = () => {
                         />
                     )}
                 </div>
-                <h1 className="title">SIGN IN<br/>TO CONTINUE</h1>
+                <h1 className="title" onClick={()=> console.log(localStorage.theme)}>SIGN IN<br/>TO CONTINUE</h1>
                     <input 
                         name="email"
                         type="text" 

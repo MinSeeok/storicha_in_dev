@@ -57,4 +57,24 @@ export const GlobalStyle = createGlobalStyle`
             display: block;
         }
     }
+    @media screen and (max-width: 500px) {
+        .swal2-html-container{
+            font-size: 14px !important;
+        }
+        .swal2-actions{
+            padding: 8px 48px !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            button {
+                font-size: 14px !important;
+                width: 100%;
+                border: none;
+                outline: none;
+            }
+        }
+        .swal2-styled.swal2-confirm{
+            background-color: var(--point) !important;
+        }
+    }
 `;

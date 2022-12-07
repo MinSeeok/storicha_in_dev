@@ -1,4 +1,5 @@
 import Area from 'components/Area';
+import HelmetProvier from 'components/Helmet';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -6,155 +7,158 @@ export default function SignAgreement(){
     const [infoCheck, setInfoCheck] = useState(false);
     const [contractCheck, setContractCheck] = useState(false);
     return (
-        <Area>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아' required={true}/>
-                <span>판매자계정 <b>*</b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={true}/>
-                <span>사업자명 <b>*</b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={true}/>
-                <span>사업자등록번호 <b>*</b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
-                <span>사업자 주소<b></b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
-                <span>상세 주소<b></b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={true}/>
-                <span>사업자등록증 첨부<b>*</b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox style={{marginTop: "60px"}}>
-                <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
-                <span>계약 담당자 성명<b>*</b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
-                <span>계약 담당자 이메일<b>*</b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
-                <span>계약 담당자 전화번호<b>*</b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
-                <span>계약 담당자 휴대전화번호<b></b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <Title>콘텐츠 판매 수익 정산을 위한 계좌정보를 입력 해 주세요</Title>
-            <InputBox className='nonInput' style={{marginTop: "20px"}}>
-                <select name="" id="">
-                    <option value="KEB하나은행">KEB하나은행</option>
-                    <option value="SC제일은행">SC제일은행</option>
-                    <option value="국민은행">국민은행</option>
-                    <option value="신한은행">신한은행</option>
-                    <option value="외환은행">외환은행</option>
-                    <option value="우리은행">우리은행</option>
-                    <option value="농협">농협</option>
-                    <option value="수협">수협</option>
-                    <option value="한국산업은행">한국산업은행</option>
-                    <option value="한국수출입은행">한국수출입은행</option>
-                    <option value="한국시티은행">한국시티은행</option>
-                    <option value="경남은행">경남은행</option>
-                    <option value="광주은행">광주은행</option>
-                    <option value="대구은행">대구은행</option>
-                    <option value="부산은행">부산은행</option>
-                    <option value="전북은행">전북은행</option>
-                    <option value="제주은행">제주은행</option>
-                    <option value="기업은행">기업은행</option>
-                </select>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="svgClass">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
-                <span>계좌번호<b></b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <InputBox>
-                <input type="text" placeholder='오늘도날씨가좋아'required={false}/>
-                <span>예금주<b></b></span>
-                <div className='underline'></div>
-            </InputBox>
-            <Title>개인정보 이용 정책 동의</Title>
-            <TextAreaBox readOnly={true} defaultValue='안녕하세요'/>
-            <AgreeBox>
-                <div>
-                    <input type="checkbox" defaultChecked={infoCheck ? true: false} id="checkbox123" onClick={()=> setInfoCheck((e) => !e)}/>
-                    <label htmlFor="checkbox123"><span>동의</span></label>
-                </div>
-                <div>
-                    <input type="checkbox" defaultChecked={infoCheck ? false: true} id="checkbox123" onClick={()=> setInfoCheck((e) => !e)}/>
-                    <label htmlFor="checkbox123" style={{left: 'calc(50% - 40px)'}}><span>비동의</span></label>
-                </div>
-            </AgreeBox>
-            <Title>콘텐츠 판매 계약 약관</Title>
-            <TextAreaBox readOnly={true} defaultValue='안녕하세요'/>
-            <TitleH2>파트너 티어란? Tier 별로 정산주기와 수익정산 요율이 다르게 됩니다.<br/>위 계약을 읽은 후 알맞게 선택 해 주세요</TitleH2>
-            <TierSelectBox>
-                <p>신청 파트너 티어<b>*</b></p>
-                <select name="" id="">
-                    <option value="1">Partner Tier 1</option>
-                    <option value="2">Partner Tier 2</option>
-                    <option value="3">Partner Tier 3</option>
-                    <option value="4">Partner Tier 4</option>
-                    <option value="5">Partner Tier 5</option>
-                    <option value="6">Partner Tier 6</option>
-                    <option value="7">Partner Tier 7</option>
-                    <option value="8">Partner Tier 8</option>
-                    <option value="9">Partner Tier 9</option>
-                    <option value="10">Partner Tier 10</option>
-                    <option value="11">Partner Tier 11</option>
-                    <option value="12">Partner Tier 12</option>
-                    <option value="13">Partner Tier 13</option>
-                    <option value="14">Partner Tier 14</option>
-                    <option value="15">Partner Tier 15</option>
-                    <option value="16">Partner Tier 16</option>
-                    <option value="17">Partner Tier 17</option>
-                    <option value="18">Partner Tier 18</option>
-                    <option value="19">Partner Tier 19</option>
-                    <option value="20">Partner Tier 20</option>
-                </select>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="svgClass">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </TierSelectBox>
-            <AgreeBox>
-                <div>
-                    <input type="checkbox" defaultChecked={contractCheck ? true: false} id="checkbox12345" onChange={()=> setContractCheck((e) => !e)}/>
-                    <label htmlFor="checkbox12345"><span>동의</span></label>
-                </div>
-                <div>
-                    <input type="checkbox" defaultChecked={contractCheck ? false: true} id="checkbox12345" onChange={()=> setContractCheck((e) => !e)}/>
-                    <label htmlFor="checkbox12345" style={{left: 'calc(50% - 40px)'}}><span>비동의</span></label>
-                </div>
-            </AgreeBox> 
-            <ButtonBox>
-                <div>
-                    <button className='left' onChange={()=> alert("저장")}>저장</button>
-                </div>
-                <div>
-                    <button className='right' onChange={()=> alert("입점 신청")}>콘텐츠 판매자 입점 신청</button>
-                </div>
-            </ButtonBox>
-        </Area>
+        <>
+            <HelmetProvier title='판매 계약 동의'/>
+            <Area>
+                <InputBox>
+                    <input type="text" placeholder='판매자계정 입력' required={true}/>
+                    <span>판매자계정 <b>*</b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='사업자명 입력'required={true}/>
+                    <span>사업자명 <b>*</b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='사업자등록번호 입력'required={true}/>
+                    <span>사업자등록번호 <b>*</b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='사업자 주소 입력'required={false}/>
+                    <span>사업자 주소<b></b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='상세 주소 입력'required={false}/>
+                    <span>상세 주소<b></b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='사업자 등록증 첨부'required={true}/>
+                    <span>사업자등록증 첨부<b>*</b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox style={{marginTop: "60px"}}>
+                    <input type="text" placeholder='계약 담당자 입력'required={false}/>
+                    <span>계약 담당자 성명<b>*</b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='example@naver.com'required={false}/>
+                    <span>계약 담당자 이메일<b>*</b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='010-0000-0000'required={false}/>
+                    <span>계약 담당자 전화번호<b>*</b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='010-0000-0000'required={false}/>
+                    <span>계약 담당자 휴대전화번호<b></b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <Title>콘텐츠 판매 수익 정산을 위한 계좌정보를 입력 해 주세요</Title>
+                <InputBox className='nonInput' style={{marginTop: "20px"}}>
+                    <select name="" id="">
+                        <option value="KEB하나은행">KEB하나은행</option>
+                        <option value="SC제일은행">SC제일은행</option>
+                        <option value="국민은행">국민은행</option>
+                        <option value="신한은행">신한은행</option>
+                        <option value="외환은행">외환은행</option>
+                        <option value="우리은행">우리은행</option>
+                        <option value="농협">농협</option>
+                        <option value="수협">수협</option>
+                        <option value="한국산업은행">한국산업은행</option>
+                        <option value="한국수출입은행">한국수출입은행</option>
+                        <option value="한국시티은행">한국시티은행</option>
+                        <option value="경남은행">경남은행</option>
+                        <option value="광주은행">광주은행</option>
+                        <option value="대구은행">대구은행</option>
+                        <option value="부산은행">부산은행</option>
+                        <option value="전북은행">전북은행</option>
+                        <option value="제주은행">제주은행</option>
+                        <option value="기업은행">기업은행</option>
+                    </select>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="svgClass">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='계좌번호 입력'required={false}/>
+                    <span>계좌번호<b></b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <InputBox>
+                    <input type="text" placeholder='예금주 이름 입력'required={false}/>
+                    <span>예금주<b></b></span>
+                    <div className='underline'></div>
+                </InputBox>
+                <Title>개인정보 이용 정책 동의</Title>
+                <TextAreaBox readOnly={true} defaultValue='Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore numquam impedit et saepe quibusdam corporis iste nobis veritatis, consequuntur nemo cumque doloribus temporibus, ex inventore odio explicabo cum enim.'/>
+                <AgreeBox>
+                    <div>
+                        <input type="checkbox" defaultChecked={infoCheck ? true: false} id="checkbox123" onClick={()=> setInfoCheck((e) => !e)}/>
+                        <label htmlFor="checkbox123"><span>동의</span></label>
+                    </div>
+                    <div>
+                        <input type="checkbox" defaultChecked={infoCheck ? false: true} id="checkbox123" onClick={()=> setInfoCheck((e) => !e)}/>
+                        <label htmlFor="checkbox123" style={{left: 'calc(50% - 40px)'}}><span>비동의</span></label>
+                    </div>
+                </AgreeBox>
+                <Title>콘텐츠 판매 계약 약관</Title>
+                <TextAreaBox readOnly={true} defaultValue='Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore numquam impedit et saepe quibusdam corporis iste nobis veritatis, consequuntur nemo cumque doloribus temporibus, ex inventore odio explicabo cum enim.Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore numquam impedit et saepe quibusdam corporis iste nobis veritatis, consequuntur nemo cumque doloribus temporibus, ex inventore odio explicabo cum enim.Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore numquam impedit et saepe quibusdam corporis iste nobis veritatis, consequuntur nemo cumque doloribus temporibus, ex inventore odio explicabo cum enim.'/>
+                <TitleH2>파트너 티어란? Tier 별로 정산주기와 수익정산 요율이 다르게 됩니다.<br/>위 계약을 읽은 후 알맞게 선택 해 주세요</TitleH2>
+                <TierSelectBox>
+                    <p>신청 파트너 티어<b>*</b></p>
+                    <select name="" id="">
+                        <option value="1">Partner Tier 1</option>
+                        <option value="2">Partner Tier 2</option>
+                        <option value="3">Partner Tier 3</option>
+                        <option value="4">Partner Tier 4</option>
+                        <option value="5">Partner Tier 5</option>
+                        <option value="6">Partner Tier 6</option>
+                        <option value="7">Partner Tier 7</option>
+                        <option value="8">Partner Tier 8</option>
+                        <option value="9">Partner Tier 9</option>
+                        <option value="10">Partner Tier 10</option>
+                        <option value="11">Partner Tier 11</option>
+                        <option value="12">Partner Tier 12</option>
+                        <option value="13">Partner Tier 13</option>
+                        <option value="14">Partner Tier 14</option>
+                        <option value="15">Partner Tier 15</option>
+                        <option value="16">Partner Tier 16</option>
+                        <option value="17">Partner Tier 17</option>
+                        <option value="18">Partner Tier 18</option>
+                        <option value="19">Partner Tier 19</option>
+                        <option value="20">Partner Tier 20</option>
+                    </select>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="svgClass">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </TierSelectBox>
+                <AgreeBox>
+                    <div>
+                        <input type="checkbox" defaultChecked={contractCheck ? true: false} id="checkbox12345" onChange={()=> setContractCheck((e) => !e)}/>
+                        <label htmlFor="checkbox12345"><span>동의</span></label>
+                    </div>
+                    <div>
+                        <input type="checkbox" defaultChecked={contractCheck ? false: true} id="checkbox12345" onChange={()=> setContractCheck((e) => !e)}/>
+                        <label htmlFor="checkbox12345" style={{left: 'calc(50% - 40px)'}}><span>비동의</span></label>
+                    </div>
+                </AgreeBox> 
+                <ButtonBox>
+                    <div>
+                        <button className='left' onChange={()=> alert("저장")}>저장</button>
+                    </div>
+                    <div>
+                        <button className='right' onChange={()=> alert("입점 신청")}>콘텐츠 판매자 입점 신청</button>
+                    </div>
+                </ButtonBox>
+            </Area>
+        </>
     )
 }
 

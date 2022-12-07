@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Area from 'components/Area';
+import HelmetProvier from 'components/Helmet';
 
 export default function Revenue(){
     const [viewState, setViewState] = useState(true);
@@ -10,194 +11,197 @@ export default function Revenue(){
         AOS.init();
     },[]);
     return(
-        <Area>
-            <Box>
-                <div>
-                    <div data-aos="fade-right">
-                        <h1>판매 실적</h1>
-                        <p>유료화 스토리 시리즈 수<span>3</span><span className='date'></span></p>
-                        <p>유료화 스토리 에피소드 수<span>65</span><span className='date'></span></p>
-                        <p>누적 에피소드 판매 건<span>54</span><span className='date'></span></p>
-                        <p>지난 달 에피소드 판매 건<span>25</span><span className='date'>22.10.01~22.10.31</span></p>
-                        <p>이번 달 에피소드 판매 건<span>15</span><span className='date'>22.11.01~22.11.31</span></p>
-                    </div>
-                    <div data-aos="fade-right">
-                        <h1>판매 금액</h1>
-                        <p>유료화 스토리 시리즈 수<span>3</span><span className='date'></span></p>
-                        <p>유료화 스토리 에피소드 수<span>65</span><span className='date'></span></p>
-                        <p>누적 에피소드 판매 건<span>54</span><span className='date'></span></p>
-                        <p>지난 달 에피소드 판매 건<span>25</span><span className='date'>22.10.01~22.10.31</span></p>
-                        <p>이번 달 에피소드 판매 건<span>15</span><span className='date'>22.11.01~22.11.31</span></p>
-                    </div>
-                </div>
-                <div>
-                    <div className='fullBox' data-aos="zoom-in">
-                        <h1>정산</h1>
-                        <p>정산 주기일<span>(1,3,5,7,9월 5일)</span><span className='date'></span></p>
-                        <p>누적 정산금<span>524,550 KRW</span><span className='date'>19.10.01~22.08.55</span></p>
-                        <p>지난주기 정산금<span>524,550 KRW</span><span className='date'>22.09.05</span></p>
-                        <p>출금요청 가능금액<span>21,524,550 KRW</span><span className='date'></span></p>
-                        <h3>출금요청 방법</h3>
-                        <h3 style={{marginTop: '0px'}}>정산가능 금액 120,000KWR이상일 때 요청 가능.<br/>정산 후 10일 이내 요청 가능. 요청 후 영업일 (N)일 이내 계약된 계좌로 출금. 입금받을 계좌 (XXX) 은행 예금주 (XXXX)</h3>
-                        <button>출금 요청</button>
-                        <p>출금신청액<span>21,524,550 KRW</span><span className='date'>출금대기 중</span></p>
-                    </div>
-                </div>
-                <div className='rightBox' data-aos="fade-left">
+        <>
+            <HelmetProvier title='판매 수익'/>
+            <Area>
+                <Box>
                     <div>
-                        <h1>수익</h1>
-                        <p>누적 수익<span>8,121,524,550 KRW</span><span className='date'>19.10.01~22.10.31</span></p>
-                        <p>누적 취소환불<span>5,141 KRW</span><span className='date'>19.10.01~22.10.31</span></p>
-                        <p>지난 주기 수익<span>21,524,550 KRW</span><span className='date'>22.10.01~22.10.31</span></p>
-                        <p>지난 주기 취소환불<span>890,000 KRW</span><span className='date'>22.11.01~22.11.31</span></p>
-                        <p>이번 주기 수익<span>100,000,000 KRW</span><span className='date'>22.11.01~22.11.31</span></p>
+                        <div data-aos="fade-right">
+                            <h1>판매 실적</h1>
+                            <p>유료화 스토리 시리즈 수<span>3</span><span className='date'></span></p>
+                            <p>유료화 스토리 에피소드 수<span>65</span><span className='date'></span></p>
+                            <p>누적 에피소드 판매 건<span>54</span><span className='date'></span></p>
+                            <p>지난 달 에피소드 판매 건<span>25</span><span className='date'>22.10.01~22.10.31</span></p>
+                            <p>이번 달 에피소드 판매 건<span>15</span><span className='date'>22.11.01~22.11.31</span></p>
+                        </div>
+                        <div data-aos="fade-right">
+                            <h1>판매 금액</h1>
+                            <p>유료화 스토리 시리즈 수<span>3</span><span className='date'></span></p>
+                            <p>유료화 스토리 에피소드 수<span>65</span><span className='date'></span></p>
+                            <p>누적 에피소드 판매 건<span>54</span><span className='date'></span></p>
+                            <p>지난 달 에피소드 판매 건<span>25</span><span className='date'>22.10.01~22.10.31</span></p>
+                            <p>이번 달 에피소드 판매 건<span>15</span><span className='date'>22.11.01~22.11.31</span></p>
+                        </div>
                     </div>
-                </div>
-            </Box>
-            <TitleBox>
-                <H1Title onClick={()=> setViewState(true)}>정산내역</H1Title>
-                <H1Title onClick={()=> setViewState(false)}>출금요청 및 수익 내역</H1Title>
-                <div className='btnLine' id={viewState ? "" : "request"}></div>
-            </TitleBox>
-            <Box2 style={viewState ? {} : {display: "none"}}>
-                <div className='line' id='topLine'>
-                    <div className='left'>
-                        <p>번호</p>
-                        <p>판매기간</p>
+                    <div>
+                        <div className='fullBox' data-aos="zoom-in">
+                            <h1>정산</h1>
+                            <p>정산 주기일<span>(1,3,5,7,9월 5일)</span><span className='date'></span></p>
+                            <p>누적 정산금<span>524,550 KRW</span><span className='date'>19.10.01~22.08.55</span></p>
+                            <p>지난주기 정산금<span>524,550 KRW</span><span className='date'>22.09.05</span></p>
+                            <p>출금요청 가능금액<span>21,524,550 KRW</span><span className='date'></span></p>
+                            <h3>출금요청 방법</h3>
+                            <h3 style={{marginTop: '0px'}}>정산가능 금액 120,000KWR이상일 때 요청 가능.<br/>정산 후 10일 이내 요청 가능. 요청 후 영업일 (N)일 이내 계약된 계좌로 출금. 입금받을 계좌 (XXX) 은행 예금주 (XXXX)</h3>
+                            <button>출금 요청</button>
+                            <p>출금신청액<span>21,524,550 KRW</span><span className='date'>출금대기 중</span></p>
+                        </div>
                     </div>
-                    <div className='center'>
-                        <p>정산 주기일</p>
-                        <p>판매액</p>
+                    <div className='rightBox' data-aos="fade-left">
+                        <div>
+                            <h1>수익</h1>
+                            <p>누적 수익<span>8,121,524,550 KRW</span><span className='date'>19.10.01~22.10.31</span></p>
+                            <p>누적 취소환불<span>5,141 KRW</span><span className='date'>19.10.01~22.10.31</span></p>
+                            <p>지난 주기 수익<span>21,524,550 KRW</span><span className='date'>22.10.01~22.10.31</span></p>
+                            <p>지난 주기 취소환불<span>890,000 KRW</span><span className='date'>22.11.01~22.11.31</span></p>
+                            <p>이번 주기 수익<span>100,000,000 KRW</span><span className='date'>22.11.01~22.11.31</span></p>
+                        </div>
                     </div>
-                    <div className='right'>
-                        <p>파트너티어</p>
-                        <p>정산금</p>
-                    </div>
-                    <div className='btnbox'>
-                        <p>정산명세서</p>
-                    </div>
-                </div>
-                {[0,1,2,3,4,5].map((content, i) => (
-                <div className='line' key={i}>
-                    <div className='left'>
-                        <p className='pc'>3242</p>
-                        <p className='mobile'>3242</p>
-                        <p className='date'>22.06.21~22.08.31</p>
+                </Box>
+                <TitleBox>
+                    <H1Title onClick={()=> setViewState(true)}>정산내역</H1Title>
+                    <H1Title onClick={()=> setViewState(false)}>출금요청 및 수익 내역</H1Title>
+                    <div className='btnLine' id={viewState ? "" : "request"}></div>
+                </TitleBox>
+                <Box2 style={viewState ? {} : {display: "none"}}>
+                    <div className='line' id='topLine'>
+                        <div className='left'>
+                            <p>번호</p>
+                            <p>판매기간</p>
                         </div>
                         <div className='center'>
-                        <p className='pc'>22.09.05</p>
-                        <p className='mobile'>
-                            <span>정산주기일</span>
-                            <span>22.09.05</span>
-                        </p>
-                        <p className='pc'>105,000</p>
-                        <p className='mobile'>
-                            <span>판매액</span>
-                            <span>105,000 원</span>
-                        </p>
+                            <p>정산 주기일</p>
+                            <p>판매액</p>
+                        </div>
+                        <div className='right'>
+                            <p>파트너티어</p>
+                            <p>정산금</p>
+                        </div>
+                        <div className='btnbox'>
+                            <p>정산명세서</p>
+                        </div>
                     </div>
-                    <div className='right'>
-                        <p className='pc'>T1</p>
-                        <p className='mobile'>
-                            <span>파트너티어</span>
-                            <span>Tier 1</span>              
-                        </p>
-                        <p className='pc number'>1,956,777</p>
-                        <p className='mobile'>
-                            <span>정산금</span>
-                            <span>1,956,777 원</span>  
-                        </p>
+                    {[0,1,2,3,4,5].map((content, i) => (
+                    <div className='line' key={i}>
+                        <div className='left'>
+                            <p className='pc'>3242</p>
+                            <p className='mobile idx'>3242</p>
+                            <p className='date'>22.06.21~22.08.31</p>
+                            </div>
+                            <div className='center'>
+                            <p className='pc'>22.09.05</p>
+                            <p className='mobile'>
+                                <span>정산주기일</span>
+                                <span>22.09.05</span>
+                            </p>
+                            <p className='pc'>105,000</p>
+                            <p className='mobile'>
+                                <span>판매액</span>
+                                <span>105,000 원</span>
+                            </p>
+                        </div>
+                        <div className='right'>
+                            <p className='pc'>T1</p>
+                            <p className='mobile'>
+                                <span>파트너티어</span>
+                                <span>Tier 1</span>              
+                            </p>
+                            <p className='pc number'>1,956,777</p>
+                            <p className='mobile'>
+                                <span>정산금</span>
+                                <span>1,956,777 원</span>  
+                            </p>
+                        </div>
+                        <div className='btnbox last'>
+                            <button>상세보기</button>
+                        </div>
                     </div>
-                    <div className='btnbox last'>
-                        
+                    ))}
+                </Box2>
+                <Box3 style={viewState ? {display: "none"} : {}}>
+                    <div className='list' id='listTop'>
+                        <p className='number'>번호</p>
+                        <p className='calculate'>정산일</p>
+                        <p className='withdraw_request'>출금요청일</p>
+                        <p className='withdraw_complete'>출금완료일</p>
+                        <p className='supplyprice'>공급가(원)</p>
+                        <p className='surtax'>부가세(원)</p>
+                        <p className='paye'>원천징수(원)</p>
+                        <p className='sum'>합계(원)</p>
+                        <p className='statement'>거래명세서</p>
                     </div>
-                </div>
-                ))}
-            </Box2>
-            <Box3 style={viewState ? {display: "none"} : {}}>
-                <div className='list' id='listTop'>
-                    <p className='number'>번호</p>
-                    <p className='calculate'>정산일</p>
-                    <p className='withdraw_request'>출금요청일</p>
-                    <p className='withdraw_complete'>출금완료일</p>
-                    <p className='supplyprice'>공급가(원)</p>
-                    <p className='surtax'>부가세(원)</p>
-                    <p className='paye'>원천징수(원)</p>
-                    <p className='sum'>합계(원)</p>
-                    <p className='statement'>거래명세서</p>
-                </div>
-                <div className='list'>
-                <p className='number'>
-                    <span className='pc'>3242</span>
-                    <span className='mobile'>3242</span>
-                </p>
-                <p className='calculate'>
-                    <span className='pc'>22.09.05</span>
-                    <span className='mobile'>정산일<b>22.09.05</b></span>
-                </p>
-                <p className='withdraw_request'>
-                    <span className='pc'>22.09.06</span>
-                    <span className='mobile'>출금요청일<b>22.09.06</b></span>
-                </p>
-                <p className='withdraw_complete'>
-                    <span className='pc'>출금대기중</span>
-                    <span className='mobile'>출금완료일<b>출금대기중</b></span>
-                </p>
-                <p className='supplyprice'>
-                    <span className='pc'>19,567,773</span>
-                    <span className='mobile'>공급가(원)<b>19,567,773</b></span>
-                </p>
-                <p className='surtax'>
-                    <span className='pc'>1,956,777</span>
-                    <span className='mobile'>부가세(원)<b>1,956,777</b></span>
-                </p>
-                <p className='paye'>
-                    <span className='pc'>0</span>
-                    <span className='mobile' style={{width:'auto'}}>원천징수(원)<b>0</b></span>
-                </p>
-                <p className='sum'>
-                    <span className='pc'>21,524,550</span>
-                    <span className='mobile'>합계(원)<b>21,524,550</b></span>
-                </p>
-                <p className='statement'><span>대기중</span></p>
-                </div>
-                <div className='list'>
-                <p className='number'>
-                    <span className='pc'>3242</span>
-                    <span className='mobile'>3242</span>
-                </p>
-                <p className='calculate'>
-                    <span className='pc'>22.09.05</span>
-                    <span className='mobile'>정산일<b>22.09.05</b></span>
-                </p>
-                <p className='withdraw_request'>
-                    <span className='pc'>22.09.06</span>
-                    <span className='mobile'>출금요청일<b>22.09.06</b></span>
-                </p>
-                <p className='withdraw_complete'>
-                    <span className='pc'>출금대기중</span>
-                    <span className='mobile'>출금완료일<b>출금대기중</b></span>
-                </p>
-                <p className='supplyprice'>
-                    <span className='pc'>19,567,773</span>
-                    <span className='mobile'>공급가(원)<b>19,567,773</b></span>
-                </p>
-                <p className='surtax'>
-                    <span className='pc'>1,956,777</span>
-                    <span className='mobile'>부가세(원)<b>1,956,777</b></span>
-                </p>
-                <p className='paye'>
-                    <span className='pc'>0</span>
-                    <span className='mobile' style={{width:'auto'}}>원천징수(원)<b>0</b></span>
-                </p>
-                <p className='sum'>
-                    <span className='pc'>21,524,550</span>
-                    <span className='mobile'>합계(원)<b>21,524,550</b></span>
-                </p>
-                <p className='statement complete'><span>명세서</span></p>
-                </div>
-            </Box3>
-        </Area>
+                    <div className='list'>
+                    <p className='number'>
+                        <span className='pc'>3242</span>
+                        <span className='mobile idx'>3242</span>
+                    </p>
+                    <p className='calculate'>
+                        <span className='pc'>22.09.05</span>
+                        <span className='mobile'>정산일<b>22.09.05</b></span>
+                    </p>
+                    <p className='withdraw_request'>
+                        <span className='pc'>22.09.06</span>
+                        <span className='mobile'>출금요청일<b>22.09.06</b></span>
+                    </p>
+                    <p className='withdraw_complete'>
+                        <span className='pc'>출금대기중</span>
+                        <span className='mobile'>출금완료일<b>출금대기중</b></span>
+                    </p>
+                    <p className='supplyprice'>
+                        <span className='pc'>19,567,773</span>
+                        <span className='mobile'>공급가(원)<b>19,567,773</b></span>
+                    </p>
+                    <p className='surtax'>
+                        <span className='pc'>1,956,777</span>
+                        <span className='mobile'>부가세(원)<b>1,956,777</b></span>
+                    </p>
+                    <p className='paye'>
+                        <span className='pc'>0</span>
+                        <span className='mobile' style={{width:'auto'}}>원천징수(원)<b>0</b></span>
+                    </p>
+                    <p className='sum'>
+                        <span className='pc'>21,524,550</span>
+                        <span className='mobile'>합계(원)<b>21,524,550</b></span>
+                    </p>
+                    <p className='statement'><span>대기중</span></p>
+                    </div>
+                    <div className='list'>
+                    <p className='number'>
+                        <span className='pc'>3242</span>
+                        <span className='mobile idx'>3242</span>
+                    </p>
+                    <p className='calculate'>
+                        <span className='pc'>22.09.05</span>
+                        <span className='mobile'>정산일<b>22.09.05</b></span>
+                    </p>
+                    <p className='withdraw_request'>
+                        <span className='pc'>22.09.06</span>
+                        <span className='mobile'>출금요청일<b>22.09.06</b></span>
+                    </p>
+                    <p className='withdraw_complete'>
+                        <span className='pc'>출금대기중</span>
+                        <span className='mobile'>출금완료일<b>출금대기중</b></span>
+                    </p>
+                    <p className='supplyprice'>
+                        <span className='pc'>19,567,773</span>
+                        <span className='mobile'>공급가(원)<b>19,567,773</b></span>
+                    </p>
+                    <p className='surtax'>
+                        <span className='pc'>1,956,777</span>
+                        <span className='mobile'>부가세(원)<b>1,956,777</b></span>
+                    </p>
+                    <p className='paye'>
+                        <span className='pc'>0</span>
+                        <span className='mobile' style={{width:'auto'}}>원천징수(원)<b>0</b></span>
+                    </p>
+                    <p className='sum'>
+                        <span className='pc'>21,524,550</span>
+                        <span className='mobile'>합계(원)<b>21,524,550</b></span>
+                    </p>
+                    <p className='statement complete'><span>명세서</span></p>
+                    </div>
+                </Box3>
+            </Area>
+        </>
     )
 }
 const Box = styled.div`
@@ -297,7 +301,7 @@ const Box2 = styled.div`
     padding: 20px;
     margin-bottom: 20px;
     background-color: var(--box2);
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    gap: 8px;
     .title{
         width: 100%;
         text-align: center;
@@ -312,6 +316,8 @@ const Box2 = styled.div`
         align-items: center;
         color: var(--title);
         padding: 10.5px 0;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+        padding: 12px;
         div{
             width: 100%;
             display: flex;
@@ -326,9 +332,6 @@ const Box2 = styled.div`
             &.center{
             }
             &.right{
-                p:nth-child(2){
-                    text-align: left;
-                }
             }
             &.btnbox{
                 width: 100%;
@@ -337,24 +340,25 @@ const Box2 = styled.div`
                 justify-content: center;
                 align-items: center;
                 button{
-                padding: 3.5px 28px;
-                font-size: 16px;
-                background-color: var(--box3);
-                outline: none;
-                border: none;
-                color: var(--title);
-                cursor: pointer;
-                transition: all ease-in-out .1s;
-                border-radius: 4px;
-                &:hover{
-                    background-color: var(--point);
-                }
+                    padding: 5.5px 28px;
+                    font-size: 16px;
+                    background-color: var(--boxColor);
+                    outline: none;
+                    border: none;
+                    color: var(--title);
+                    cursor: pointer;
+                    transition: all ease-in-out .1s;
+                    border-radius: 4px;
+                    &:hover{
+                        background-color: var(--unchecked);
+                        color: #FFFFFF;
+                    }
                 }
                 @media screen and (max-width: 1024px) {
-                max-width: 100%;
-                button{
-                    width: 100% !important;
-                }
+                    max-width: 100%;
+                    button{
+                        width: 100% !important;
+                    }
                 }
             }
             p{
@@ -364,18 +368,18 @@ const Box2 = styled.div`
             }
         }
         .number{
-        text-align: left;
+            text-align: center;
         }
         .mobile{
-        display: none;
+            display: none;
         }
         &#topLine{
             font-weight: bold;
         }
         &:hover{
             background-color: var(--box3);
-            button{
-                background-color: var(--box1) !important;
+            &#topLine{
+                background-color: var(--box2);
             }
         }
     }
@@ -454,6 +458,9 @@ const Box2 = styled.div`
     @media screen and (max-width: 768px) {
         padding: 8px !important;
     }
+    @media screen and (max-width: 500px) {
+        padding: 0px !important;
+    }
 `
 const TitleBox = styled.div`
     width: 100%;
@@ -518,6 +525,8 @@ const Box3 = styled.div`
         justify-content: space-between;
         align-items: center;
         transition: all ease-in-out .1s;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        background-color: var(--boxColor2);
         p{
             display: flex;
             justify-content: center;
@@ -633,11 +642,12 @@ const Box3 = styled.div`
         }
     }
     @media screen and (max-width: 1024px) {
+        padding: 12px;
         box-shadow: none;
         background-color: transparent;
         margin-top: 0;
         .list{
-            background-color: var(--box2);
+            background-color: var(--boxColor);
             margin-top: 24px;
             padding: 12px 16px !important;
             flex-direction: column;
@@ -652,6 +662,10 @@ const Box3 = styled.div`
             .mobile{
                 display: block !important;
                 width: 100%;
+                color: var(--title);
+                &.title{
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+                }
             }
         }
         .number{
@@ -659,6 +673,8 @@ const Box3 = styled.div`
                 width: auto;
                 padding: 4px 16px;
                 background-color: var(--box3);
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+                border-radius: 4px;
             }
         }
         .calculate, .withdraw_request, .withdraw_complete, .supplyprice, .surtax, .paye, .sum{
@@ -678,6 +694,7 @@ const Box3 = styled.div`
         }
         .statement{
             margin-top: 42px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
             span{
                 width: 100%;
                 text-align: center;
@@ -688,5 +705,8 @@ const Box3 = styled.div`
         #listTop.list{
             display: none;
         }
+    }
+    @media screen and (max-width: 1024px) {
+        padding: 0;
     }
 `

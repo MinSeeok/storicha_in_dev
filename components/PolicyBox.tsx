@@ -6,9 +6,10 @@ import PriceSalePolicyData from '../json/sale/pricepolicy.json';
 
 interface kind{
     kind: string;
+    idx:number;
 }
 
-export default function SalePolicyBox({kind}:kind){
+const SalePolicyBox = (props:kind) => {
     const [exception, setException] = React.useState(false);
     const [onModify, setOnModify] = React.useState(false);
     function onlyNumber(e: React.ChangeEvent<HTMLInputElement>){
@@ -20,7 +21,7 @@ export default function SalePolicyBox({kind}:kind){
     },[]);
     return(
         <>
-            <Box>
+            <Box style={{maxWidth: '1200px'}}> 
                 <Title>
                     <Image
                         width={'24px'}
@@ -110,8 +111,8 @@ export default function SalePolicyBox({kind}:kind){
                             <span className='unit'>TC</span>
                         </div>
                     </div>
-                    <div className='boxline'>
-                        기다리면 무료
+                    <div className='boxline mobile_column'>
+                        <p className='title'>기다리면 무료</p>
                         <div className='box'>
                             <label className='toggler-wrapper style-1' style={{marginLeft: "-20px"}}>
                             <input type="checkbox"/>
@@ -122,14 +123,14 @@ export default function SalePolicyBox({kind}:kind){
                             <p>{`${priceSalePolicy.response_data && moment(priceSalePolicy.response_data[0].wait_free_date).diff(moment(), 'days')}일 후 무료`}</p>
                         </div>
                     </div>
-                    <div className='boxline'>
-                        사용시작
+                    <div className='boxline mobile_column'>
+                        <p className='title'>사용시작</p>
                         <div className='box'>
                             <p>{priceSalePolicy.response_data && moment(String(priceSalePolicy.response_data[0].start_date)).format('YYYY-MM-DD')}</p>
                         </div>
                     </div>
-                    <div className='boxline'>
-                        사용종료
+                    <div className='boxline mobile_column'>
+                        <p className='title'>사용종료</p>
                         <div className='box'>
                             <p>{priceSalePolicy.response_data && moment(String(priceSalePolicy.response_data[0].end_date)).format('YYYY-MM-DD')}</p>
                         </div>
@@ -148,7 +149,7 @@ export default function SalePolicyBox({kind}:kind){
                         <button>삭제하기</button>
                     </BtnLine>
                 </PolicyBox>
-                {kind === "basic" ? (
+                {props.kind === "basic" ? (
                     <ExceptionSelect>
                     <p>특정 에피소드만 예외가격으로 적용하고 싶나요?</p>
                     <label className='toggler-wrapper style-1'>
@@ -249,8 +250,8 @@ export default function SalePolicyBox({kind}:kind){
                         <span className='unit'>TC</span>
                         </div>
                     </div>
-                    <div className='boxline'>
-                        기다리면 무료
+                    <div className='boxline mobile_column'>
+                        <p className='title'>기다리면 무료</p>
                         <div className='box'>
                         <label className='toggler-wrapper style-1' style={{marginLeft: "-20px"}}>
                             <input type="checkbox"/>
@@ -261,14 +262,14 @@ export default function SalePolicyBox({kind}:kind){
                         <p>조회 후 2일 뒤</p>
                         </div>
                     </div>
-                    <div className='boxline'>
-                        사용시작
+                    <div className='boxline mobile_column'>
+                        <p className='title'>사용시작</p>
                         <div className='box'>
                         <p>2022-06-31</p>
                         </div>
                     </div>
-                    <div className='boxline'>
-                        사용종료
+                    <div className='boxline mobile_column'>
+                        <p className='title'>사용종료</p>
                         <div className='box'>
                         <p>2022-06-31</p>
                         </div>
@@ -290,12 +291,14 @@ export default function SalePolicyBox({kind}:kind){
                 </ExceptionBox>
                 <BottomBtnBox>
                     <button>변경저장</button>
-                    <button>판매요청</button>
+                    <button className='request'>판매요청</button>
                 </BottomBtnBox>
             </Box>
         </>
     )
 }
+
+export default SalePolicyBox;
 
 const Box = styled.div`
     width: 100%;
@@ -400,7 +403,7 @@ const PolicyBox = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    background-color: var(--box2);
+    background-color: var(--boxColor);
     margin-top: 12px;
     border-radius: 8px;
     gap: 16px;
@@ -428,6 +431,7 @@ const PolicyBox = styled.div`
             color: var(--title);
             font-weight: 500;
             font-size: 18px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
             .unit{
                 position: absolute;
                 right: 14px;
@@ -537,6 +541,24 @@ const PolicyBox = styled.div`
         @media screen and (max-width: 768px) {
             font-size: 16px;
         }
+        @media screen and (max-width: 500px) {
+            &.mobile_column{
+                height: auto;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                .box{
+                    position: relative;
+                    top: none;
+                    transform: none;
+                    margin-top: 12px;
+                    width: 100%;
+                }
+                p.title {
+                    margin-top: 8px;
+                }
+            }
+        }
     }
     .line{
         width: 100%;
@@ -546,7 +568,8 @@ const PolicyBox = styled.div`
         color: var(--point);
     }
     @media screen and (max-width: 500px) {
-        padding: 8px;
+        padding: 16px;
+        height: auto;
     }
 `
 const BtnLine = styled.div`
@@ -563,7 +586,7 @@ const BtnLine = styled.div`
         font-size: 18px;
         padding: 6.5px 64px;
         border-radius: 6px;
-        background-color: var(--placeholder);
+        background-color: var(--boxColor2);
         border: 1.8px solid var(--line);
         @media screen and (max-width: 500px) {
             padding: 4px 32px;
@@ -595,12 +618,15 @@ const BottomBtnBox = styled.div`
         align-items: center;
         border-radius: 4px;
         font-size: 20px;
-        padding: 6px 0;
+        padding: 9px 0;
         outline: none;
         border: none;
         cursor: pointer;
         font-weight: 600;
         background-color: #D7D7D7;
+        &.request{
+            color: #000000;
+        }
     }
     button:nth-child(1){
         background-color: var(--point);
