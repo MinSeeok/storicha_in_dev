@@ -62,6 +62,9 @@ const LoginBox = () => {
             document.removeEventListener('mousedown', clickModalOutside);
         };
     });
+    React.useEffect(()=>{
+        localStorage.theme === 'light';
+    },[])
     // outside-click-function
     const clickModalOutside = (event:any) => {
         if(!loginBoxRef.current.contains(event.target)){
