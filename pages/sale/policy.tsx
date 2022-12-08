@@ -1,11 +1,13 @@
 import axios from 'axios';
 import Area from 'components/Area';
-import SalePolicyBox from 'components/PolicyBox';
+import SalePolicyBox from 'components/sale/PolicyBox';
 import { SalePolicyEnum } from 'enum/data-type';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useRecoilValue } from 'recoil';
+import { LoginState } from 'recoil/user';
 import styled from "styled-components";
 
 type IProgress = {
@@ -19,7 +21,16 @@ export default function SalePolicy(){
     const router = useRouter();
     const idx = router.asPath.substring(router.asPath.indexOf('idx=') !== -1 ? router.asPath.indexOf('idx=')+4 : router.asPath.length);
 
+    // get-login
+    const login = useRecoilValue(LoginState);
     const [contentData, setContentData] = React.useState<SalePolicyEnum | null>(null);
+
+    // exception-set
+    const [exception, setException] = React.useState<boolean>(false);
+
+    // exception-data
+    const [getException, setGetException] = React.useState<number>(0);
+
     const Progress: IProgress[] = [
         {state: "작성중", complete: 2, request: 1},
         {state: "검수중", complete: 2, request: 1},
@@ -34,6 +45,10 @@ export default function SalePolicy(){
             alert('올바르지 않은 접근입니다.')
             router.push('/');
         }
+        if(login === null || login === undefined){
+            alert('올바르지 않은 접근입니다.')
+            router.push('/');
+        }
         axios({
             method: 'GET',
             url:`https://api-v2.storicha.in/api/saleset?series_idx=${idx}`,
@@ -44,8 +59,43 @@ export default function SalePolicy(){
         })
         .catch((error) => {
             console.log(error);
-        })
+        });
     },[]);
+    // login-change => main
+    React.useEffect(()=> {
+        if(login === null || login === undefined){
+            router.push('/')
+        }
+    },[login])
+    // get-exception
+    React.useEffect(()=> {
+        if(contentData !== null){
+            axios({
+                method: 'GET',
+                url: `https://api-v2.storicha.in/api/sale-pricepolicy?set_idx=2&type_idx=3&delete_yn=N`,
+                withCredentials: true,
+            })
+            .then((response):any => {
+                setGetException(response.data.response_data_count);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        } 
+    },[contentData])
+    const renderException = () => {
+        let array = [];
+        for(let i = 0; i < getException; i++){
+            array.push(
+                <SalePolicyBox 
+                    kind={"exception"} 
+                    idx={contentData?.set_idx ? contentData?.set_idx - 1 : 0}
+                    count={i}
+                />
+            )
+        }
+        return array;
+    }
     return(
         <Area>
             <TopLine>
@@ -70,8 +120,8 @@ export default function SalePolicy(){
                         </svg>
                         내 책상
                     </button>
-                    <p onClick={()=>console.log(contentData)}><span>배급사</span> 씨엠닉스</p>
-                    <p><span>진행현황</span> 진행중</p>
+                    <p onClick={()=>console.log(getException)}><span>배급사</span> 씨엠닉스</p>
+                    <p onClick={()=>console.log(login)}><span>진행현황</span> 진행중</p>
                 </TopLightBox>
             </TopLine>
             <ProgressBarBox>
@@ -113,7 +163,7 @@ export default function SalePolicy(){
                         }
                         {
                             i !== 5 && (
-                                <BarLine id={i === 2 ? 'center' : ''}>
+                                <BarLine key={'bar'+i} id={i === 2 ? 'center' : ''}>
                                     <div className={`line${progress.complete}`}/>
                                 </BarLine>
                             )
@@ -121,10 +171,27 @@ export default function SalePolicy(){
                     </>
                 ))}
             </ProgressBarBox>
-            <SalePolicyBox 
-                kind={"basic"} 
-                idx={123}
-            />
+            {contentData?.set_idx ? (
+                <SalePolicyBox 
+                    kind={"basic"} 
+                    idx={contentData?.set_idx ? contentData?.set_idx - 1 : 0}
+                    count={0}
+                />
+            ) : ('')}            
+            <ExceptionSelect>
+                <p onClick={()=> console.log(getException)}>특정 에피소드만 예외가격으로 적용하고 싶나요?</p>
+                <label className='toggler-wrapper style-1'>
+                    <input type="checkbox" onChange={()=> setException((e) => !e)} />
+                    <div className="toggler-slider">
+                        <div className="toggler-knob"></div>
+                    </div>
+                </label>
+            </ExceptionSelect>
+            {exception && renderException()}
+            <BottomBtnBox>
+                <button onClick={()=> renderException()}>변경저장</button>
+                <button className='request'>판매요청</button>
+            </BottomBtnBox>
         </Area>
     )
 }
@@ -364,5 +431,87 @@ const BarLine = styled.div`
         &.line2{
             width: 100%;
         }
+    }
+`
+
+const ExceptionSelect = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 24px;
+    font-size: 22px;
+    margin-left: 4px;
+    color: var(--title);
+    .toggler-wrapper {
+        display: block;
+        width: 40px;
+        height: 20px;
+        cursor: pointer;
+        input[type="checkbox"] {
+            display: none;
+        }
+        input[type="checkbox"]:checked+.toggler-slider {
+            background-color: var(--point);
+        }
+        .toggler-slider{
+            background-color: #282828;
+            position: absolute;
+            border-radius: 100px;
+            top: 0;
+            left: 10px;
+            width: 100%;
+            height: 100%;
+            -webkit-transition: all 300ms ease;
+            transition: all 300ms ease;
+        }
+    }
+    .toggler-wrapper.style-1 {
+        input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+            left: calc(100% - 14px - 3px);
+        }
+        .toggler-knob {
+            width: calc(20px - 6px);
+            height: calc(20px - 6px);
+            border-radius: 50%;
+            left: 3px;
+            top: 3px;
+            background-color: #fff;
+        }
+    }
+    @media screen and (max-width: 768px) {
+        font-size: 18px;
+    }
+    @media screen and (max-width: 768px) {
+        font-size: 16px;
+    }
+`
+
+const BottomBtnBox = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    button {
+        width: calc(50% - 12px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        font-size: 20px;
+        padding: 9px 0;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        background-color: #D7D7D7;
+        &.request{
+            color: #000000;
+        }
+    }
+    button:nth-child(1){
+        background-color: var(--point);
+        color: #FFFFFF;
     }
 `

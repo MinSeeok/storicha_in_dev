@@ -116,3 +116,35 @@ export interface SalePolicyEnum{
     supply_images: SalePolicyImage[];
     update_date: string;
 }
+
+export interface GetPolicyData {
+    code_name: string;
+    code_name_en: string;
+    end_date: string;
+    keep_dc_price: number;
+    keep_price: number;
+    price_policy_idx: number;
+    price_policy_title: string;
+    rental_dc_price: number;
+    rental_price: number;
+    start_date: string;
+    use_yn: string;
+    wait_free_date: string;
+    wait_free_yn: string;
+}
+
+export interface GetExceptionPolicyData {
+    price_policy_idx: number;
+    code_name: string;
+    code_name_en: string;
+    price_policy_title: string;
+    use_yn: string;
+    keep_price: number;
+    rental_price: number;
+    keep_dc_price: number;
+    rental_dc_price: number;
+    start_date: string;
+    end_date: string;
+    wait_free_date: string | null;
+    wait_free_yn: string;
+}

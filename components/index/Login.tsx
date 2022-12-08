@@ -72,7 +72,7 @@ const LoginBox = () => {
             <DarkBox/>
             <Box ref={loginBoxRef}>
                 <div className="logo">
-                    {localStorage.theme === 'light' ? 
+                    {localStorage.theme === 'dark' ? 
                         <Image
                             src={'/images/logo/dark-logo.png'}
                             layout="fill"

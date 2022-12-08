@@ -479,7 +479,7 @@ const ContentLineBox = styled.div`
           color: var(--point);
         }
     }
-    @media screen and (max-width:1024px) {
+    @media screen and (max-width:768px) {
         width: 100%;
         display: flex;
         justify-content: flex-start;

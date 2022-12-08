@@ -739,7 +739,7 @@ const PlusMenu = styled.div`
         padding: 12px;
         border-radius: 8px;
         color: var(--title);
-        font-size: 18px;
+        font-size: 16px;
         overflow: hidden;
         cursor: pointer;
         display: flex;
@@ -807,7 +807,7 @@ const PlusMenu = styled.div`
             width: 100%;
             gap: 8px;
             padding: 8px 12px;
-            font-size: 18px;
+            font-size: 16px;
             color: var(--textColor2);
             cursor: pointer;
             transition: all .15s ease-in-out;

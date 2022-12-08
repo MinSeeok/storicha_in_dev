@@ -1,23 +1,63 @@
+import axios from 'axios';
+import { GetExceptionPolicyData, GetPolicyData } from 'enum/data-type';
 import moment from 'moment';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import styled from 'styled-components';
-import PriceSalePolicyData from '../json/sale/pricepolicy.json';
 
 interface kind{
     kind: string;
-    idx:number;
+    idx: number;
+    count: number;
 }
 
 const SalePolicyBox = (props:kind) => {
     const [exception, setException] = React.useState(false);
     const [onModify, setOnModify] = React.useState(false);
+    // getPolicy-data
+    const [policyData, setPolicyData] = React.useState<GetPolicyData | GetExceptionPolicyData |null>(null);
+    
+    // router
+    const router = useRouter();
+
     function onlyNumber(e: React.ChangeEvent<HTMLInputElement>){
         return e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
     }
-    const priceSalePolicy = PriceSalePolicyData;
     React.useEffect(()=>{
-        console.log(priceSalePolicy.response_data && moment(priceSalePolicy.response_data[0].wait_free_date).diff(moment(), 'days'));
+        if(props.idx === 0){
+            alert('잘못된 접근입니다.');
+            router.push('/');
+        }
+        if(props.kind === 'basic'){
+            axios({
+                method: 'GET',
+                url:`https://api-v2.storicha.in/api/sale-pricepolicy?set_idx=${props.idx}&type_idx=${props.kind === 'basic' ? 2 : 3}&delete_yn=N`,
+                withCredentials: true,
+            })
+            .then((response):any => {
+                setPolicyData(response.data.response_data[0]);
+            })
+            .catch((error) => {
+                setPolicyData(null);
+                console.log(error);
+            })
+        }
+        if(props.kind === 'exception'){
+            axios({
+                method: 'GET',
+                url: `https://api-v2.storicha.in/api/sale-pricepolicy?set_idx=2&type_idx=${props.kind === 'exception' ? 3 : 2}&delete_yn=N`,
+                withCredentials: true,
+            })
+            .then((response):any => {
+                console.log(`https://api-v2.storicha.in/api/sale-pricepolicy?set_idx=2&type_idx=${props.kind === 'exception' ? 3 : 2}&delete_yn=N`);
+                setPolicyData(response.data.response_data[props.count]);
+            })
+            .catch((error) => {
+                setPolicyData(null);
+                console.log(error);
+            })
+        }
     },[]);
     return(
         <>
@@ -26,11 +66,17 @@ const SalePolicyBox = (props:kind) => {
                     <Image
                         width={'24px'}
                         height={'24px'}
-                        src={'/images/icons/basicCost.svg'}
+                        src={props.kind === 'basic' ? '/images/icons/basicCost.svg' : '/images/icons/exceptionCost.svg'}
                     />
-                    <p>기본 가격 판매정책</p>
+                    <p onClick={()=> console.log(policyData)}>{props.kind === 'basic' ? '기본 가격 판매정책' : '예외 가격 판매정책'}</p>
                 </Title>
-                <SubTitle>본 세트에 포함 되는 모든 에피소드를 단일한 가격으 로 설정 합니다. 예외로 가격을 달리하고 싶은 에피소드가 있을 경우 아래 예외 가격 판매 정책에서 설정 하실 수 있습니다.</SubTitle>
+                <SubTitle>
+                    {
+                        props.kind === 'basic' ?
+                        '본 세트에 포함 되는 모든 에피소드를 단일한 가격으 로 설정 합니다. 예외로 가격을 달리하고 싶은 에피소드가 있을 경우 아래 예외 가격 판매 정책에서 설정 하실 수 있습니다' :
+                        '기본 가격 판매정책 보다 더 높거나 낮게 판매하고 싶은 에피소드가 있는 경우 이곳에서 설정합니다'
+                    }
+                </SubTitle>
                 <BoundaryLine/>
                 <AddPolicy>
                     판매 정책 추가
@@ -53,7 +99,7 @@ const SalePolicyBox = (props:kind) => {
                         <div className='box'>
                             <input 
                             type="text" 
-                            placeholder={"사랑과 악마"} 
+                            placeholder={(policyData?.code_name !== '') && (policyData?.code_name !== undefined)  ? policyData?.code_name : '제목이 존재하지 않습니다'} 
                             readOnly={onModify ? false : true}
                             />
                         </div>
@@ -65,7 +111,7 @@ const SalePolicyBox = (props:kind) => {
                             <input 
                             type="text" 
                             className='rightUnit' 
-                            placeholder={`${priceSalePolicy.response_data && priceSalePolicy.response_data[0].rental_price}`} 
+                            placeholder={`${(policyData?.rental_price !== 0) && (policyData?.rental_price !== undefined)  ? policyData?.rental_price : 0}`} 
                             readOnly={onModify ? false : true}
                             onChange={(event)=> onlyNumber(event)}
                             />
@@ -78,7 +124,7 @@ const SalePolicyBox = (props:kind) => {
                             <input 
                             type="text" 
                             className='rightUnit' 
-                            placeholder={`${priceSalePolicy.response_data && priceSalePolicy.response_data[0].rental_dc_price}`} 
+                            placeholder={`${(policyData?.rental_dc_price !== 0) && (policyData?.rental_dc_price !== undefined) ? policyData?.rental_dc_price : 0}`} 
                             readOnly={onModify ? false : true}
                             onChange={(event)=> onlyNumber(event)}
                             />
@@ -91,7 +137,7 @@ const SalePolicyBox = (props:kind) => {
                             <input 
                             type="text" 
                             className='rightUnit' 
-                            placeholder={`${priceSalePolicy.response_data && priceSalePolicy.response_data[0].keep_price}`} 
+                            placeholder={`${(policyData?.keep_price !== 0) && (policyData?.keep_price !== undefined) ? policyData?.keep_price : 0}`} 
                             readOnly={onModify ? false : true}
                             onChange={(event)=> onlyNumber(event)}
                             />
@@ -104,7 +150,7 @@ const SalePolicyBox = (props:kind) => {
                             <input 
                             type="text" 
                             className='rightUnit' 
-                            placeholder={`${priceSalePolicy.response_data && priceSalePolicy.response_data[0].keep_dc_price}`} 
+                            placeholder={`${(policyData?.keep_dc_price !== 0) && (policyData?.keep_dc_price !== undefined) ? policyData?.keep_dc_price : 0}`} 
                             readOnly={onModify ? false : true}
                             onChange={(event)=> onlyNumber(event)}
                             />
@@ -120,19 +166,19 @@ const SalePolicyBox = (props:kind) => {
                                 <div className="toggler-knob"></div>
                             </div>
                             </label>
-                            <p>{`${priceSalePolicy.response_data && moment(priceSalePolicy.response_data[0].wait_free_date).diff(moment(), 'days')}일 후 무료`}</p>
+                            <p>{`${policyData?.wait_free_date ? moment(policyData?.wait_free_date).diff(moment(), 'days') : 0}일 후 무료`}</p>
                         </div>
                     </div>
                     <div className='boxline mobile_column'>
                         <p className='title'>사용시작</p>
                         <div className='box'>
-                            <p>{priceSalePolicy.response_data && moment(String(priceSalePolicy.response_data[0].start_date)).format('YYYY-MM-DD')}</p>
+                            <p>{policyData?.start_date ? moment(policyData?.start_date).format('YYYY-MM-DD') : '0000-00-00'}</p>
                         </div>
                     </div>
                     <div className='boxline mobile_column'>
                         <p className='title'>사용종료</p>
                         <div className='box'>
-                            <p>{priceSalePolicy.response_data && moment(String(priceSalePolicy.response_data[0].end_date)).format('YYYY-MM-DD')}</p>
+                            <p>{policyData?.end_date ? moment(policyData?.end_date).format('YYYY-MM-DD') : '0000-00-00'}</p>
                         </div>
                     </div>
                     <BtnLine>
@@ -149,150 +195,6 @@ const SalePolicyBox = (props:kind) => {
                         <button>삭제하기</button>
                     </BtnLine>
                 </PolicyBox>
-                {props.kind === "basic" ? (
-                    <ExceptionSelect>
-                    <p>특정 에피소드만 예외가격으로 적용하고 싶나요?</p>
-                    <label className='toggler-wrapper style-1'>
-                        <input type="checkbox" onChange={()=> setException((e) => !e)} />
-                        <div className="toggler-slider">
-                            <div className="toggler-knob"></div>
-                        </div>
-                    </label>
-                    </ExceptionSelect>
-                ) : ""}
-                <ExceptionBox className={exception ? 'exceptionBox' : ''}>
-                    <Title style={{marginTop: "36px"}}>
-                        <Image
-                            width={'24px'}
-                            height={'24px'}
-                            src={'/images/icons/exceptionCost.svg'}
-                        />
-                        <p>예외 가격 판매 정책</p>
-                    </Title>
-                    <SubTitle>기본 가격 판매정책 보다 더 높거나 낮게 판매하고 싶은 에피소드가 있을 경우 이곳에서 설정합니다.</SubTitle>
-                    <BoundaryLine/>
-                    <AddPolicy>
-                        판매 정책 추가
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </AddPolicy>
-                    <PolicyBox>
-                    <div className='boxline'>
-                        사용여부
-                        <label className='toggler-wrapper style-1' style={{position: "absolute", right: "12px"}}>
-                        <input type="checkbox"/>
-                        <div className="toggler-slider">
-                            <div className="toggler-knob"></div>
-                        </div>
-                        </label>
-                    </div>
-                    <div className='boxline'>
-                        판매 정책 제목
-                        <div className='box'>
-                        <input 
-                            type="text" 
-                            placeholder={"사랑과 악마"} 
-                            readOnly={onModify ? false : true}
-                        />
-                        </div>
-                    </div>
-                    <div className='line'></div>
-                    <div className='boxline'>
-                        대여 정상가
-                        <div className='box'>
-                        <input 
-                            type="text" 
-                            className='rightUnit' 
-                            placeholder={"10"} 
-                            readOnly={onModify ? false : true}
-                            onChange={(event)=> onlyNumber(event)}
-                        />
-                        <span className='unit'>TC</span>
-                        </div>
-                    </div>
-                    <div className='boxline hot'>
-                        대여 할인가
-                        <div className='box'>
-                        <input 
-                            type="text" 
-                            className='rightUnit' 
-                            placeholder={"8"} 
-                            readOnly={onModify ? false : true}
-                            onChange={(event)=> onlyNumber(event)}
-                        />
-                        <span className='unit'>TC</span>
-                        </div>
-                    </div>
-                    <div className='boxline'>
-                        소장 정상가
-                        <div className='box'>
-                        <input 
-                            type="text" 
-                            placeholder={"10"} 
-                            className='rightUnit' 
-                            readOnly={onModify ? false : true}
-                            onChange={(event)=> onlyNumber(event)}
-                        />
-                        <span className='unit'>TC</span>
-                        </div>
-                    </div>
-                    <div className='boxline hot'>
-                        소장 할인가
-                        <div className='box'>
-                        <input 
-                            type="text"
-                            className='rightUnit' 
-                            placeholder={"8"} 
-                            readOnly={onModify ? false : true}
-                            onChange={(event)=> onlyNumber(event)}
-                        />
-                        <span className='unit'>TC</span>
-                        </div>
-                    </div>
-                    <div className='boxline mobile_column'>
-                        <p className='title'>기다리면 무료</p>
-                        <div className='box'>
-                        <label className='toggler-wrapper style-1' style={{marginLeft: "-20px"}}>
-                            <input type="checkbox"/>
-                            <div className="toggler-slider">
-                            <div className="toggler-knob"></div>
-                            </div>
-                        </label>
-                        <p>조회 후 2일 뒤</p>
-                        </div>
-                    </div>
-                    <div className='boxline mobile_column'>
-                        <p className='title'>사용시작</p>
-                        <div className='box'>
-                        <p>2022-06-31</p>
-                        </div>
-                    </div>
-                    <div className='boxline mobile_column'>
-                        <p className='title'>사용종료</p>
-                        <div className='box'>
-                        <p>2022-06-31</p>
-                        </div>
-                    </div>
-                    <BtnLine>
-                        <button onClick={()=>{
-                            setOnModify((e)=>!e);
-                            if(!onModify){
-                                alert("이제부터 수정하실 수 있습니다.");
-                            }else{
-                                alert("수정완료 되었습니다.");
-                            }
-                            }}>
-                            {!onModify ? "수정하기" : "수정완료"}
-                            </button>
-                        <button>삭제하기</button>
-                    </BtnLine>
-                    </PolicyBox>
-                </ExceptionBox>
-                <BottomBtnBox>
-                    <button>변경저장</button>
-                    <button className='request'>판매요청</button>
-                </BottomBtnBox>
             </Box>
         </>
     )
@@ -324,58 +226,6 @@ const SubTitle = styled.p`
     line-height: 20px;
     margin-top: 24px;
     color: var(--sub);
-`
-const ExceptionSelect = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 24px;
-    font-size: 22px;
-    margin-left: 4px;
-    color: var(--title);
-    .toggler-wrapper {
-        display: block;
-        width: 40px;
-        height: 20px;
-        cursor: pointer;
-        input[type="checkbox"] {
-            display: none;
-        }
-        input[type="checkbox"]:checked+.toggler-slider {
-            background-color: var(--point);
-        }
-        .toggler-slider{
-            background-color: #282828;
-            position: absolute;
-            border-radius: 100px;
-            top: 0;
-            left: 10px;
-            width: 100%;
-            height: 100%;
-            -webkit-transition: all 300ms ease;
-            transition: all 300ms ease;
-        }
-    }
-    .toggler-wrapper.style-1 {
-        input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
-            left: calc(100% - 14px - 3px);
-        }
-        .toggler-knob {
-            width: calc(20px - 6px);
-            height: calc(20px - 6px);
-            border-radius: 50%;
-            left: 3px;
-            top: 3px;
-            background-color: #fff;
-        }
-    }
-    @media screen and (max-width: 768px) {
-        font-size: 18px;
-    }
-    @media screen and (max-width: 768px) {
-        font-size: 16px;
-    }
 `
 const BoundaryLine = styled.div`
     width: 100%;
@@ -599,37 +449,5 @@ const BtnLine = styled.div`
         width: 24px;
         height: 24px;
         cursor: pointer;
-    }
-`
-const ExceptionBox = styled.div`
-    display: none;
-    flex-direction: column;
-`
-const BottomBtnBox = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 24px;
-    button {
-        width: calc(50% - 12px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 4px;
-        font-size: 20px;
-        padding: 9px 0;
-        outline: none;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        background-color: #D7D7D7;
-        &.request{
-            color: #000000;
-        }
-    }
-    button:nth-child(1){
-        background-color: var(--point);
-        color: #FFFFFF;
     }
 `
