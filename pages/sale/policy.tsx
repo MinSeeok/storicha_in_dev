@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Area from 'components/Area';
+import BasicPolicyBox from 'components/sale/BasicPolicyBox';
 import SalePolicyBox from 'components/sale/PolicyBox';
 import { SalePolicyEnum } from 'enum/data-type';
 import moment from 'moment';
@@ -171,6 +172,7 @@ export default function SalePolicy(){
                     </>
                 ))}
             </ProgressBarBox>
+            <BasicPolicyBox/>
             {contentData?.set_idx ? (
                 <SalePolicyBox 
                     kind={"basic"} 

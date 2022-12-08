@@ -68,7 +68,7 @@ const SalePolicyBox = (props:kind) => {
                         height={'24px'}
                         src={props.kind === 'basic' ? '/images/icons/basicCost.svg' : '/images/icons/exceptionCost.svg'}
                     />
-                    <p onClick={()=> console.log(policyData)}>{props.kind === 'basic' ? '기본 가격 판매정책' : '예외 가격 판매정책'}</p>
+                    <p onClick={()=> console.log(policyData)}>{props.kind === 'basic' ? '공통 가격정책' : '예외 가격 판매정책'}</p>
                 </Title>
                 <SubTitle>
                     {
