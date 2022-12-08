@@ -2,9 +2,10 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import * as React from 'react';
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { LoadingState } from "recoil/loading";
 import { LoginMadalState } from "recoil/loginModal";
+import { isThemeAtom } from "recoil/theme";
 import { LoginState } from "recoil/user";
 import styled from "styled-components";
 
@@ -72,21 +73,22 @@ const LoginBox = () => {
             <DarkBox/>
             <Box ref={loginBoxRef}>
                 <div className="logo">
-                    {localStorage.theme === 'dark' ? 
+                    {localStorage.theme === 'light' &&
                         <Image
                             src={'/images/logo/dark-logo.png'}
                             layout="fill"
                             objectFit="cover"
                             alt="logo"
                         />
-                    : (
+                    }
+                    {localStorage.theme === 'dark' &&
                         <Image
                             src={'/images/logo/white-logo.png'}
                             layout="fill"
                             objectFit="cover"
                             alt="logo"
                         />
-                    )}
+                    }
                 </div>
                 <h1 className="title" onClick={()=> console.log(localStorage.theme)}>SIGN IN<br/>TO CONTINUE</h1>
                     <input 
