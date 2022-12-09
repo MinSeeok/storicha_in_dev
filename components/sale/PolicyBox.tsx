@@ -50,7 +50,6 @@ const SalePolicyBox = (props:kind) => {
                 withCredentials: true,
             })
             .then((response):any => {
-                console.log(`https://api-v2.storicha.in/api/sale-pricepolicy?set_idx=2&type_idx=${props.kind === 'exception' ? 3 : 2}&delete_yn=N`);
                 setPolicyData(response.data.response_data[props.count]);
             })
             .catch((error) => {
@@ -69,6 +68,10 @@ const SalePolicyBox = (props:kind) => {
                         src={props.kind === 'basic' ? '/images/icons/basicCost.svg' : '/images/icons/exceptionCost.svg'}
                     />
                     <p onClick={()=> console.log(policyData)}>{props.kind === 'basic' ? '공통 가격정책' : '예외 가격 판매정책'}</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                    </svg>
+                    <div className='intro-text'>{props.kind === 'basic' ? '공통 가격정책' : '예외 가격 판매정책'}</div>
                 </Title>
                 <SubTitle>
                     {
@@ -80,13 +83,13 @@ const SalePolicyBox = (props:kind) => {
                 <BoundaryLine/>
                 <AddPolicy>
                     판매 정책 추가
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </AddPolicy>
                 <PolicyBox>
                     <div className='boxline'>
-                        사용여부
+                        사용여부 (IDX {policyData?.price_policy_idx})
                         <label className='toggler-wrapper style-1' style={{position: "absolute", right: "12px"}}>
                             <input type="checkbox"/>
                             <div className="toggler-slider">
@@ -98,9 +101,9 @@ const SalePolicyBox = (props:kind) => {
                         판매 정책 제목
                         <div className='box'>
                             <input 
-                            type="text" 
-                            placeholder={(policyData?.code_name !== '') && (policyData?.code_name !== undefined)  ? policyData?.code_name : '제목이 존재하지 않습니다'} 
-                            readOnly={onModify ? false : true}
+                                type="text" 
+                                placeholder={(policyData?.code_name !== '') && (policyData?.code_name !== undefined)  ? policyData?.code_name : '제목이 존재하지 않습니다'} 
+                                readOnly={onModify ? false : true}
                             />
                         </div>
                     </div>
@@ -109,11 +112,11 @@ const SalePolicyBox = (props:kind) => {
                         대여 정상가
                         <div className='box'>
                             <input 
-                            type="text" 
-                            className='rightUnit' 
-                            placeholder={`${(policyData?.rental_price !== 0) && (policyData?.rental_price !== undefined)  ? policyData?.rental_price : 0}`} 
-                            readOnly={onModify ? false : true}
-                            onChange={(event)=> onlyNumber(event)}
+                                type="text" 
+                                className='rightUnit' 
+                                placeholder={`${(policyData?.rental_price !== 0) && (policyData?.rental_price !== undefined)  ? policyData?.rental_price : 0}`} 
+                                readOnly={onModify ? false : true}
+                                onChange={(event)=> onlyNumber(event)}
                             />
                             <span className='unit'>TC</span>
                         </div>
@@ -122,11 +125,11 @@ const SalePolicyBox = (props:kind) => {
                         대여 할인가
                         <div className='box'>
                             <input 
-                            type="text" 
-                            className='rightUnit' 
-                            placeholder={`${(policyData?.rental_dc_price !== 0) && (policyData?.rental_dc_price !== undefined) ? policyData?.rental_dc_price : 0}`} 
-                            readOnly={onModify ? false : true}
-                            onChange={(event)=> onlyNumber(event)}
+                                type="text" 
+                                className='rightUnit' 
+                                placeholder={`${(policyData?.rental_dc_price !== 0) && (policyData?.rental_dc_price !== undefined) ? policyData?.rental_dc_price : 0}`} 
+                                readOnly={onModify ? false : true}
+                                onChange={(event)=> onlyNumber(event)}
                             />
                             <span className='unit'>TC</span>
                         </div>
@@ -135,11 +138,11 @@ const SalePolicyBox = (props:kind) => {
                         소장 정상가
                         <div className='box'>
                             <input 
-                            type="text" 
-                            className='rightUnit' 
-                            placeholder={`${(policyData?.keep_price !== 0) && (policyData?.keep_price !== undefined) ? policyData?.keep_price : 0}`} 
-                            readOnly={onModify ? false : true}
-                            onChange={(event)=> onlyNumber(event)}
+                                type="text" 
+                                className='rightUnit' 
+                                placeholder={`${(policyData?.keep_price !== 0) && (policyData?.keep_price !== undefined) ? policyData?.keep_price : 0}`} 
+                                readOnly={onModify ? false : true}
+                                onChange={(event)=> onlyNumber(event)}
                             />
                             <span className='unit'>TC</span>
                         </div>
@@ -148,11 +151,11 @@ const SalePolicyBox = (props:kind) => {
                         소장 할인가
                         <div className='box'>
                             <input 
-                            type="text" 
-                            className='rightUnit' 
-                            placeholder={`${(policyData?.keep_dc_price !== 0) && (policyData?.keep_dc_price !== undefined) ? policyData?.keep_dc_price : 0}`} 
-                            readOnly={onModify ? false : true}
-                            onChange={(event)=> onlyNumber(event)}
+                                type="text" 
+                                className='rightUnit' 
+                                placeholder={`${(policyData?.keep_dc_price !== 0) && (policyData?.keep_dc_price !== undefined) ? policyData?.keep_dc_price : 0}`} 
+                                readOnly={onModify ? false : true}
+                                onChange={(event)=> onlyNumber(event)}
                             />
                             <span className='unit'>TC</span>
                         </div>
@@ -214,10 +217,42 @@ const Title = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    height: 30px;
     font-size: 22px;
     color: var(--title);
     p{
         margin-left: 12px;
+    }
+    svg{
+        width: 20px;
+        height: 20px;
+        margin-left: 12px;
+        cursor: pointer;
+        :hover{
+            &+.intro-text{
+                display: block;
+            }
+        }
+    }
+    .intro-text{
+        padding: 8px 12px;
+        color: var(--boxColor);
+        background-color: var(--textColor);
+        margin-left: 10px;
+        font-size: 18px;
+        border-radius: 4px;
+        display: none;
+        ::after{
+            content: '';
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform:translate(50%,-50%) rotate(-45deg);
+            background-color: var(--textColor);
+            border-top-left-radius: 2px;
+        }
     }
 `
 const SubTitle = styled.p`
@@ -244,6 +279,11 @@ const AddPolicy = styled.p`
         svg {
             color: var(--title);
         }
+    }
+    svg{
+        margin-left: 6px;
+        width: 22px;
+        height: 22px;
     }
 `
 const PolicyBox = styled.div`

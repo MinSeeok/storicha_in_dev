@@ -1,43 +1,89 @@
 import styled from "styled-components";
-import AddPolicyBox from "./AddPolicyBox";
 import * as React from 'react';
+import moment from "moment";
 
-const BasicPolicyBox = () => {
-    const [addOn, setAddon] = React.useState<boolean>(false);
+const AddPolicyBox = () => {
+    const [title, setTitle] = React.useState<string>('');
+    const [rental, setRental] = React.useState<string>('');
+    const [dcRental, setDcRental] = React.useState<string>('');
+    const [keep, setKeep] = React.useState<string>('');
+    const [dcKeep, setDcKeep] = React.useState<string>('');
+    const [waitFree, setWaitFree] = React.useState(moment().format('YYYY-MM-DD'));
+    const [freeSet, setFreeSet] = React.useState<boolean>(true);
+    const [start, setStart] = React.useState<any>(moment().format('YYYY-MM-DD'));
+    const [end, setEnd] = React.useState<any>('0000-00-00');
+
+    const onChange = (event:any) => {
+        const {
+            target: { name, value }
+        } = event;
+        if(name === 'title'){
+            setTitle(value);
+        }
+        if(name === 'rental'){
+            setRental(value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/(^0+)/, ""));
+        }
+        if(name === 'dcRental'){
+            setDcRental(value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/(^0+)/, ""));
+        }
+        if(name === 'keep'){
+            setKeep(value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/(^0+)/, ""));
+        }
+        if(name === 'dcKeep'){
+            setDcKeep(value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/(^0+)/, ""));
+        }
+        if(name === 'start-date'){
+            if(value < start){
+                return alert('과거 날짜는 선택할 수 없습니다');
+            }
+            setStart(value);
+        }
+        if(name === 'end-date'){
+            if(start === '0000-00-00'){
+                return alert('시작일을 먼저 선택하신 후 지정할 수 있습니다')
+            }
+            if(value < start){
+                return alert('시작일보다 과거 날짜는 선택할 수 없습니다');
+            }
+            setEnd(value);
+        }
+        if(name === 'wait-free'){
+            if(value < moment().format('YYYY-MM-DD')){
+                return alert('오늘보다 과거 날짜는 선택할 수 없습니다');
+            }
+            setWaitFree(value);
+        }
+    }
+
     return (
         <Box style={{maxWidth: '1200px'}}> 
-            <AddPolicy>
-                판매 정책 추가
-                {addOn ? (
-                    <svg onClick={()=> setAddon(e => !e)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                ) : (
-                    <svg onClick={()=> setAddon(e => !e)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                )}
-            </AddPolicy>
-            {addOn  && (<AddPolicyBox/>)}
             <PolicyBox>
                 <div className='boxline'>
-                    디폴트 가격
+                    가격정책 추가하기
                 </div>
                 <div className='line'></div>
-                <div className='boxline mobile_column'>
-                        <p className='title'>판매 정책 제목</p>
-                        <div className='box'>
-                            <p>{`사랑과악마`}</p>
-                        </div>
+                <div className='boxline'>
+                    판매정책 제목
+                    <div className='box'>
+                        <input 
+                            type="text" 
+                            className='' 
+                            name="title"
+                            value={title}
+                            onChange={onChange}
+                        />
                     </div>
+                </div>
                 <div className='boxline'>
                     대여 정상가
                     <div className='box'>
                         <input 
                             type="text" 
-                            className='rightUnit'  
-                            readOnly={false}
-                            value={'0'}
+                            className='rightUnit'
+                            placeholder="0"
+                            name='rental' 
+                            value={rental}
+                            onChange={onChange}
                         />
                         <span className='unit'>TC</span>
                     </div>
@@ -47,9 +93,11 @@ const BasicPolicyBox = () => {
                     <div className='box'>
                         <input 
                             type="text" 
-                            className='rightUnit'  
-                            readOnly={true}
-                            value={'123'}
+                            className='rightUnit'
+                            placeholder="0"
+                            name="dcRental"
+                            value={dcRental}
+                            onChange={onChange}
                         />
                         <span className='unit'>TC</span>
                     </div>
@@ -59,9 +107,11 @@ const BasicPolicyBox = () => {
                     <div className='box'>
                         <input 
                             type="text" 
-                            className='rightUnit' 
-                            readOnly={true}
-                            value={'123'}
+                            className='rightUnit'
+                            placeholder="0"
+                            name="keep"
+                            value={keep}
+                            onChange={onChange}
                         />
                         <span className='unit'>TC</span>
                     </div>
@@ -71,46 +121,69 @@ const BasicPolicyBox = () => {
                     <div className='box'>
                         <input 
                             type="text" 
-                            className='rightUnit' 
-                            readOnly={true}
-                            value={'123'}
+                            className='rightUnit'
+                            placeholder="0"
+                            name="dcKeep"
+                            value={dcKeep}
+                            onChange={onChange}
                         />
                         <span className='unit'>TC</span>
                     </div>
                 </div>
+                <div className='boxline'>
+                    기다리면 무료
+                    <div className='box'>
+                        <input 
+                            type="date" 
+                            className='date-type' 
+                            name="wait-free"
+                            value={waitFree}
+                            onChange={onChange}
+                        />
+                    </div>
+                </div>
+                <div className='boxline'>
+                    기다리면 무료 세팅 여부
+                    <div className="on-off" onClick={()=> setFreeSet(e=>!e)}>
+                        <button className={`on ${freeSet ? 'free' : ''}`}>ON</button>
+                        <button className={`off ${freeSet ? '' : 'free'}`}>OFF</button>
+                    </div>
+                </div>
+                <div className='boxline'>
+                    사용시작
+                    <div className='box'>
+                        <input 
+                            type="date" 
+                            className='date-type' 
+                            name="start-date"
+                            value={start}
+                            onChange={onChange}
+                        />
+                    </div>
+                </div>
+                <div className='boxline'>
+                    사용종료
+                    <div className='box'>
+                        <input 
+                            type="date" 
+                            className='date-type' 
+                            name="end-date"
+                            value={end}
+                            onChange={onChange}
+                        />
+                    </div>
+                </div>
+                <button className="add-policy-box">정책추가</button>
             </PolicyBox>
         </Box>
     )
 }
 
-export default BasicPolicyBox;
-
 const Box = styled.div`
     width: 100%;
-    margin-top: 42px;
     color: var(--title);
     .exceptionBox{
         display: flex;
-    }
-`
-const AddPolicy = styled.p`
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 20px;
-    margin-top: 12px;
-    span{
-        margin-left: 8px;
-        svg {
-            color: var(--title);
-        }
-    }
-    svg{
-        margin-left: 6px;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
     }
 `
 const PolicyBox = styled.div`
@@ -207,6 +280,10 @@ const PolicyBox = styled.div`
                 &.rightUnit{
                     padding-right: 24px;
                 }
+                &.date-type{
+                    letter-spacing: -.4px;
+                    cursor: pointer;
+                }
                 ::placeholder{
                     color: var(--title);
                 }
@@ -255,6 +332,27 @@ const PolicyBox = styled.div`
                 background-color: #fff;
             }
         }
+        .on-off{
+            position: absolute;
+            right: 0px;
+            height: 38.66px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--box1);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: rgb(0 0 0 / 10%) 0px 1px 3px 0px, rgb(0 0 0 / 6%) 0px 1px 2px 0px;
+            button {
+                width: 68px;
+                height: 100%;
+                cursor: pointer;
+                &.free{
+                    background-color: var(--point);
+                    color: #FFFFFF;
+                }
+            }
+        }
         @media screen and (max-width: 768px) {
             font-size: 16px;
         }
@@ -288,6 +386,14 @@ const PolicyBox = styled.div`
         padding: 16px;
         height: auto;
     }
+    .add-policy-box{
+        padding: 10.5px;
+        width: 100%;
+        background-color: var(--point);
+        color: #FFFFFF;
+        cursor: pointer;
+        border-radius: 4px;
+    }
 `
 const BtnLine = styled.div`
     width: 100%;
@@ -318,3 +424,5 @@ const BtnLine = styled.div`
         cursor: pointer;
     }
 `
+
+export default AddPolicyBox;

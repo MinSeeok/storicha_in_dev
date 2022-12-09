@@ -16,14 +16,22 @@ export const ThemeNavigation = () => {
         if(value === 'light'){
             localStorage.theme = 'light';
             document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
             setShowBox(false);
             return;
         }
         localStorage.theme = 'dark';
+        document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
         setShowBox(false);
         return;
     };
+    React.useEffect(()=> {
+        localStorage.theme = 'light';
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        setShowBox(false);
+    },[]);
     return (
         <>
             <Container color={isPointTheme} style={showBox ? { right: '0px' } : { right: '-303px' }}>
