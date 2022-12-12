@@ -13,7 +13,6 @@ interface kind{
 }
 
 const SalePolicyBox = (props:kind) => {
-    const [exception, setException] = React.useState(false);
     const [onModify, setOnModify] = React.useState(false);
     // getPolicy-data
     const [policyData, setPolicyData] = React.useState<GetPolicyData | GetExceptionPolicyData |null>(null);

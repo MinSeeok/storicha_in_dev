@@ -2,8 +2,8 @@ import styled from "styled-components";
 import * as React from 'react';
 import moment from "moment";
 
-const AddPolicyBox = () => {
-    const [title, setTitle] = React.useState<string>('');
+const AddPolicyBox = ({title}:any) => {
+    const [policyTitle, setPolicyTitle] = React.useState<string>('');
     const [rental, setRental] = React.useState<string>('');
     const [dcRental, setDcRental] = React.useState<string>('');
     const [keep, setKeep] = React.useState<string>('');
@@ -18,7 +18,7 @@ const AddPolicyBox = () => {
             target: { name, value }
         } = event;
         if(name === 'title'){
-            setTitle(value);
+            setPolicyTitle(value);
         }
         if(name === 'rental'){
             setRental(value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/(^0+)/, ""));
@@ -54,12 +54,21 @@ const AddPolicyBox = () => {
             setWaitFree(value);
         }
     }
-
+    React.useEffect(()=>{
+        setPolicyTitle(title);
+    },[]);
     return (
         <Box style={{maxWidth: '1200px'}}> 
             <PolicyBox>
                 <div className='boxline'>
                     가격정책 추가하기
+                    <span style={{position: 'absolute', right: '50px'}}>사용여부</span>
+                    <label className='toggler-wrapper style-1' style={{position: "absolute", right: "12px"}}>
+                        <input type="checkbox"/>
+                        <div className="toggler-slider">
+                        <div className="toggler-knob"></div>
+                        </div>
+                    </label>
                 </div>
                 <div className='line'></div>
                 <div className='boxline'>
@@ -69,7 +78,7 @@ const AddPolicyBox = () => {
                             type="text" 
                             className='' 
                             name="title"
-                            value={title}
+                            value={policyTitle}
                             onChange={onChange}
                         />
                     </div>
@@ -131,6 +140,19 @@ const AddPolicyBox = () => {
                     </div>
                 </div>
                 <div className='boxline'>
+                    기다리면 무료 세팅 여부
+                    {/* <div className="on-off" onClick={()=> setFreeSet(e=>!e)}>
+                        <button className={`on ${freeSet ? 'free' : ''}`}>ON</button>
+                        <button className={`off ${freeSet ? '' : 'free'}`}>OFF</button>
+                    </div> */}
+                    <label className='toggler-wrapper style-1' style={{position: "absolute", right: "12px"}}>
+                        <input type="checkbox"/>
+                        <div className="toggler-slider">
+                        <div className="toggler-knob"></div>
+                        </div>
+                    </label>
+                </div>
+                <div className='boxline'>
                     기다리면 무료
                     <div className='box'>
                         <input 
@@ -140,13 +162,6 @@ const AddPolicyBox = () => {
                             value={waitFree}
                             onChange={onChange}
                         />
-                    </div>
-                </div>
-                <div className='boxline'>
-                    기다리면 무료 세팅 여부
-                    <div className="on-off" onClick={()=> setFreeSet(e=>!e)}>
-                        <button className={`on ${freeSet ? 'free' : ''}`}>ON</button>
-                        <button className={`off ${freeSet ? '' : 'free'}`}>OFF</button>
                     </div>
                 </div>
                 <div className='boxline'>

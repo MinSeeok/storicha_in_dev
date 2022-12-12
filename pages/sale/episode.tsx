@@ -1,7 +1,11 @@
 import AddContentBox from 'components/AddContentBox';
 import Area from 'components/Area';
+import SaleTop from 'components/sale/SaleTop';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { LoginState } from 'recoil/user';
 import styled from 'styled-components';
 
 interface StoryDataInterface{
@@ -21,6 +25,10 @@ interface StoryDataInterface{
 }
 
 export default function SaleEpisode(){
+
+    // get Idx
+    const router = useRouter();
+    const idx = router.asPath.substring(router.asPath.indexOf('idx=') !== -1 ? router.asPath.indexOf('idx=')+4 : router.asPath.length);
     const addStory:StoryDataInterface[] = [
         // number: 에피소드 번호, title: 제목, policy: 판매정책, rent: 대여가, rentSale: 대여할인가, own: 소장가, ownSale: 소장할인가
         {img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif", idx: "f4e8fc25-7601-4846-8644-21bdbf17be3f", number: 0, title: "재니와의 만남", policy: 0, rent: 8, rentSale: 18, own: 18, ownSale: 18 ,textCount: 25112, artworkCount: 5, sceneCount: 2, characterCount: 10},
@@ -28,9 +36,13 @@ export default function SaleEpisode(){
         {img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif", idx: "61ef7a72-795b-4ef8-8e79-b2ff7c43f7e6", number: 3, title: "엄마가 적이 되다", policy: 0, rent: 8, rentSale: 18, own: 18, ownSale: 18 ,textCount: 25112, artworkCount: 5, sceneCount: 2, characterCount: 10},
         {img: "4beab4b1b4486f76581b8b75d8041717a030eff8.gif", idx: "6c875b05-9717-4d18-83fc-6eb6a49f776d", number: 4, title: "아이러니 - 착오가 곧 성공 ...", policy: 0, rent: 8, rentSale: 18, own: 18, ownSale: 18 ,textCount: 25112, artworkCount: 5, sceneCount: 2, characterCount: 10},
     ]
+
+    // get-login
+    const login = useRecoilValue(LoginState);
     const sortKind = ["최신순","가나다순","공개순","비공개순","팔로워 공개 순","초대된 사람만 순"];
     const [sort, setSort] = useState<string>("최신 순");
     const [sortOn, setSortOn] = useState<boolean>(false);
+
     const storyList = [
         // public: 0-공개 / 1-비공개 / 2-팔로워에게만공개 / 3-초대된사람만
         {
@@ -95,6 +107,15 @@ export default function SaleEpisode(){
     }
     const listBoxRef = useRef<Array<HTMLDivElement | null>>([]);
     useEffect(()=>{
+        // a wrong approach
+        if(idx === ''){
+            alert('올바르지 않은 접근입니다.')
+            router.push('/');
+        }
+        if(login === null || login === undefined){
+            alert('올바르지 않은 접근입니다.')
+            router.push('/');
+        }
         document.addEventListener("mousedown", handleClickOutside);
     },[]);
     const handleClickOutside =(e:any)=>{
@@ -110,127 +131,129 @@ export default function SaleEpisode(){
         }
     }
     return(
-        <Area>
-            <TopBox>
-                <p className='title'>판매 할 에피소드로 추가한 스토리 ( {addStory.length} )</p>
-                <p className='subtitle'>에피소드 번호를 입력 해 주세요. 미 입력시 맨 마지막에 노출 됩니다.</p>
-                {addStory.map((content, i) => (
-                    <AddContentBox {...content} key={i}/>
-                ))}
-                <p className='pagingList'>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                  </svg>
-                  <b onClick={()=> alert("페이징처리")}>1</b>
-                  <b onClick={()=> alert("페이징처리")}>2</b>
-                  <b onClick={()=> alert("페이징처리")}>3</b>
-                  <b onClick={()=> alert("페이징처리")}>4</b>
-                  <b onClick={()=> alert("페이징처리")}>5</b>
-                  <b onClick={()=> alert("페이징처리")}>6</b>
-                  <b onClick={()=> alert("페이징처리")}>7</b>
-                  <b onClick={()=> alert("페이징처리")}>8</b>
-                  <b onClick={()=> alert("페이징처리")}>9</b>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                  </svg>
-                </p>
-            </TopBox>
-            <ContentBox>
-                <p className='title'>내 책상의 스토리 전체목록</p>
-                <p className='subtitle'>에피소드로써 판매할 스토리를 이 시리즈에 추가 하세요. 추가(플러스 버튼)을 누르면 판매할 에피소드로 추가 됩니다.</p>
-                <div className='topLine'>
-                <span className='left'>
-                    <b>전체 스토리</b> ( {storyList.length * 10 + 1} )
-                </span>
-                <div className='center'>
-                    <input type="text" placeholder='스토리 찾기'/>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                    </svg>
-                </div>
-                <div className='right' onClick={()=>setSortOn((e) => !e)} ref={el => (listBoxRef.current[0] = el)}>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
-                  </svg>
-                    {sort}
-                    {sortOn && (
-                    <div className='sortBox'>
-                        {sortKind.map((content, i)=>(
-                        <p 
-                            key={i}
-                            className={'kindValue'}
-                        >{content}
-                        </p>
-                        ))}
+        <>
+            <SaleTop/>
+            <Area>
+                <TopBox>
+                    <p className='title'>판매 할 에피소드로 추가한 스토리 ( {addStory.length} )</p>
+                    <p className='subtitle'>에피소드 번호를 입력 해 주세요. 미 입력시 맨 마지막에 노출 됩니다.</p>
+                    {addStory.map((content, i) => (
+                        <AddContentBox {...content} key={i}/>
+                    ))}
+                    <p className='pagingList'>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                      </svg>
+                      <b onClick={()=> alert("페이징처리")}>1</b>
+                      <b onClick={()=> alert("페이징처리")}>2</b>
+                      <b onClick={()=> alert("페이징처리")}>3</b>
+                      <b onClick={()=> alert("페이징처리")}>4</b>
+                      <b onClick={()=> alert("페이징처리")}>5</b>
+                      <b onClick={()=> alert("페이징처리")}>6</b>
+                      <b onClick={()=> alert("페이징처리")}>7</b>
+                      <b onClick={()=> alert("페이징처리")}>8</b>
+                      <b onClick={()=> alert("페이징처리")}>9</b>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
+                    </p>
+                </TopBox>
+                <ContentBox>
+                    <p className='title'>내 책상의 스토리 전체목록</p>
+                    <p className='subtitle'>에피소드로써 판매할 스토리를 이 시리즈에 추가 하세요. 추가(플러스 버튼)을 누르면 판매할 에피소드로 추가 됩니다.</p>
+                    <div className='topLine'>
+                    <span className='left'>
+                        <b>전체 스토리</b> ( {storyList.length * 10 + 1} )
+                    </span>
+                    <div className='center'>
+                        <input type="text" placeholder='스토리 찾기'/>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
                     </div>
-                    )}
-                </div>
-                </div>
-                {storyList.map((content, i) => (
-                    <ContentLine key={i}>
-                        <ContentLineBox>
-                            <ContentImg>
-                                <Image
-                                    src={`/images/test/${content.img}`}
-                                    layout='fill'
-                                    objectFit='contain'
-                                />
-                            </ContentImg>
-                            <p className='title'>
-                                {content.title.length > 9 ? content.title.slice(0,9)+"..." : content.title}&nbsp;
-                                <span>
-                                {/* public: 0-공개 / 1-비공개 / 2-팔로워에게만공개 / 3-초대된사람만 */}
-                                {
-                                    content.public === 0 ? "( 공개 )" :
-                                    content.public === 1 ? "( 비공개 )" :
-                                    content.public === 2 ? "( 팔로워 공개 )" :
-                                    content.public === 3 && "( 초대된 사람 )"
-                                }
-                                </span>
+                    <div className='right' onClick={()=>setSortOn((e) => !e)} ref={el => (listBoxRef.current[0] = el)}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                      </svg>
+                        {sort}
+                        {sortOn && (
+                        <div className='sortBox'>
+                            {sortKind.map((content, i)=>(
+                            <p 
+                                key={i}
+                                className={'kindValue'}
+                            >{content}
                             </p>
-                        </ContentLineBox>
-                        <ContentLineBox className='secondBox'>
-                            <span className='link'>{content.link}</span>
-                            <div className='svg-box'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="copyOutline" onClick={copyLink}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="AddCircleOutline">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                        </ContentLineBox>
-                    </ContentLine>
-                ))}
-                <p className='pagingList'>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                  </svg>
-                  <b onClick={()=> alert("페이징처리")}>1</b>
-                  <b onClick={()=> alert("페이징처리")}>2</b>
-                  <b onClick={()=> alert("페이징처리")}>3</b>
-                  <b onClick={()=> alert("페이징처리")}>4</b>
-                  <b onClick={()=> alert("페이징처리")}>5</b>
-                  <b onClick={()=> alert("페이징처리")}>6</b>
-                  <b onClick={()=> alert("페이징처리")}>7</b>
-                  <b onClick={()=> alert("페이징처리")}>8</b>
-                  <b onClick={()=> alert("페이징처리")}>9</b>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                  </svg>
-                </p>
-            </ContentBox>
-            <BottomBtnBox>
-                <button>가격 정책 관리로 가기</button>
-                <button>나의 책상으로 돌아가기</button>
-            </BottomBtnBox>
-        </Area>
+                            ))}
+                        </div>
+                        )}
+                    </div>
+                    </div>
+                    {storyList.map((content, i) => (
+                        <ContentLine key={i}>
+                            <ContentLineBox>
+                                <ContentImg>
+                                    <Image
+                                        src={`/images/test/${content.img}`}
+                                        layout='fill'
+                                        objectFit='contain'
+                                    />
+                                </ContentImg>
+                                <p className='title'>
+                                    {content.title.length > 9 ? content.title.slice(0,9)+"..." : content.title}&nbsp;
+                                    <span>
+                                    {/* public: 0-공개 / 1-비공개 / 2-팔로워에게만공개 / 3-초대된사람만 */}
+                                    {
+                                        content.public === 0 ? "( 공개 )" :
+                                        content.public === 1 ? "( 비공개 )" :
+                                        content.public === 2 ? "( 팔로워 공개 )" :
+                                        content.public === 3 && "( 초대된 사람 )"
+                                    }
+                                    </span>
+                                </p>
+                            </ContentLineBox>
+                            <ContentLineBox className='secondBox'>
+                                <span className='link'>{content.link}</span>
+                                <div className='svg-box'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="copyOutline" onClick={copyLink}>
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="AddCircleOutline">
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </ContentLineBox>
+                        </ContentLine>
+                    ))}
+                    <p className='pagingList'>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                      </svg>
+                      <b onClick={()=> alert("페이징처리")}>1</b>
+                      <b onClick={()=> alert("페이징처리")}>2</b>
+                      <b onClick={()=> alert("페이징처리")}>3</b>
+                      <b onClick={()=> alert("페이징처리")}>4</b>
+                      <b onClick={()=> alert("페이징처리")}>5</b>
+                      <b onClick={()=> alert("페이징처리")}>6</b>
+                      <b onClick={()=> alert("페이징처리")}>7</b>
+                      <b onClick={()=> alert("페이징처리")}>8</b>
+                      <b onClick={()=> alert("페이징처리")}>9</b>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
+                    </p>
+                </ContentBox>
+                <BottomBtnBox>
+                    <button>가격 정책 관리로 가기</button>
+                    <button>나의 책상으로 돌아가기</button>
+                </BottomBtnBox>
+            </Area>
+        </>
     )
 }
 
 const TopBox = styled.div`
     padding: 12px;
-    padding-top: 20px;
     width: 100%;
     height: auto;
     display: flex;

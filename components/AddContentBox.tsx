@@ -25,52 +25,52 @@ export default function AddContentBox(props:any){
     }
     return(
         <AddContent>
-        <div className='left'>
-            <AddImageBox>
-                <Image
-                    src={`/images/test/${props.img}`}
-                    layout='fill'
-                    objectFit='contain'
-                />
-            </AddImageBox>
-            <span className='epText'>EP</span>
-            <input type="text" placeholder={props.number !== 0 ? String(props.number) : "에피소드 번호"}/>
-            <p className='title'>{props.title.length < 10 ? props.title : props.title.slice(0,10)+"..."}</p>
-            <p className='mobileTitle'>{props.title}</p>
-            <p className='underText'>글자수 ({props.textCount})&nbsp;&nbsp;삽화수({props.artworkCount})&nbsp;&nbsp;장면수({props.sceneCount})&nbsp;&nbsp;캐릭터수({props.characterCount})</p>
-            <p className='mobileUnderText'>글자수 ({props.textCount})&nbsp;&nbsp;삽화수({props.artworkCount})<br/>장면수({props.sceneCount})&nbsp;&nbsp;캐릭터수({props.characterCount})</p>
-        </div>
-        <div className='right'>
-            <div className='selectPrice'>
-            <span onClick={()=> setBoxView((e)=>!e)}>
-              적용된 판매정책 : 기본가격 
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            <div className='left'>
+                <AddImageBox>
+                    <Image
+                        src={`/images/test/${props.img}`}
+                        layout='fill'
+                        objectFit='contain'
+                    />
+                </AddImageBox>
+                <span className='epText'>EP</span>
+                <input type="text" placeholder={props.number !== 0 ? String(props.number) : "에피소드 번호"}/>
+                <p className='title'>{props.title.length < 10 ? props.title : props.title.slice(0,10)+"..."}</p>
+                <p className='mobileTitle'>{props.title}</p>
+                <p className='underText'>글자수 ({props.textCount})&nbsp;&nbsp;삽화수({props.artworkCount})&nbsp;&nbsp;장면수({props.sceneCount})&nbsp;&nbsp;캐릭터수({props.characterCount})</p>
+                <p className='mobileUnderText'>글자수 ({props.textCount})&nbsp;&nbsp;삽화수({props.artworkCount})<br/>장면수({props.sceneCount})&nbsp;&nbsp;캐릭터수({props.characterCount})</p>
+            </div>
+            <div className='right'>
+                <div className='selectPrice'>
+                <span onClick={()=> setBoxView((e)=>!e)}>
+                  적용된 판매정책 : 기본가격 
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg>
+                </span>
+                <SelectPriceBox className={boxView ? "selectPriceBoxView" : ""}>
+                    <p>기본 가격정책 적용</p>
+                    <p>예외 가격정책 적용</p>
+                    <p>012 글자수 많은...</p>
+                    <p>010 단행 본 가격...</p>
+                    <p>009 드라마 대본...</p>
+                    <p>무료 가격정책 적용</p>
+                </SelectPriceBox>
+                </div>
+                <div className='top'>
+                    <span><b>대여가: </b>&nbsp; {props.rent}TC</span>
+                    <span><b>대여할인가: </b>&nbsp; {props.rentSale}TC</span>
+                </div>
+                <div className='bottom'>
+                    <span><b>소장가: </b>&nbsp; {props.own} TC</span>
+                    <span><b>소장가: </b>&nbsp; {props.ownSale} TC</span>
+                </div>
+            </div>
+            <AddCircle>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="removeBtn" onClick={RemoveStory}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-            </span>
-            <SelectPriceBox className={boxView ? "selectPriceBoxView" : ""}>
-                <p>기본 가격정책 적용</p>
-                <p>예외 가격정책 적용</p>
-                <p>012 글자수 많은...</p>
-                <p>010 단행 본 가격...</p>
-                <p>009 드라마 대본...</p>
-                <p>무료 가격정책 적용</p>
-            </SelectPriceBox>
-            </div>
-            <div className='top'>
-                <span><b>대여가: </b>&nbsp; {props.rent}TC</span>
-                <span><b>대여할인가: </b>&nbsp; {props.rentSale}TC</span>
-            </div>
-            <div className='bottom'>
-                <span><b>소장가: </b>&nbsp; {props.own} TC</span>
-                <span><b>소장가: </b>&nbsp; {props.ownSale} TC</span>
-            </div>
-        </div>
-        <AddCircle>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="removeBtn" onClick={RemoveStory}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </AddCircle>
+            </AddCircle>
         </AddContent>
     )
 }

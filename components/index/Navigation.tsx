@@ -16,6 +16,7 @@ import { LoginMadalState } from 'recoil/loginModal';
 
 const Navigation = () => {
     const isPointTheme = useRecoilValue(isPointThemeAtom);
+    const [myCopy, setMyCopy] = React.useState<boolean>(true);
     const [claim, setClaim] = React.useState<boolean>(false);
     const [more, setMore] = React.useState<boolean>(false);
     const login = useRecoilValue(LoginState);
@@ -132,13 +133,13 @@ const Navigation = () => {
                                     </svg>
                                     나의 프로필
                                 </div>
-                                <div onClick={() => routerPathChange('/')}>
+                                <div onClick={() => routerPathChange('/cash/cashwallet')}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
                                     </svg>
                                     나의 캐시 지갑
                                 </div>
-                                <div onClick={() => routerPathChange('/')}>
+                                <div onClick={() => routerPathChange('/cash/topup')}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 7.5l.415-.207a.75.75 0 011.085.67V10.5m0 0h6m-6 0h-1.5m1.5 0v5.438c0 .354.161.697.473.865a3.751 3.751 0 005.452-2.553c.083-.409-.263-.75-.68-.75h-.745M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
@@ -150,7 +151,7 @@ const Navigation = () => {
                                     </svg>
                                     롤체인지
                                 </div>
-                                <div onClick={() => routerPathChange('/')}>
+                                <div onClick={() => router.push('https://storicha.in/profile/setting')}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -158,10 +159,10 @@ const Navigation = () => {
                                     설정
                                 </div>
                                 <div onClick={() => routerPathChange('/')}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                                    </svg>
-                                    부가 정보
+                                    </svg> */}
+                                    　
                                 </div>
                                 <div style={{borderTop: '1px solid #c8c8c8', justifyContent: 'center'}} onClick={doLogout}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -177,56 +178,8 @@ const Navigation = () => {
                 </div>
             </TopContainer>
             <Container color={isPointTheme} style={leftView ? {left: '0px'} : {left: '-300px'}}>
-                <ProfileBox 
-                    color={isPointTheme}
-                >
-                    <div>
-                        <div className='back'/>
-                        <div className='profileImage'>
-                            <Image
-                                width={'50px'}
-                                height={'50px'}
-                                src={ProfileImage}
-                            />
-                        </div>
-                        <h4><b>BONGS LEE</b><br/>ADMIN</h4>
-                    </div>
-                </ProfileBox>
                 <MenuBox color={isPointTheme}>
-                    <div className='wrapper no-sub'>
-                        <div className='background'/>
-                        <div className='box'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-                            </svg>
-                            <p className='head'>나의 저작재산권</p>
-                        </div>
-                    </div>
-                    <div className='wrapper' id='issuance-of-copyright'>
-                        <div className='background'/>
-                        <div className='box'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                            </svg>
-                            <p className='head'>저작재산권 발행</p>
-                        </div>
-                        <div className='sub-text'>
-                            <p>NFT 기반 IP를 발행 하세요</p>
-                        </div>
-                    </div>
-                    <div className='wrapper'>
-                        <div className='background'/>
-                        <div className='box'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                            </svg>
-                            <p className='head'>발행된 저작재산권</p>
-                        </div>
-                        <div className='sub-text'>
-                            <p>발행된 NFT를 확인, 계약, 기능 실행</p>
-                        </div>
-                    </div>
-                    <div className='wrapper'>
+                    <div className='wrapper' style={{marginTop: '4px'}}>
                         <div className='background'/>
                         <div className='box'>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -235,14 +188,46 @@ const Navigation = () => {
                             </svg>
                             <p className='head'>공개된 저작재산권</p>
                         </div>
-                        <div className='sub-text'>
-                            <p>타인이 공개한 저작재산권을 확인햐세요</p>
-                        </div>
                     </div>
                     <PlusMenu color={isPointTheme}>
                         <div 
+                            className={`head ${myCopy ? 'focus' : ''}`} 
+                            onClick={()=> setMyCopy(e => !e)}
+                            style={{marginTop:'4px'}}
+                        >
+                            <div className='background'/>
+                            <svg style={{marginRight: '6px'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                            </svg>
+                            <p>나의 저작재산권</p>
+                            <svg className='right' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
+                        <div className='content-box' style={myCopy ? {maxHeight: '100vh', display: 'flex', padding: '8px'} : {}}>
+                            <div className='content'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" />
+                                </svg>
+                                <p>저작재산권 발행</p>
+                                <div className='sub-text'>
+                                    <p>NFT 기반 IP를 발행 하세요</p>
+                                </div>
+                            </div>
+                            <div className='content'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                <p>발행된 저작재산권</p>
+                                <div className='sub-text'>
+                                    <p>발행된 NFT를 확인, 계약, 기능 실행</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div 
                             className={`head ${claim ? 'focus' : ''}`} 
                             onClick={()=> setClaim(e => !e)}
+                            style={{marginTop: '8px'}}
                         >
                             <div className='background'/>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="left">
@@ -253,7 +238,7 @@ const Navigation = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </div>
-                        <div className='content-box' style={claim ? {maxHeight: '100vh'} : {}}>
+                        <div className='content-box' style={claim ? {maxHeight: '100vh', display: 'flex', padding: '8px'} : {}}>
                             <div className='content'>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" />
@@ -311,7 +296,7 @@ const Navigation = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </div>
-                        <div className='content-box' style={more ? {maxHeight: '100vh'} : {}}>
+                        <div className='content-box' style={more ? {maxHeight: '100vh', display: 'flex', padding: '8px'} : {}}>
                             <div className='content' onClick={() => Router.push('https://storicha.in/home')}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" />
@@ -327,6 +312,22 @@ const Navigation = () => {
                         </div>
                     </PlusMenu>
                 </MenuBox>
+                <ProfileBox 
+                    color={isPointTheme}
+                    onClick={()=>console.log(login)}
+                >
+                    <div>
+                        <div className='back'/>
+                        <div className='profileImage'>
+                            <Image
+                                width={'50px'}
+                                height={'50px'}
+                                src={ProfileImage}
+                            />
+                        </div>
+                        <h4><b>BONGS LEE</b><br/>ADMIN</h4>
+                    </div>
+                </ProfileBox>
             </Container>
             {loginModal && <LoginBox/>}
         </>
@@ -523,7 +524,6 @@ const Container = styled.div`
     color: var(--title);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     background-color: var(--box1);
-    padding: 24px 0;
     transition: all .2s ease-in-out;
     @media (max-width: 1280px) {
         display: none;
@@ -545,6 +545,8 @@ const Container = styled.div`
 
 const ProfileBox = styled.div`
     width: 100%;
+    position: absolute;
+    bottom: 64px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -598,12 +600,11 @@ const ProfileBox = styled.div`
 
 const MenuBox = styled.div`
     width: 100%;
-    margin-top: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 8px;
+    gap: 4px;
     padding: 8px;
     .wrapper{
         top: 0;
@@ -640,7 +641,6 @@ const MenuBox = styled.div`
             gap: 6px;
             padding: 12px;
             cursor: pointer;
-            overflow: hidden;
             border-radius: 8px;
             svg{
                 width: 22px;
@@ -649,7 +649,7 @@ const MenuBox = styled.div`
             .head{
                 font-size: 16px;
             }
-            ::after{
+            /* ::after{
                 content: '';
                 position: absolute;
                 left: 0;
@@ -659,7 +659,7 @@ const MenuBox = styled.div`
                 background-color: ${props=>props.color};
                 transition: all .5s ease-in-out;
                 transform: translateX(-110%);
-            }
+            } */
         }
         .background{
             position: absolute;
@@ -670,29 +670,7 @@ const MenuBox = styled.div`
             border-radius: 8px;
             background-color: var(--box1);
         }
-        .sub-text{
-            position: absolute;
-            right: 0;
-            padding: 8px;
-            background-color: ${props=>props.color};
-            color: #FFFFFF;
-            font-size: 15px;
-            transform: translateX(calc(100% - 12px));
-            border-radius: 6px;
-            display: none;
-            transition: all .15s ease-in-out;
-            ::after{
-                content: '';
-                position: absolute;
-                top: 8px;
-                left: -4px;
-                width: 8px;
-                height: 8px;
-                transform: rotate(45deg);
-                background-color: ${props=>props.color};
-                border-bottom-left-radius: 2px;
-            }
-        }
+
         @keyframes shakeIcon {
             0%{
                 transform: rotate(-20deg);
@@ -723,6 +701,20 @@ const MenuBox = styled.div`
             }
             100%{
                 transform: rotate(0deg);
+            }
+        }
+        &.sub{
+            height: 40px;
+            .background{
+                height: 40px;
+            }
+            .box{
+                padding: 8px 20px;
+                height: 40px;
+                svg{
+                    width: 20px;
+                    height: 20px;
+                }
             }
         }
     }
@@ -792,8 +784,7 @@ const PlusMenu = styled.div`
     .content-box{
         width: 100%;
         max-height: 0px;
-        overflow: hidden;
-        display: flex;
+        display: none;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
@@ -817,6 +808,34 @@ const PlusMenu = styled.div`
             }
             :hover{
                 color: var(--title);
+                .sub-text{
+                    display: block;
+                }
+            }
+        }
+        .sub-text{
+            position: absolute;
+            right: 0px;
+            bottom: 0;
+            padding: 8px;
+            background-color: ${props=>props.color};
+            color: #FFFFFF;
+            font-size: 15px;
+            border-radius: 6px;
+            display: none;
+            transition: all .15s ease-in-out;
+            z-index: 999999;
+            transform: translateX(100%);
+            ::after{
+                content: '';
+                position: absolute;
+                top: 30%;
+                left: -4px;
+                width: 8px;
+                height: 8px;
+                transform: rotate(45deg);
+                background-color: ${props=>props.color};
+                border-bottom-left-radius: 2px;
             }
         }
     }

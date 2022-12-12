@@ -2,6 +2,7 @@ import axios from 'axios';
 import Area from 'components/Area';
 import BasicPolicyBox from 'components/sale/BasicPolicyBox';
 import SalePolicyBox from 'components/sale/PolicyBox';
+import SaleTop from 'components/sale/SaleTop';
 import { SalePolicyEnum } from 'enum/data-type';
 import moment from 'moment';
 import Image from 'next/image';
@@ -98,103 +99,106 @@ export default function SalePolicy(){
         return array;
     }
     return(
-        <Area>
-            <TopLine>
-                <TitleImgBox>
-                    <Image
-                        src={`/images/test/95ec9d3731d6eeef263b52761a6a12543f07cb8f.gif`}
-                        layout='fill'
-                        objectFit='cover'
+        <>
+            <SaleTop/>
+            <Area>
+                <TopLine>
+                    <TitleImgBox>
+                        <Image
+                            src={`/images/test/95ec9d3731d6eeef263b52761a6a12543f07cb8f.gif`}
+                            layout='fill'
+                            objectFit='cover'
+                        />
+                    </TitleImgBox>
+                    <TitleTextBox>
+                        <h2>{contentData?.series_title ? contentData?.series_title : 'None-Title'}</h2>
+                        <p>
+                            최종 임시 저장일 &nbsp;&nbsp;{contentData?.selling_start_date ? moment(contentData.selling_start_date).format('YYYY-MM-DD HH:SS') : 'NONE-DATE'}<br/>
+                            최종 판매 승인일 &nbsp;&nbsp;{contentData?.update_date ? moment(contentData.update_date).format('YYYY-MM-DD HH:SS') : 'NONE-DATE'}
+                        </p>
+                    </TitleTextBox>
+                    <TopLightBox>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
+                            </svg>
+                            내 책상
+                        </button>
+                        <p onClick={()=>console.log(getException)}><span>배급사</span> 씨엠닉스</p>
+                        <p onClick={()=>console.log(login)}><span>진행현황</span> 진행중</p>
+                    </TopLightBox>
+                </TopLine>
+                <ProgressBarBox>
+                    {Progress.map((progress, i) => (
+                        <>
+                            {
+                                progress.complete === 0 && (
+                                    <Line key={i}>
+                                        <ProgressBox>
+                                            <Empty/>
+                                            <p>{progress.state}</p>
+                                        </ProgressBox>
+                                    </Line>
+                                )
+                            }
+                            {
+                                progress.complete === 1 && (
+                                    <Line key={i}>
+                                        <ProgressBox>
+                                            <FullCircle/>
+                                            <p>{progress.state}</p>
+                                        </ProgressBox>
+                                    </Line>
+                                )
+                            }
+                            {
+                                progress.complete === 2 && (
+                                    <Line key={i}>
+                                        <ProgressBox>
+                                        <FullCircle>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                            </svg>
+                                        </FullCircle>
+                                            <p>{progress.state}</p>
+                                        </ProgressBox>
+                                    </Line>
+                                )
+                            }
+                            {
+                                i !== 5 && (
+                                    <BarLine key={'bar'+i} id={i === 2 ? 'center' : ''}>
+                                        <div className={`line${progress.complete}`}/>
+                                    </BarLine>
+                                )
+                            }
+                        </>
+                    ))}
+                </ProgressBarBox>
+                <BasicPolicyBox/>
+                {contentData?.set_idx ? (
+                    <SalePolicyBox 
+                        kind={"basic"} 
+                        idx={contentData?.set_idx ? contentData?.set_idx - 1 : 0}
+                        count={0}
                     />
-                </TitleImgBox>
-                <TitleTextBox>
-                    <h2>{contentData?.series_title ? contentData?.series_title : 'None-Title'}</h2>
-                    <p>
-                        최종 임시 저장일 &nbsp;&nbsp;{contentData?.selling_start_date ? moment(contentData.selling_start_date).format('YYYY-MM-DD HH:SS') : 'NONE-DATE'}<br/>
-                        최종 판매 승인일 &nbsp;&nbsp;{contentData?.update_date ? moment(contentData.update_date).format('YYYY-MM-DD HH:SS') : 'NONE-DATE'}
-                    </p>
-                </TitleTextBox>
-                <TopLightBox>
-                    <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
-                        </svg>
-                        내 책상
-                    </button>
-                    <p onClick={()=>console.log(getException)}><span>배급사</span> 씨엠닉스</p>
-                    <p onClick={()=>console.log(login)}><span>진행현황</span> 진행중</p>
-                </TopLightBox>
-            </TopLine>
-            <ProgressBarBox>
-                {Progress.map((progress, i) => (
-                    <>
-                        {
-                            progress.complete === 0 && (
-                                <Line key={i}>
-                                    <ProgressBox>
-                                        <Empty/>
-                                        <p>{progress.state}</p>
-                                    </ProgressBox>
-                                </Line>
-                            )
-                        }
-                        {
-                            progress.complete === 1 && (
-                                <Line key={i}>
-                                    <ProgressBox>
-                                        <FullCircle/>
-                                        <p>{progress.state}</p>
-                                    </ProgressBox>
-                                </Line>
-                            )
-                        }
-                        {
-                            progress.complete === 2 && (
-                                <Line key={i}>
-                                    <ProgressBox>
-                                    <FullCircle>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                        </svg>
-                                    </FullCircle>
-                                        <p>{progress.state}</p>
-                                    </ProgressBox>
-                                </Line>
-                            )
-                        }
-                        {
-                            i !== 5 && (
-                                <BarLine key={'bar'+i} id={i === 2 ? 'center' : ''}>
-                                    <div className={`line${progress.complete}`}/>
-                                </BarLine>
-                            )
-                        }
-                    </>
-                ))}
-            </ProgressBarBox>
-            <BasicPolicyBox/>
-            {contentData?.set_idx ? (
-                <SalePolicyBox 
-                    kind={"basic"} 
-                    idx={contentData?.set_idx ? contentData?.set_idx - 1 : 0}
-                    count={0}
-                />
-            ) : ('')}            
-            <ExceptionSelect>
-                <p onClick={()=> console.log(getException)}>특정 에피소드만 예외가격으로 적용하고 싶나요?</p>
-                <label className='toggler-wrapper style-1'>
-                    <input type="checkbox" onChange={()=> setException((e) => !e)} />
-                    <div className="toggler-slider">
-                        <div className="toggler-knob"></div>
-                    </div>
-                </label>
-            </ExceptionSelect>
-            {exception && renderException()}
-            <BottomBtnBox>
-                <button onClick={()=> renderException()}>변경저장</button>
-                <button className='request'>판매요청</button>
-            </BottomBtnBox>
-        </Area>
+                ) : ('')}            
+                <ExceptionSelect>
+                    <p onClick={()=> console.log(getException)}>특정 에피소드만 예외가격으로 적용하고 싶나요?</p>
+                    <label className='toggler-wrapper style-1'>
+                        <input type="checkbox" onChange={()=> setException((e) => !e)} />
+                        <div className="toggler-slider">
+                            <div className="toggler-knob"></div>
+                        </div>
+                    </label>
+                </ExceptionSelect>
+                {exception && renderException()}
+                <BottomBtnBox>
+                    <button onClick={()=> renderException()}>변경저장</button>
+                    <button className='request'>판매요청</button>
+                </BottomBtnBox>
+            </Area>
+        </>
     )
 }
 const TopLine = styled.div`

@@ -75,7 +75,8 @@ const Cash:NextPage = () => {
                         alert('잔액이 존재하지 않습니다');
                         return;
                     }
-                    setBalance(response.data && response.data.response_data.Topup + response.data.response_data.Subscription + response.data.response_data.Bonus);
+                    // setBalance(response.data && response.data.response_data.Topup + response.data.response_data.Subscription + response.data.response_data.Bonus);
+                    console.log(response.data)
                 })
             } catch(e) {
                 setError(e);

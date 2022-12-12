@@ -7,7 +7,8 @@ import LoadingContainer from 'components/LoadingBox';
 import type { AppProps } from 'next/app';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useSetRecoilState } from 'recoil';
+import { LoginMadalState } from 'recoil/loginModal';
 import '../src/styles/globals.css';
 
 const queryClient = new QueryClient();
