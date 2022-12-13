@@ -9,7 +9,6 @@ export const ThemeNavigation = () => {
     const setPointAtom = useSetRecoilState(isPointThemeAtom);
     const isPointTheme = useRecoilValue(isPointThemeAtom);
 
-
     const setLoginMenuState = useSetRecoilState(LoginMenuState);
 
     const themeChange = (color: string) => {
@@ -41,7 +40,7 @@ export const ThemeNavigation = () => {
     const setThemeState = useSetRecoilState(ThemeChangeState);
     return (
         <>
-            <Container color={isPointTheme} style={themeState ? { right: '0px' } : { right: '-303px' }}>
+            <Container color={isPointTheme} style={themeState ? { right: '0px' } : { right: 'calc(-100% + 3px)' }}>
                 <div className="head">
                     <h1>테마 설정</h1>
                     <svg onClick={() => setThemeState(false)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -100,6 +99,9 @@ const Container = styled.div`
     align-items: center;
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     transition: all .15s ease-in-out;
+    @media screen and (max-width: 500px) {
+        width: 100%;
+    }
     
     button{
         position: absolute;

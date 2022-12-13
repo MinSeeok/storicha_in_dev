@@ -41,6 +41,8 @@ const Navigation = () => {
     // Enable idx presence
     const idx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
 
+    let [windowWidth, setWindowWidth] = React.useState<number>(0);;
+
     const doLogout = () => {
         setLoadState(true);
         axios({
@@ -56,14 +58,15 @@ const Navigation = () => {
     React.useEffect(()=>{
         login === null ? setLoginState(false) : setLoginState(true);
         setLoginMenuState(false);
-        if(window.innerWidth >= 1280){
+        setWindowWidth(window.innerWidth);
+        if(windowWidth >= 1280){
             setLeftView(true);
         }
     },[]);
     React.useEffect(()=>{
         login === null ? setLoginState(false) : setLoginState(true);
         setLoginMenuState(false);
-        if(window.innerWidth >= 1280){
+        if(windowWidth >= 1280){
             setLeftView(true);
         }
     },[login]);
@@ -93,6 +96,24 @@ const Navigation = () => {
         Router.push(`/${path}`);
     }
     const setThemeState = useSetRecoilState(ThemeChangeState);
+
+    const seeLoginMenuState = () => {
+        if(windowWidth <= 1280){
+            setLeftView(false);
+        }
+        setLoginMenuState((e:any) => !e); 
+    }
+
+    const seeTheme = () => {
+        setThemeState(true);
+        if(windowWidth <= 1280){
+            setLeftView(false);
+        }
+    }
+    const seeNavigation = () => {
+        setLeftView((e:any)=>!e);
+        loginMenuState && setLoginMenuState(false);
+    }
     return(
         <>
             <TopContainer>
@@ -103,7 +124,7 @@ const Navigation = () => {
                             layout="fill"
                             objectFit="cover"
                             alt="logo"
-                            onClick={()=> setLeftView(e => !e)}
+                            onClick={seeNavigation}
                         />
                     </div>
                     <div className="logo-two">
@@ -112,12 +133,12 @@ const Navigation = () => {
                             layout="fill"
                             objectFit="cover"
                             alt="logo"
-                            onClick={()=> setLeftView(e => !e)}
+                            onClick={seeNavigation}
                         />
                     </div>
                     <span className="title" onClick={()=> router.push('/')}>IP Manager</span>
                     <div className="search">
-                        <input type="text" placeholder="search.."/>
+                        <input type="text" placeholder={`search...${windowWidth}`}/>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
@@ -134,7 +155,7 @@ const Navigation = () => {
                                     alt='user'
                                 />
                             </div>
-                            <span className='email' onClick={()=> setLoginMenuState((e: any) => !e)}>
+                            <span className='email' onClick={()=> seeLoginMenuState()}>
                                 {loginState !== null && login?.site_user_id}
                                 <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -172,7 +193,7 @@ const Navigation = () => {
                                     </svg>
                                     설정
                                 </div>
-                                <div onClick={() => setThemeState(true)}>
+                                <div onClick={() => seeTheme()}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" />
                                     </svg>
@@ -441,6 +462,7 @@ const TopContainer = styled.div`
             align-items: flex-start;
             overflow: hidden;
             transition: all .2s ease-in-out;
+            z-index: 999999;
             div{
                 width: 100%;
                 color: var(--title);
