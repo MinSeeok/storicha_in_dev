@@ -144,8 +144,8 @@ const Cash:NextPage = () => {
                                 alt='Image'
                             />
                             &nbsp;
-                            {String(balance).replace(/[^0-9]/g, '').replace(/(^0+)/, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                            <span onClick={()=> console.log(productIdx, pricePolicy, fillupAmount, cashBuyType)}>TC</span>
+                            {balance !== 0 ? String(balance).replace(/[^0-9]/g, '').replace(/(^0+)/, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                            <span onClick={()=> console.log(balance)}>TC</span>
                         </Title>
                         <TopupBoxTop>
                             <Directly

@@ -25,6 +25,7 @@ export default function CashWallet(){
             const getDataSecond = await axios.get(
                 'https://api-v2.storicha.in/api/wallet-history/1?display_yn=y&product_id=0',{withCredentials:true}
             )
+            console.log(getDataSecond);
             setUsageDetails(getDataSecond.data);
         } catch(e) {
             setError(e);

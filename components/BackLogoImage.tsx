@@ -25,7 +25,7 @@ const BackImage = styled.div`
         min-height: 500px;
         top: 50%;
         transform: translate(-30px, calc(-50% + 10px));
-        filter: var(--invert) blur(2px);
+        filter: var(--invert);
     }
     @media screen and (max-width: 1024px) {
         display: none; 

@@ -59,14 +59,14 @@ const Navigation = () => {
         login === null ? setLoginState(false) : setLoginState(true);
         setLoginMenuState(false);
         setWindowWidth(window.innerWidth);
-        if(windowWidth >= 1280){
+        if(window.innerWidth >= 1280){
             setLeftView(true);
         }
     },[]);
     React.useEffect(()=>{
         login === null ? setLoginState(false) : setLoginState(true);
         setLoginMenuState(false);
-        if(windowWidth >= 1280){
+        if(window.innerWidth >= 1280){
             setLeftView(true);
         }
     },[login]);
@@ -106,6 +106,7 @@ const Navigation = () => {
 
     const seeTheme = () => {
         setThemeState(true);
+        setLoginMenuState(false);
         if(windowWidth <= 1280){
             setLeftView(false);
         }
@@ -138,7 +139,7 @@ const Navigation = () => {
                     </div>
                     <span className="title" onClick={()=> router.push('/')}>IP Manager</span>
                     <div className="search">
-                        <input type="text" placeholder={`search...${windowWidth}`}/>
+                        <input type="text" placeholder={`search...`}/>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>

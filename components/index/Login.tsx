@@ -23,6 +23,7 @@ const LoginBox = () => {
     const setLoginModal = useSetRecoilState(LoginMadalState);
 
     const stateChange = (event:any) => {
+        console.log(event.target.value);
         event.target.name === 'email' && setInputEmail(event.target.value);
         event.target.name === 'password' && setInputPassword(event.target.value);
     }
@@ -55,6 +56,13 @@ const LoginBox = () => {
         })
         setLoadState(false);
     }
+
+    const handleKeyPress = (e:any) => {
+        if(e.key === 'Enter'){
+            setLoginState();
+        }
+    }
+
     // outside-click-sensing
     React.useEffect(() => {
         document.addEventListener('mousedown', clickModalOutside);
@@ -102,6 +110,7 @@ const LoginBox = () => {
                         autoComplete="off" 
                         style={{marginTop: '24px'}}
                         onChange={stateChange}
+                        onKeyPress={handleKeyPress}
                     />
                     <input 
                         name="password"
@@ -109,6 +118,7 @@ const LoginBox = () => {
                         autoComplete="off" 
                         value={inputPassword}
                         onChange={stateChange}
+                        onKeyPress={handleKeyPress}
                     />
                     <p className="error">{errorMassage}</p>
                     <button className="login-btn" onClick={setLoginState}>LOGIN</button>
