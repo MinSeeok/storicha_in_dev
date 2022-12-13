@@ -566,7 +566,7 @@ const Container = styled.div`
     position: fixed;
     left: 0px;
     width: 280px;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
