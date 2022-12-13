@@ -26,6 +26,7 @@ const Box = styled.div`
     img{
         cursor: pointer;
         height: 70vh;
+        min-height: 500px;
         margin-top: 100px;
     }
     @media screen and (max-width: 768px) {

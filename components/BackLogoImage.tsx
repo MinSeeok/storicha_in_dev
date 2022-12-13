@@ -22,11 +22,12 @@ const BackImage = styled.div`
         position: absolute;
         right: 0;
         height: 45vh;
+        min-height: 500px;
         top: 50%;
         transform: translate(-30px, calc(-50% + 10px));
-        filter: var(--invert);
+        filter: var(--invert) blur(2px);
     }
     @media screen and (max-width: 1024px) {
-        display: none;
+        display: none; 
     }
 `
