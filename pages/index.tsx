@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import HelmetProvier from 'components/Helmet';
 import Router from 'next/router';
 
-export default function Home(props:any){
+export default function Home(){
     return (
         <>
             <HelmetProvier title='IP Manager'/>

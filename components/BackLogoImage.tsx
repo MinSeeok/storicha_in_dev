@@ -19,11 +19,12 @@ const BackImage = styled.div`
     filter: blur(0px);
     pointer-events: none;
     img{
-      position: absolute;
-      right: 0;
-      height: 45vh;
-      top: 50%;
-      transform: translate(-30px, calc(-50% + 10px));
+        position: absolute;
+        right: 0;
+        height: 45vh;
+        top: 50%;
+        transform: translate(-30px, calc(-50% + 10px));
+        filter: var(--invert);
     }
     @media screen and (max-width: 1024px) {
         display: none;

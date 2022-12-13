@@ -2,42 +2,44 @@ import { useRecoilValue, useSetRecoilState } from "recoil"
 import { isPointThemeAtom } from "recoil/theme"
 import styled from "styled-components"
 import * as React from 'react'
+import { ThemeChangeState } from "recoil/themeChange"
 
 export const ThemeNavigation = () => {
     const setPointAtom = useSetRecoilState(isPointThemeAtom);
     const isPointTheme = useRecoilValue(isPointThemeAtom);
-    const [showBox, setShowBox] = React.useState<boolean>(false);
 
     const themeChange = (color: string) => {
         setPointAtom(color);
-        setShowBox(false)
+        setThemeState(false)
     }
     const themeHandler = (value:string) => {
         if(value === 'light'){
             localStorage.theme = 'light';
             document.documentElement.classList.remove('dark');
             document.documentElement.classList.add('light');
-            setShowBox(false);
+            setThemeState(false);
             return;
         }
         localStorage.theme = 'dark';
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
-        setShowBox(false);
+        setThemeState(false);
         return;
     };
     React.useEffect(()=> {
         localStorage.theme = 'light';
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
-        setShowBox(false);
+        setThemeState(false);
     },[]);
+    const themeState = useRecoilValue(ThemeChangeState);
+    const setThemeState = useSetRecoilState(ThemeChangeState);
     return (
         <>
-            <Container color={isPointTheme} style={showBox ? { right: '0px' } : { right: '-303px' }}>
+            <Container color={isPointTheme} style={themeState ? { right: '0px' } : { right: '-303px' }}>
                 <div className="head">
                     <h1>테마 설정</h1>
-                    <svg onClick={() => setShowBox(false)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <svg onClick={() => setThemeState(false)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </div>
@@ -75,11 +77,6 @@ export const ThemeNavigation = () => {
                         <div onClick={()=> themeChange('#1e272e')} style={{ backgroundColor:'#1e272e' }}/>
                     </div>
                 </div>
-                <button color={isPointTheme} onClick={() => setShowBox(true)} style={showBox ? {display: "none"} : {display: 'block'}}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" />
-                    </svg>
-                </button>
             </Container>
         </>
     )
@@ -90,7 +87,7 @@ const Container = styled.div`
     height: 100vh;
     right: 0;
     z-index: 9999999;
-    background-color: #FFFFFF;
+    background-color: var(--box1);
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -146,6 +143,7 @@ const Container = styled.div`
         padding: 20px;
         font-weight: 700;
         border-bottom: 1px solid #e3e3e3;
+        color: var(--title);
         h1{
             font-size: 20px;
         }
@@ -188,6 +186,7 @@ const Container = styled.div`
         justify-content: center;
         align-items: flex-start;
         padding: 20px;
+        color: var(--title);
         h2{
           font-size: 20px;
           font-weight: 500;
@@ -201,7 +200,8 @@ const Container = styled.div`
             gap: 16px;
             div {
                 width: 100%;
-                box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+                /* box-shadow: var(--title) 0px 2px 6px, var(--icon1) 0px 1px 2px; */
+                border: var(--title) 1.4px solid;
                 border-radius: 12px;
                 display: flex;
                 flex-direction: column;
@@ -216,7 +216,7 @@ const Container = styled.div`
                     height: 26px;
                 }
                 &:hover{
-                    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                    box-shadow: var(--title) 0px 3px 8px;
                 }
                 p{
                     font-family: 'Pretendard-Regular';
@@ -234,6 +234,7 @@ const Container = styled.div`
         align-items: flex-start;
         padding: 20px;
         margin-top: 24px;
+        color: var(--title);
         h2{
             font-size: 20px;
             font-weight: 500;

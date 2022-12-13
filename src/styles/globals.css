@@ -24,11 +24,13 @@
 body[data-theme="dark"]{
     --bg-main: #111111;
     --bg-sub: #333333;
+    --invert: invert(100%);
 }
 
 body[data-theme="light"]{
     --bg-main: #ffffff;
     --bg-sub: #bdc1c9;
+    --invert: invert(0%);
 }
 
 html{
@@ -74,6 +76,7 @@ html{
     --modalSlideBg: #F6F8FA;
     --titleBold: #1A1B1C;
     --iconAccent: #E45059;
+    --invert: invert(0%);
 }
 html.dark{
     --title: white;
@@ -119,4 +122,5 @@ html.dark{
     --modalSlideBg: #242528;
     --titleBold: #1A1B1C;
     --iconAccent: #FFBE7C;
+    --invert: invert(100%);
 }

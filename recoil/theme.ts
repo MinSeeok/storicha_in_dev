@@ -1,7 +1,8 @@
 import { atom } from "recoil";
+import uuid from 'react-uuid'
 
 export const DarkState = atom({
-    key: 'dark',
+    key: `dark/${uuid()}`,
     default: {
         bgColor: '#1F1F1F',
         boxColor: '#141414',
@@ -53,7 +54,7 @@ export const DarkState = atom({
 })
 
 export const LightState = atom({
-    key: 'light',
+    key: `light/${uuid()}`,
     default: {
         bgColor: '#F6F5F3',
         boxColor: '#EAEAEA',
@@ -103,16 +104,16 @@ export const LightState = atom({
 })
 
 export const isThemeAtom = atom<boolean>({
-    key: 'isTheme',
+    key: `isTheme/${uuid()}`,
     default: true,
 })
 
 export const isPointThemeAtom = atom<string>({
-    key: `isTheme`,
+    key: `isTheme/${uuid()}`,
     default: '#1e272e',
 })
 
 export const isMobileAtom = atom<Boolean | Boolean[] | undefined>({
-    key: `isMobile`,
+    key: `isMobile/${uuid()}`,
     default: false,
 })
