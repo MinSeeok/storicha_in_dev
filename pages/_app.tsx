@@ -15,6 +15,11 @@ const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
     // testMessege **
+    React.useEffect(()=> {
+        localStorage.theme = 'light';
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+    },[]);
     return (
         <>
             <RecoilRoot>

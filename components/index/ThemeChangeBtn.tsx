@@ -3,14 +3,19 @@ import { isPointThemeAtom } from "recoil/theme"
 import styled from "styled-components"
 import * as React from 'react'
 import { ThemeChangeState } from "recoil/themeChange"
+import { LoginMenuState } from "recoil/loginMenu"
 
 export const ThemeNavigation = () => {
     const setPointAtom = useSetRecoilState(isPointThemeAtom);
     const isPointTheme = useRecoilValue(isPointThemeAtom);
 
+
+    const setLoginMenuState = useSetRecoilState(LoginMenuState);
+
     const themeChange = (color: string) => {
         setPointAtom(color);
         setThemeState(false)
+        setLoginMenuState(false);
     }
     const themeHandler = (value:string) => {
         if(value === 'light'){
@@ -18,19 +23,19 @@ export const ThemeNavigation = () => {
             document.documentElement.classList.remove('dark');
             document.documentElement.classList.add('light');
             setThemeState(false);
+            setLoginMenuState(false);
             return;
         }
         localStorage.theme = 'dark';
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
         setThemeState(false);
+        setLoginMenuState(false);
         return;
     };
     React.useEffect(()=> {
-        localStorage.theme = 'light';
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
         setThemeState(false);
+        setLoginMenuState(false);
     },[]);
     const themeState = useRecoilValue(ThemeChangeState);
     const setThemeState = useSetRecoilState(ThemeChangeState);

@@ -115,7 +115,7 @@ const Navigation = () => {
                             onClick={()=> setLeftView(e => !e)}
                         />
                     </div>
-                    <span className="title">IP Manager</span>
+                    <span className="title" onClick={()=> router.push('/')}>IP Manager</span>
                     <div className="search">
                         <input type="text" placeholder="search.."/>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
