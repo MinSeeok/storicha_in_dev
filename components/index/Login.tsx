@@ -23,7 +23,6 @@ const LoginBox = () => {
     const setLoginModal = useSetRecoilState(LoginMadalState);
 
     const stateChange = (event:any) => {
-        console.log(event.target.value);
         event.target.name === 'email' && setInputEmail(event.target.value);
         event.target.name === 'password' && setInputPassword(event.target.value);
     }
