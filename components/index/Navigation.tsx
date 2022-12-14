@@ -157,7 +157,6 @@ const Navigation = () => {
                             onClick={seeNavigation}
                         />
                     </div>
-                    <span className="title" onClick={()=> router.push('/')}>IP Manager</span>
                     <div className="search">
                         <input type="text" placeholder={`search...${''}`}/>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -239,6 +238,7 @@ const Navigation = () => {
                         <p className="login" onClick={()=> setLoginModal(true)}>로그인</p>
                     )}
                 </div>
+                <span className="title" onClick={()=> router.push('/')}>IP Studio</span>
             </TopContainer>
             <Container ref={elem => (wrapperRef.current[1] = elem)} color={isPointTheme} style={leftView ? {left: '0px'} : {left: '-100%'}}>
                 <MenuBox color={isPointTheme}>
@@ -542,21 +542,17 @@ const TopContainer = styled.div`
         }
     }
     .title{
-        margin-left: 74px;
+        position: absolute;
         color: #FFFFFF;
         font-size: 24px;
         font-weight: bold;
-        @media screen and (max-width: 1000px) {
-            margin-left: 32px;
-        }
-        @media screen and (max-width: 500px) {
-            font-size: 18px;
-        }
+        left: 50%;
+        transform: translateX(-50%);
     }
     .search{
-        width: 300px;
+        width: 176px;
         height: 34px;
-        margin-left: 12px;
+        margin-left: 78px;
         input{
             width: 100%;
             height: 100%;
@@ -763,7 +759,7 @@ const MenuBox = styled.div`
             border-radius: 8px;
             background-color: var(--box1);
             @media (max-width: 1280px) {
-                height: 36px !important;
+                /* height: 36px !important; */
             }
         }
 
@@ -818,9 +814,6 @@ const MenuBox = styled.div`
         width: 100%;
         justify-content: flex-start;
         gap: 0;
-        .wrapper{
-            height: 36px;
-        }
         .box{
             svg{
                 width: 26px !important;
