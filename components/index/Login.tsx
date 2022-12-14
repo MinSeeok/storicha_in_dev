@@ -2,10 +2,9 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import * as React from 'react';
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { LoadingState } from "recoil/loading";
 import { LoginMadalState } from "recoil/loginModal";
-import { isThemeAtom } from "recoil/theme";
 import { LoginState } from "recoil/user";
 import styled from "styled-components";
 

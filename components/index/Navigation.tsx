@@ -28,7 +28,7 @@ const Navigation = () => {
     const loginMenuState = useRecoilValue(LoginMenuState);
     const setLoginMenuState = useSetRecoilState(LoginMenuState);
 
-    const [loginState, setLoginState] = React.useState<any | null>(null);
+    const [loginState, setLoginState] = React.useState<any | null>([]);
 
     const setLogin = useSetRecoilState(LoginState);
     const setLoadState = useSetRecoilState(LoadingState);
@@ -41,7 +41,26 @@ const Navigation = () => {
     // Enable idx presence
     const idx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
 
+    function useOutsideClick(ref: any, ){
+        React.useEffect(()=>{
+            function handleClickOutSide(event:any){
+                if (((ref.current[0] && !ref.current[0].contains(event.target)) && ref.current[1] && !ref.current[1].contains(event.target))) {
+                    setLeftView(false);
+                }
+            }
+    
+            // Bind the event listner
+            document.addEventListener('mousedown', handleClickOutSide);
+            return () => {
+                // Unbind the event listner on clean up
+                document.removeEventListener('mousedown', handleClickOutSide);
+            };
+        },[ref]);
+    }
+
     let [windowWidth, setWindowWidth] = React.useState<number>(0);;
+    const wrapperRef = React.useRef<any>([]);
+    useOutsideClick(wrapperRef);
 
     const doLogout = () => {
         setLoadState(true);
@@ -117,7 +136,8 @@ const Navigation = () => {
     }
     return(
         <>
-            <TopContainer>
+            {leftView && <DarkBox/>}
+            <TopContainer ref={elem => (wrapperRef.current[0] = elem)}>
                 <div className="left">
                     <div className="logo">
                         <Image
@@ -139,7 +159,7 @@ const Navigation = () => {
                     </div>
                     <span className="title" onClick={()=> router.push('/')}>IP Manager</span>
                     <div className="search">
-                        <input type="text" placeholder={`search...`}/>
+                        <input type="text" placeholder={`search...${''}`}/>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
@@ -220,7 +240,7 @@ const Navigation = () => {
                     )}
                 </div>
             </TopContainer>
-            <Container color={isPointTheme} style={leftView ? {left: '0px'} : {left: '-100%'}}>
+            <Container ref={elem => (wrapperRef.current[1] = elem)} color={isPointTheme} style={leftView ? {left: '0px'} : {left: '-100%'}}>
                 <MenuBox color={isPointTheme}>
                     <div className='wrapper' style={{marginTop: '4px'}}>
                         <div className='background'/>
@@ -384,6 +404,20 @@ const Navigation = () => {
         </>
     )
 }
+
+const DarkBox = styled.div`
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 0.8;
+    display: none;
+    @media (max-width: 1280px) {
+        display: block;
+    }
+`
 
 const TopContainer = styled.div`
     position: fixed;
@@ -578,6 +612,7 @@ const Container = styled.div`
     transition: all .2s ease-in-out;
     @media (max-width: 1280px) {
         width: 100vw;
+        max-width: 300px;
     }
     .logoHead{
         width: 100%;
@@ -727,6 +762,9 @@ const MenuBox = styled.div`
             transition: all .3s ease-in-out;
             border-radius: 8px;
             background-color: var(--box1);
+            @media (max-width: 1280px) {
+                height: 36px !important;
+            }
         }
 
         @keyframes shakeIcon {
@@ -779,6 +817,10 @@ const MenuBox = styled.div`
     @media (max-width: 1280px) {
         width: 100%;
         justify-content: flex-start;
+        gap: 0;
+        .wrapper{
+            height: 36px;
+        }
         .box{
             svg{
                 width: 26px !important;
@@ -791,13 +833,13 @@ const MenuBox = styled.div`
     }
     @media (max-width: 500px) {
         .box{
-            padding: 8px !important;
+            padding: 6px !important;
             svg{
-                width: 24px !important;
-                height: 24px !important;
+                width: 20px !important;
+                height: 20px !important;
             }
             .head{
-                font-size: 18px !important;
+                font-size: 16px !important;
             }
         }
     }
@@ -926,18 +968,18 @@ const PlusMenu = styled.div`
         width: 100%;
         .head{
             svg{
-                width: 26px;
-                height: 26px;
+                width: 22px;
+                height: 22px;
             }
             font-size: 18px !important;
             
         }
         .content{
             svg{
-                width: 22px !important;
-                height: 22px !important;
+                width: 20px !important;
+                height: 20px !important;
             }
-            font-size: 18px !important;
+            font-size: 16px !important;
         }
         .sub-text{
             transform: translateX(0%) !important;
@@ -945,22 +987,24 @@ const PlusMenu = styled.div`
     }
     @media (max-width: 500px) {
         .head{
-            padding: 8px !important;
+            padding: 6px !important;
             svg{
-                width: 22px;
-                height: 22px;
+                width: 20px;
+                height: 20px;
             }
-            font-size: 18px !important;
+            font-size: 16px !important;
             
         }
         .content-box{
             padding: 4px 8px !important;
             svg{
-                width: 20px !important;
-                height: 20px !important;
+                width: 18px !important;
+                height: 18px !important;
             }
             .content{
                 font-size: 16px !important;
+                gap: 4px;
+                padding: 6px 6px;
             }
         }
     }

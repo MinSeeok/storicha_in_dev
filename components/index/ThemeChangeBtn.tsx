@@ -38,11 +38,31 @@ export const ThemeNavigation = () => {
     },[]);
     const themeState = useRecoilValue(ThemeChangeState);
     const setThemeState = useSetRecoilState(ThemeChangeState);
+
+    function useOutsideClick(ref: any, ){
+        React.useEffect(()=>{
+            function handleClickOutSide(event:any){
+                if ((ref.current && !ref.current.contains(event.target))) {
+                    setThemeState(false);
+                }
+            }
+    
+            // Bind the event listner
+            document.addEventListener('mousedown', handleClickOutSide);
+            return () => {
+                // Unbind the event listner on clean up
+                document.removeEventListener('mousedown', handleClickOutSide);
+            };
+        },[ref]);
+    }
+    const wrapperRef = React.useRef<any>([]);
+    useOutsideClick(wrapperRef);
     return (
         <>
-            <Container color={isPointTheme} style={themeState ? { right: '0px' } : { right: 'calc(-100% + 3px)' }}>
+            {themeState && <DarkBox/>}
+            <Container ref={wrapperRef} color={isPointTheme} style={themeState ? { right: '0px' } : { right: 'calc(-100% + 3px)' }}>
                 <div className="head">
-                    <h1>테마 설정</h1>
+                    <h1 onClick={()=> console.log(themeState)}>테마 설정</h1>
                     <svg onClick={() => setThemeState(false)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -86,6 +106,20 @@ export const ThemeNavigation = () => {
     )
 }
 
+const DarkBox = styled.div`
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    opacity: 0.8;
+    z-index: 9999;
+    @media (max-width: 1280px) {
+        display: block;
+    }
+`
+
 const Container = styled.div`
     width: 300px;
     height: 100vh;
@@ -99,8 +133,10 @@ const Container = styled.div`
     align-items: center;
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     transition: all .15s ease-in-out;
-    @media screen and (max-width: 500px) {
+    transform: calc(100vw);
+    @media screen and (max-width: 1280px) {
         width: 100%;
+        max-width: 300px;
     }
     
     button{
