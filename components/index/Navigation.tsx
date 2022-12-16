@@ -45,7 +45,9 @@ const Navigation = () => {
         React.useEffect(()=>{
             function handleClickOutSide(event:any){
                 if (((ref.current[0] && !ref.current[0].contains(event.target)) && ref.current[1] && !ref.current[1].contains(event.target))) {
-                    setLeftView(false);
+                    if(window.innerWidth < 1280){
+                        setLeftView(false);
+                    }
                 }
             }
     
@@ -75,6 +77,7 @@ const Navigation = () => {
         setLoadState(false);
     }
     React.useEffect(()=>{
+        console.log('123123');
         login === null ? setLoginState(false) : setLoginState(true);
         setLoginMenuState(false);
         setWindowWidth(window.innerWidth);
@@ -134,6 +137,19 @@ const Navigation = () => {
         setLeftView((e:any)=>!e);
         loginMenuState && setLoginMenuState(false);
     }
+    const loginCheck = () => {
+        console.log('123');
+        setLoadState(true);
+        axios({
+            method: 'GET',
+            url: 'https://api-v2.storicha.in/api/checkLogin',
+            withCredentials: true,
+        })
+        .then((response):any => {
+            console.log(response);
+        }) 
+        setLoadState(false);
+    }
     return(
         <>
             {leftView && <DarkBox/>}
@@ -163,6 +179,7 @@ const Navigation = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                     </div>
+                    <p onClick={()=> loginCheck()} style={{color: '#FFFFFF', marginLeft: '14px', fontSize: '20px'}}>LOGIN-CHECK</p>
                 </div>
                 <div className="right">
                     {loginState === true ? (
@@ -396,7 +413,7 @@ const Navigation = () => {
                                 />
                             )}
                         </div>
-                        <h4><b>{login === null ? "please, Login" : (login.user_name === '' || login.user_name === undefined) ? 'None-Name' : login.user_name}</b><br/>{login === null ? "'None-Type" : 'None-Type'}</h4>
+                        <h4><b>{login === null ? "please, Login" : (login.user_name === undefined || login.user_name === '') ? 'None-Name' : login.user_name}</b><br/>{login === null ? "'None-Type" : 'None-Type'}</h4>
                     </div>
                 </ProfileBox>
             </Container>

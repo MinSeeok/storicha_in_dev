@@ -1,6 +1,7 @@
 import { GlobalStyle } from '@src/styles/global-styled';
 import BackLogoImage from 'components/BackLogoImage';
 import Container from 'components/Container';
+import Devtools from 'components/dev/devtools';
 import FooterContainer from 'components/index/Bottom';
 import Navigation from 'components/index/Navigation';
 import LoadingContainer from 'components/LoadingBox';
@@ -30,6 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                         <Component {...pageProps}/>
                         <LoadingContainer/>
                         <Navigation/>
+                        {/* <Devtools/> */}
                     </Container>
                     <FooterContainer/>
                 </QueryClientProvider>
