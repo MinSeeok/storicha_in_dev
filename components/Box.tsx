@@ -13,7 +13,7 @@ export default Box;
 const Container = styled.div`
   box-sizing: border-box;
   position: relative;
-  min-width: 428px;
+  min-width: 500px;
   max-width: 500px;
   padding: 40px 30px;
   border-radius: 12px;

@@ -25,7 +25,6 @@ export default function Home(){
         }).catch((error)=> {
             console.log(error);
         });
-        setInnerWidth(window.innerWidth);
         const handleResize = () => {
             setInnerWidth(window.innerWidth);
             if(boxWidthRef.current.offsetWidth >= 984){
@@ -34,7 +33,11 @@ export default function Home(){
             else if(boxWidthRef.current.offsetWidth >= 824){
                 setBoxWidth('pc-small');  
             }
+            else if(boxWidthRef.current.offsetWidth >= 786){
+                setBoxWidth('tablet');  
+            }
         }
+        handleResize();
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -44,7 +47,6 @@ export default function Home(){
         <>
             <HelmetProvier title='IP Manager'/>
             <ThemeNavigation/>
-            <h1 style={{fontSize: '35px'}}>{boxWidth}</h1>
             <Box ref={boxWidthRef}>
                 {array.map((content, i)=> (
                     <MainContentLine title={content} width={innerWidth} box={boxWidth} key={`main-container-${i}`}/>

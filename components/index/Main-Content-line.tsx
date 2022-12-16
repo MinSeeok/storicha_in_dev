@@ -8,15 +8,15 @@ interface Title {
 }
 
 const MainContentLine = (props:Title) => {
+    const controlBox = React.useRef<any>(null);
     const controlLine = React.useRef<any>(null);
     const [lineCount, setLineCount] = React.useState<number>(0);
     const handleLineLeft = () => {
-        console.log(controlLine.current.style.transform);
         if(lineCount !== 0){
             setLineCount(lineCount - 1);
             if(props.box === 'pc-medium'){
                 console.log('medium');
-                controlLine.current.style.transform = `translateX(-${20 * (lineCount - 1)}%)`;
+                controlLine.current.style.transform = `translateX(-${1160 * (lineCount - 1)}px)`;
             }
             if(props.box === 'pc-small'){
                 console.log('small');
@@ -25,18 +25,17 @@ const MainContentLine = (props:Title) => {
         }
     }
     const handleLineRight = () => {
-        if(lineCount !== 4){
-            setLineCount(lineCount + 1);
-            if(props.box === 'pc-medium'){
-                controlLine.current.style.transform = `translateX(-${20 * (lineCount + 1)}%)`;
-            }
-            if(props.box === 'pc-small'){
-                controlLine.current.style.transform = `translateX(-${16 * (lineCount + 1)}%)`;
-            }
+        setLineCount(lineCount + 1);
+        if(props.box === 'pc-medium'){
+            console.log('medium');
+            controlLine.current.style.transform = `translateX(-${1160 * (lineCount + 1)}px)`;
         }
     }
+    React.useEffect(()=> {
+        console.log(controlBox.current.offsetWidth);
+    },[]);
     return (
-        <ContentLine data-aos="fade-up">
+        <ContentLine data-aos="fade-up" ref={controlBox}>
             <p 
                 className='line-title'
             >
@@ -45,7 +44,7 @@ const MainContentLine = (props:Title) => {
             <div className={`line-line ${props.box}`}>
                 <div className='line-inline' ref={controlLine}>
                     {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25].map((content, i) => (
-                        <div className={`content ${content % 5 === 0 ? 'last' : ''}`} key={i}>
+                        <div className={`content ${content === 25 ? 'last' : ''}`} key={i}>
                             <div className='image'>
                                 <Image
                                     src={'/images/KakaoTalk_Photo_2022-10-07-12-18-26.gif'}
@@ -64,7 +63,7 @@ const MainContentLine = (props:Title) => {
                             <div className='series-info'>
                                 <h4>Pokemon</h4>
                                 <div className='second-line'>
-                                    @Animation
+                                    @Animation-{content}
                                 </div>
                                 <div className='thrid-line'>
                                     {[0,1,2,3,4].map((content,i)=>{
@@ -135,8 +134,13 @@ const ContentLine = styled.div`
                 width: 625%;
             }
         }
+        &.tablet{
+            .line-inline{
+                width: 725%;
+            }
+        }
         .line-inline{
-            width: 500%;
+            min-width: 1000%;
             height: 100%;
             transition: all .5s ease-in-out;
             display: flex;
@@ -193,12 +197,12 @@ const ContentLine = styled.div`
         }
     }
     .content{
-        width: 20%;
+        width: 220px;
         height: 100%;
         border-radius: 6px;
         overflow: hidden;
         cursor: pointer;
-        margin-right: .2%;
+        margin-right: 12px;
         &.last{
             margin-right: 0%;
         }

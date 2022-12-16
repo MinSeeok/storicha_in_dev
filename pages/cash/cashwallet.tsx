@@ -52,7 +52,7 @@ export default function CashWallet(){
     }
     return(
         <Box>
-            <TopTitle>보유 CASH</TopTitle>
+            <TopTitle onClick={()=> console.log((fetchData && fetchData.response_data[0]) ? fetchData : 'none')}>보유 CASH</TopTitle>
             <TopTitleLine/>
             <HaveCash onClick={()=> console.log(usageDetails)}>1,000,000 TC</HaveCash>
 
@@ -79,7 +79,7 @@ export default function CashWallet(){
                 <TabBox className={selectTab === "payment" ? "" : "active"} onClick={()=>setSelectTab("use")}>사용내역</TabBox>
             </Tab>
             <List className={selectTab === "payment" ? "" : "hide"}>
-            {fetchData ? fetchData.response_data.map((content: { approval_date: null; canceled_date: null; payment_method: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; pay_amt_krw: number; cash_topup_amt: number; }, i: React.Key | null | undefined) => {
+            {(fetchData && fetchData.response_data[0]) ? fetchData.response_data.map((content: { approval_date: null; canceled_date: null; payment_method: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; pay_amt_krw: number; cash_topup_amt: number; }, i: React.Key | null | undefined) => {
               if((content.approval_date !== null || content.canceled_date !== null))
                 return (
                   <ListItem key={i}>
@@ -94,10 +94,12 @@ export default function CashWallet(){
                       </ItemBox>
                   </ListItem>
                 )
-            }): ('LOGIN PLEASE...')}
+            }) : (
+                <p style={{marginTop: '36px', fontSize: '22px'}}>결제내역이 존재하지 않습니다</p> 
+            )}
             </List>
             <List className={selectTab === "payment" ? "hide" : ""}>
-            {usageDetails ? usageDetails.response_data.map((content:any, i:any ) => (
+            {(usageDetails && usageDetails.response_data[0]) ? usageDetails.response_data.map((content:any, i:any ) => (
                 <ListItem key={i}>
                     <ItemBox>
                         <p className='time'>{moment(String(content.create_date)).format('YYYY-MM-DD-HH:SS')}</p>
@@ -109,7 +111,9 @@ export default function CashWallet(){
                         </div>
                     </ItemBox>
                 </ListItem>
-            )): ('LOGIN PLEASE...')}
+            )): (
+                <p style={{marginTop: '36px', fontSize: '22px'}}>사용내역이 존재하지 않습니다</p> 
+            )}
             </List>
         </Box>
     )

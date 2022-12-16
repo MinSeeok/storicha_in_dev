@@ -49,6 +49,7 @@ const Navigation = () => {
                         setLeftView(false);
                     }
                 }
+                setLoginMenuState(null);
             }
     
             // Bind the event listner
@@ -94,6 +95,7 @@ const Navigation = () => {
     },[login]);
 
     const routerPathChange = (path: string) => {
+        setLoginMenuState(false);
         if(router.asPath.indexOf('/series') === 0){
             axios({
                 method: 'POST',
@@ -137,19 +139,6 @@ const Navigation = () => {
         setLeftView((e:any)=>!e);
         loginMenuState && setLoginMenuState(false);
     }
-    const loginCheck = () => {
-        console.log('123');
-        setLoadState(true);
-        axios({
-            method: 'GET',
-            url: 'https://api-v2.storicha.in/api/checkLogin',
-            withCredentials: true,
-        })
-        .then((response):any => {
-            console.log(response);
-        }) 
-        setLoadState(false);
-    }
     return(
         <>
             {leftView && <DarkBox/>}
@@ -179,7 +168,6 @@ const Navigation = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                     </div>
-                    <p onClick={()=> loginCheck()} style={{color: '#FFFFFF', marginLeft: '14px', fontSize: '20px'}}>LOGIN-CHECK</p>
                 </div>
                 <div className="right">
                     {loginState === true ? (
@@ -266,7 +254,7 @@ const Navigation = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <p className='head'>공개된 저작재산권</p>
+                            <p className='head'>콘텐츠</p>
                         </div>
                     </div>
                     <PlusMenu color={isPointTheme}>
