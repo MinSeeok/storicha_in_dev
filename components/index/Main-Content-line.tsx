@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import * as React from 'react';
 import styled from "styled-components";
+import css from 'styled-jsx/css';
 interface Title {
     title: string;
     width: number;
-    box: string;
 }
 
 const MainContentLine = (props:Title) => {
@@ -12,39 +12,65 @@ const MainContentLine = (props:Title) => {
     const controlLine = React.useRef<any>(null);
     const [lineCount, setLineCount] = React.useState<number>(0);
     const handleLineLeft = () => {
-        if(lineCount !== 0){
-            setLineCount(lineCount - 1);
-            if(props.box === 'pc-medium'){
-                console.log('medium');
-                controlLine.current.style.transform = `translateX(-${1160 * (lineCount - 1)}px)`;
-            }
-            if(props.box === 'pc-small'){
-                console.log('small');
-                controlLine.current.style.transform = `translateX(-${16 * (lineCount - 1)}%)`;
-            }
+        setLineCount(lineCount - 1);
+        if(props.width >= 1320){
+            controlLine.current.style.transform = `translateX(-${(controlBox.current.offsetWidth * (lineCount - 1))}px)`;
+            return;
+        }
+        if(props.width >= 1068){
+            controlLine.current.style.transform = `translateX(-${(970 * (lineCount - 1))}px)`;
+            return;
+        }
+        if(props.width >= 826){
+            controlLine.current.style.transform = `translateX(-${(727.5 * (lineCount - 1))}px)`;
+            return;
+        }
+        if(props.width >= 640){
+            controlLine.current.style.transform = `translateX(-${(445 * (lineCount - 1))}px)`;
+            return;
+        } else {
+            controlLine.current.style.transform = `translateX(-${(272.5 * (lineCount - 1))}px)`;
+            return;
         }
     }
     const handleLineRight = () => {
         setLineCount(lineCount + 1);
-        if(props.box === 'pc-medium'){
-            console.log('medium');
-            controlLine.current.style.transform = `translateX(-${1160 * (lineCount + 1)}px)`;
+        if(props.width >= 1320){
+            controlLine.current.style.transform = `translateX(-${(controlBox.current.offsetWidth * (lineCount + 1))}px)`;
+            return;
+        }
+        if(props.width >= 1068){
+            controlLine.current.style.transform = `translateX(-${(970 * (lineCount + 1))}px)`;
+            return;
+        }
+        if(props.width >= 826){
+            controlLine.current.style.transform = `translateX(-${(727.5 * (lineCount + 1))}px)`;
+            return;
+        }
+        if(props.width >= 640){
+            controlLine.current.style.transform = `translateX(-${(445 * (lineCount + 1))}px)`;
+            return;
+        } else {
+            controlLine.current.style.transform = `translateX(-${(272.5 * (lineCount + 1))}px)`;
+            return;
         }
     }
     React.useEffect(()=> {
         console.log(controlBox.current.offsetWidth);
+        console.log(controlLine.current.offsetWidth);
     },[]);
     return (
-        <ContentLine data-aos="fade-up" ref={controlBox}>
+        // <ContentLine data-aos="fade-up" ref={controlBox}>
+        <ContentLine ref={controlBox} className={`content ${props.width <= 640 ? 'mobile-medium' : ''}`}>
             <p 
                 className='line-title'
             >
-                {props.title !== '' ? `${props.title} : ${props.width}-${props.box}` : 'None-Title'}
+                {props.title !== '' ? `${props.title}` : 'None-Title'}
             </p>
-            <div className={`line-line ${props.box}`}>
+            <div className={`line-line ${props.width}`}>
                 <div className='line-inline' ref={controlLine}>
                     {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25].map((content, i) => (
-                        <div className={`content ${content === 25 ? 'last' : ''}`} key={i}>
+                        <div className={`content ${(props.width >= 1320 && content % 5 === 0) ? 'five' : (props.width <= 826 && props.width >= 641) ? 'mobile' : props.width <= 640 ? 'mobile-medium' : ''}`} key={i}>
                             <div className='image'>
                                 <Image
                                     src={'/images/KakaoTalk_Photo_2022-10-07-12-18-26.gif'}
@@ -94,23 +120,65 @@ const MainContentLine = (props:Title) => {
                     ))}
                 </div>
             </div>
-            {lineCount !== 0 &&(
-                <div className='left-button' onClick={handleLineLeft}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                </div>
-            )}
-            {lineCount !== 4 &&(
-                <div className='right-button' onClick={handleLineRight}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                    </svg>
-                </div>
-            )}
-            <ProgressStatus>
-                <div className={`status-${lineCount}`}/>
-            </ProgressStatus>
+            {lineCount !== 0 &&
+                (
+                    <div className={`left-button ${props.width <= 519 ? 'mobile-small' : ''}`} onClick={handleLineLeft}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </div>
+                )
+            }
+            {
+                ((props.width >= 1320) && lineCount !== 4) ?
+                (
+                    <div className='right-button' onClick={handleLineRight}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </div>
+                ) :
+                ((props.width >= 1068) && lineCount !== 6) ?
+                (
+                    <div className='right-button' onClick={handleLineRight}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </div>
+                ) :
+                ((props.width >= 826) && lineCount !== 8) ?
+                (
+                    <div className='right-button' onClick={handleLineRight}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </div>
+                ) :
+                ((props.width >= 520) && lineCount !== 12) ?
+                (
+                    <div className='right-button' onClick={handleLineRight}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </div>
+                ) :
+                ((props.width <= 519) && lineCount !== 24) ?
+                (
+                    <div className='right-button mobile-small' onClick={handleLineRight}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </div>
+                ) :
+                ''
+                    
+            }
+            {/* <ProgressStatus 
+                inlist={lineCount}
+            >
+                <div 
+                />
+            </ProgressStatus> */}
         </ContentLine>
     )
 }
@@ -119,6 +187,12 @@ const ContentLine = styled.div`
     width: 100%;
     color: var(--title);
     margin-top: 36px;
+    &.mobile-medium{
+        .line-line{
+            width: auto;
+            height: 400px !important;
+        }
+    }
     .line-title{
         width: 100%;
         font-size: 22px;
@@ -140,7 +214,6 @@ const ContentLine = styled.div`
             }
         }
         .line-inline{
-            min-width: 1000%;
             height: 100%;
             transition: all .5s ease-in-out;
             display: flex;
@@ -171,6 +244,15 @@ const ContentLine = styled.div`
             width: 36px;
             height: 36px;
         }
+        &.mobile-small{
+            width: 42px;
+            height: 42px;
+            left: -26px;
+            svg {
+                width: 34px;
+                height: 34px;
+            }
+        }
     }
     .right-button{
         position: absolute;
@@ -195,16 +277,32 @@ const ContentLine = styled.div`
             width: 36px;
             height: 36px;
         }
+        &.mobile-small{
+            width: 42px;
+            height: 42px;
+            right: -14px;
+            svg {
+                width: 34px;
+                height: 34px;
+            }
+        }
     }
     .content{
-        width: 220px;
+        min-width: 230px;
+        width: 230px;
         height: 100%;
         border-radius: 6px;
         overflow: hidden;
         cursor: pointer;
-        margin-right: 12px;
-        &.last{
-            margin-right: 0%;
+        margin-right: 12.5px;
+        &.five{
+            margin-right: 0px;
+        }
+        &.mobile{
+            min-width: 210px;
+        }
+        &.mobile-medium{
+            min-width: 260px;
         }
         .image{
             position: absolute;
@@ -355,11 +453,12 @@ const ContentLine = styled.div`
     }
 `
 const ProgressStatus = styled.div`
-    width: 140px;
+    width: 300px;
     height: 4px;
     position: absolute;
-    top: 0;
-    right: 4px;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: var(--icon1);
     margin-top: 16px;
     div{
@@ -370,20 +469,8 @@ const ProgressStatus = styled.div`
         height: 100%;
         background-color: var(--point);
         transition: all .3s ease-in-out;
-        &.status-0{
-            transform: translateX(0);
-        }
-        &.status-1{
-            transform: translateX(28px);
-        }
-        &.status-2{
-            transform: translateX(56px);
-        }
-        &.status-3{
-            transform: translateX(84px);
-        }
-        &.status-4{
-            transform: translateX(112px);
+        &.pc-medium{
+            transform: translateX(0px);
         }
     }
 `

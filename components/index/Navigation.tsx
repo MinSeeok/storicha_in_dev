@@ -49,7 +49,7 @@ const Navigation = () => {
                         setLeftView(false);
                     }
                 }
-                setLoginMenuState(null);
+                setLoginMenuState(false);
             }
     
             // Bind the event listner
@@ -78,7 +78,6 @@ const Navigation = () => {
         setLoadState(false);
     }
     React.useEffect(()=>{
-        console.log('123123');
         login === null ? setLoginState(false) : setLoginState(true);
         setLoginMenuState(false);
         setWindowWidth(window.innerWidth);
@@ -122,10 +121,10 @@ const Navigation = () => {
     const setThemeState = useSetRecoilState(ThemeChangeState);
 
     const seeLoginMenuState = () => {
+        setLoginMenuState(loginMenuState === 'true' ? false: true);
         if(windowWidth <= 1280){
             setLeftView(false);
         }
-        setLoginMenuState((e:any) => !e); 
     }
 
     const seeTheme = () => {
@@ -171,7 +170,7 @@ const Navigation = () => {
                 </div>
                 <div className="right">
                     {loginState === true ? (
-                        <div className="right-container">
+                        <div className="right-container" onClick={seeLoginMenuState}>
                             <div className="image">
                                 <Image
                                     src={userImage}
@@ -180,8 +179,8 @@ const Navigation = () => {
                                     alt='user'
                                 />
                             </div>
-                            <span className='email' onClick={()=> seeLoginMenuState()}>
-                                {loginState !== null && login?.site_user_id}
+                            <span className='email'>
+                                {loginState !== null && login?.nick_name}
                                 <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                 </svg>
@@ -226,9 +225,6 @@ const Navigation = () => {
                                     테마설정
                                 </div>
                                 <div onClick={() => routerPathChange('/')}>
-                                    {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                                    </svg> */}
                                     　
                                 </div>
                                 <div style={{borderTop: '1px solid #c8c8c8', justifyContent: 'center'}} onClick={doLogout}>
@@ -401,7 +397,7 @@ const Navigation = () => {
                                 />
                             )}
                         </div>
-                        <h4><b>{login === null ? "please, Login" : (login.user_name === undefined || login.user_name === '') ? 'None-Name' : login.user_name}</b><br/>{login === null ? "'None-Type" : 'None-Type'}</h4>
+                        <h4><b>{login === null ? "please, Login" : (login.user_name === undefined || login.user_name === '') ? 'None-Name' : login.user_name}</b><br/>{login === null  ?  'Basic-type' : 'None-Type'}</h4>
                     </div>
                 </ProfileBox>
             </Container>
@@ -527,13 +523,10 @@ const TopContainer = styled.div`
         position: absolute;
         top: 50%;
         left: 0px;
-        width: 34px;
-        height: 34px;
+        width: 28px;
+        height: 28px;
         transform: translateY(calc(-50% + 3px));
         cursor: pointer;
-        @media screen and (max-width: 1000px) {
-            display: none;
-        }
     }
     .logo-two{
         position: absolute;
@@ -542,9 +535,6 @@ const TopContainer = styled.div`
         width: 28px;
         height: 28px;
         transform: translateY(calc(-50%));
-        @media screen and (max-width: 1000px) {
-            left: 0px;
-        }
     }
     .title{
         position: absolute;
@@ -553,6 +543,10 @@ const TopContainer = styled.div`
         font-weight: bold;
         left: 50%;
         transform: translateX(-50%);
+        @media screen and (max-width: 1000px) {
+            left: 0%;
+            transform: translateX(100%);
+        }
     }
     .search{
         width: 176px;

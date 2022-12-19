@@ -45,6 +45,7 @@ const LoginBox = () => {
                 setErrorMessage('password does not match');
                 return;
             }
+            console.log(response);
             setLogin(response ? response.data.response_data[0] : null);
             setErrorMessage('');
             setLoginModal(false);

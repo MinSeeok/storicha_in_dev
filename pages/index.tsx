@@ -9,9 +9,7 @@ import Aos from 'aos';
 
 export default function Home(){
     const [innerWidth, setInnerWidth] = React.useState(0);
-    const [boxWidth, setBoxWidth] = React.useState<string>('pc-medium');
     const array = ['지금 뜨는 콘텐츠', '새로 올라온 콘텐츠', '다시보기 추천 콘텐츠', '오직 IP Studio에서', 'IP Studio 인기 콘텐츠'];
-    const boxWidthRef = React.useRef<any>(null);
     React.useEffect(()=>{
         Aos.init({
             duration: 600,
@@ -21,21 +19,11 @@ export default function Home(){
             url: `https://api-v2.storicha.in/api/Event/GetListsForDiscover?page=1&page_rows=24&me_user_idx=0&search_text&event_content_type_idx=2&stage_labeling_type_idx=0&scope_type_idx=0&topic_idxs&sort_type_name=date&genres_type_idxs`,
             withCredentials: true,
         }).then((response):any => {
-            console.log(response);
         }).catch((error)=> {
             console.log(error);
         });
         const handleResize = () => {
             setInnerWidth(window.innerWidth);
-            if(boxWidthRef.current.offsetWidth >= 984){
-                setBoxWidth('pc-medium');  
-            }
-            else if(boxWidthRef.current.offsetWidth >= 824){
-                setBoxWidth('pc-small');  
-            }
-            else if(boxWidthRef.current.offsetWidth >= 786){
-                setBoxWidth('tablet');  
-            }
         }
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -47,9 +35,18 @@ export default function Home(){
         <>
             <HelmetProvier title='IP Manager'/>
             <ThemeNavigation/>
-            <Box ref={boxWidthRef}>
+            <Box 
+                className = { 
+                    innerWidth >= 1320 ? 'pc-medium' : 
+                    innerWidth >= 1068 ? 'pc-small' : 
+                    innerWidth >= 826  ? 'tablet' : 
+                    innerWidth >= 640  ? 'mobile-big' : 
+                    innerWidth <= 500  ? 'mobile-small' :
+                    ''
+                }
+            >
                 {array.map((content, i)=> (
-                    <MainContentLine title={content} width={innerWidth} box={boxWidth} key={`main-container-${i}`}/>
+                    <MainContentLine title={content} width={innerWidth} key={`main-container-${i}`}/>
                 ))}
             </Box>
         </>
@@ -58,7 +55,6 @@ export default function Home(){
 
 const Box = styled.div`
     width: 100vw;
-    max-width: 1200px;
     margin-top: 40px;
     margin-bottom: 40px;
     min-height: calc(100vh - 252px);
@@ -67,7 +63,30 @@ const Box = styled.div`
     justify-content: flex-start;
     align-items: center;
     gap: 32px;
-    @media screen and (max-width: 1320px) {
-        max-width: calc(100vw - 40px);
+    &.pc-medium{
+        min-width: 1200px;
+        max-width: 1200px;
+    }
+    &.pc-small{
+        min-width: 1000px;
+        max-width: 1000px;
+    }
+    &.tablet {
+        min-width: 786px;
+        max-width: 786px;
+    }
+    &.mobile-big {
+        min-width: 580px;
+        max-width: 580px;
+    }
+    &.mobile-medium {
+        min-width: 340px;
+        width: calc(100vw - 40px);
+        max-width: 500px;
+    }
+    &.mobile-small{
+        min-width: 280px;
+        width: calc(100vw -  80px);
+        max-width: 500px;
     }
 `
