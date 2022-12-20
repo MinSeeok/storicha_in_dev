@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import * as React from 'react';
 import styled from "styled-components";
-import css from 'styled-jsx/css';
 interface Title {
     title: string;
     width: number;
