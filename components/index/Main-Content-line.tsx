@@ -22,14 +22,14 @@ const MainContentLine = (props:Title) => {
             return;
         }
         if(props.width >= 826){
-            controlLine.current.style.transform = `translateX(-${(727.5 * (lineCount - 1))}px)`;
+            controlLine.current.style.transform = `translateX(-${(607.5 * (lineCount - 1))}px)`;
             return;
         }
         if(props.width >= 640){
-            controlLine.current.style.transform = `translateX(-${(445 * (lineCount - 1))}px)`;
+            controlLine.current.style.transform = `translateX(-${(547.5 * (lineCount - 1))}px)`;
             return;
         } else {
-            controlLine.current.style.transform = `translateX(-${(272.5 * (lineCount - 1))}px)`;
+            controlLine.current.style.transform = `translateX(-${(285 * (lineCount - 1))}px)`;
             return;
         }
     }
@@ -44,14 +44,18 @@ const MainContentLine = (props:Title) => {
             return;
         }
         if(props.width >= 826){
-            controlLine.current.style.transform = `translateX(-${(727.5 * (lineCount + 1))}px)`;
+            controlLine.current.style.transform = `translateX(-${(607.5 * (lineCount + 1))}px)`;
             return;
         }
         if(props.width >= 640){
-            controlLine.current.style.transform = `translateX(-${(445 * (lineCount + 1))}px)`;
+            controlLine.current.style.transform = `translateX(-${(547.5 * (lineCount + 1))}px)`;
+            return;
+        }
+        if(props.width >= 399){
+            controlLine.current.style.transform = `translateX(-${(547.5 * (lineCount + 1))}px)`;
             return;
         } else {
-            controlLine.current.style.transform = `translateX(-${(272.5 * (lineCount + 1))}px)`;
+            controlLine.current.style.transform = `translateX(-${(285 * (lineCount + 1))}px)`;
             return;
         }
     }
@@ -61,16 +65,16 @@ const MainContentLine = (props:Title) => {
     },[]);
     return (
         // <ContentLine data-aos="fade-up" ref={controlBox}>
-        <ContentLine ref={controlBox} className={`content ${props.width <= 640 ? 'mobile-medium' : ''}`}>
+        <ContentLine ref={controlBox} className={`content ${(props.width >= 401 && props.width <= 640) ? 'mobile-medium' : (props.width <= 400) && 'mobile-mini'}`}>
             <p 
                 className='line-title'
             >
-                {props.title !== '' ? `${props.title}` : 'None-Title'}
+                {props.title !== '' ? `${props.title} + ${props.width}` : 'None-Title'}
             </p>
             <div className={`line-line ${props.width}`}>
                 <div className='line-inline' ref={controlLine}>
                     {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25].map((content, i) => (
-                        <div className={`content ${(props.width >= 1320 && content % 5 === 0) ? 'five' : (props.width <= 826 && props.width >= 641) ? 'mobile' : props.width <= 640 ? 'mobile-medium' : ''}`} key={i}>
+                        <div className={`content ${(props.width >= 1320 && content % 5 === 0) ? 'five' : (props.width >= 401 && props.width <= 640) ? 'mobile-medium' : (props.width <= 400) && 'mobile-mini'}`} key={i}>
                             <div className='image'>
                                 <Image
                                     src={'/images/KakaoTalk_Photo_2022-10-07-12-18-26.gif'}
@@ -130,17 +134,9 @@ const MainContentLine = (props:Title) => {
                 )
             }
             {
-                ((props.width >= 1320) && lineCount !== 4) ?
+                ((props.width >= 1068) && lineCount !== 4) ?
                 (
-                    <div className='right-button' onClick={handleLineRight}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </div>
-                ) :
-                ((props.width >= 1068) && lineCount !== 6) ?
-                (
-                    <div className='right-button' onClick={handleLineRight}>
+                    <div className={`right-button ${props.width <= 519 ? 'mobile-small' : ''}`} onClick={handleLineRight}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
@@ -154,7 +150,7 @@ const MainContentLine = (props:Title) => {
                         </svg>
                     </div>
                 ) :
-                ((props.width >= 520) && lineCount !== 12) ?
+                ((props.width <= 825 && props.width >= 641) && lineCount !== 8) ?
                 (
                     <div className='right-button' onClick={handleLineRight}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -162,9 +158,9 @@ const MainContentLine = (props:Title) => {
                         </svg>
                     </div>
                 ) :
-                ((props.width <= 519) && lineCount !== 24) ?
+                ((props.width <= 640) && lineCount !== 12) ?
                 (
-                    <div className='right-button mobile-small' onClick={handleLineRight}>
+                    <div className={`right-button ${(props.width <= 519 && props.width >= 401) ? 'mobile-small' : props.width <= 400 && 'mobile-mini'}`} onClick={handleLineRight}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
@@ -190,7 +186,21 @@ const ContentLine = styled.div`
     &.mobile-medium{
         .line-line{
             width: auto;
-            height: 400px !important;
+            height: 220px !important;
+        }
+        .plot {
+            height: 100px !important;
+        }
+    }
+    &.mobile-mini{
+        .line-line{
+            height: 200px !important;
+        }
+        .plot {
+            height: 80px !important;
+        }
+        .last-line{
+            margin-top: 10px !important;
         }
     }
     .line-title{
@@ -199,7 +209,7 @@ const ContentLine = styled.div`
     }
     .line-line{
         width: 100%;
-        height: 300px;
+        height: 240px;
         margin-top: 12px;
         overflow: hidden;
         &.pc-small{
@@ -225,8 +235,8 @@ const ContentLine = styled.div`
         position: absolute;
         top: 50%;
         left: -24px;
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
         box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
         display: flex;
         justify-content: center;
@@ -241,16 +251,16 @@ const ContentLine = styled.div`
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
         }
         &.mobile-small{
-            width: 42px;
-            height: 42px;
-            left: -26px;
+            width: 32px;
+            height: 32px;
+            left: -16px;
             svg {
-                width: 34px;
-                height: 34px;
+                width: 24px;
+                height: 24px;
             }
         }
     }
@@ -258,8 +268,8 @@ const ContentLine = styled.div`
         position: absolute;
         top: 50%;
         right: -24px;
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
         box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
         display: flex;
         justify-content: center;
@@ -270,26 +280,34 @@ const ContentLine = styled.div`
         cursor: pointer;
         svg{
             position: absolute;
-            margin-right: -3px;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
         }
         &.mobile-small{
-            width: 42px;
-            height: 42px;
+            width: 32px;
+            height: 32px;
             right: -14px;
             svg {
-                width: 34px;
-                height: 34px;
+                width: 24px;
+                height: 24px;
+            }
+        }
+        &.mobile-mini{
+            right: -8px;
+            width: 32px;
+            height: 32px;
+            svg {
+                width: 24px;
+                height: 24px;
             }
         }
     }
     .content{
-        min-width: 230px;
-        width: 230px;
+        min-width: 190px;
+        width: 190px;
         height: 100%;
         border-radius: 6px;
         overflow: hidden;
@@ -299,10 +317,22 @@ const ContentLine = styled.div`
             margin-right: 0px;
         }
         &.mobile{
-            min-width: 210px;
+            min-width: 170px;
+            button {
+                font-size: 12px !important;
+            }
         }
         &.mobile-medium{
-            min-width: 260px;
+            min-width: 150px;
+        }
+        &.mobile-mini{
+            min-width: 130px;
+            h4{
+                font-size: 16px !important;
+            }
+            .series-info{
+                font-size: 12px;
+            }
         }
         .image{
             position: absolute;
@@ -358,9 +388,9 @@ const ContentLine = styled.div`
                 align-items: center;
                 .plot{
                     width: 100%;
-                    height: 160px;
-                    font-size: 16px;
-                    line-height: 18px;
+                    height: 120px;
+                    font-size: 14px;
+                    line-height: 16px;
                     opacity: 0;
                     transition: opacity .6s .23s ease; 
                     overflow: hidden;
@@ -421,7 +451,7 @@ const ContentLine = styled.div`
             }
             .last-line{
                 width: 100%;
-                margin-top: 4px;
+                margin-top: 6px;
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
@@ -439,7 +469,7 @@ const ContentLine = styled.div`
                 button{
                     position: absolute;
                     right: 0px;
-                    padding: 3px 10.5px;
+                    padding: 2.4px 10.5px;
                     display: flex;
                     justify-content: center;
                     align-items: center;

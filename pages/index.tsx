@@ -40,8 +40,10 @@ export default function Home(){
                     innerWidth >= 1320 ? 'pc-medium' : 
                     innerWidth >= 1068 ? 'pc-small' : 
                     innerWidth >= 826  ? 'tablet' : 
-                    innerWidth >= 640  ? 'mobile-big' : 
-                    innerWidth <= 500  ? 'mobile-small' :
+                    innerWidth >= 640  ? 'mobile-big' :
+                    innerWidth >= 500  ? 'mobile-medium' : 
+                    innerWidth >= 400  ? 'mobile-small' :
+                    innerWidth <= 400  ? 'mobile-mini' :
                     ''
                 }
             >
@@ -64,29 +66,32 @@ const Box = styled.div`
     align-items: center;
     gap: 32px;
     &.pc-medium{
-        min-width: 1200px;
-        max-width: 1200px;
+        min-width: 1000px;
+        max-width: 1000px;
     }
     &.pc-small{
         min-width: 1000px;
         max-width: 1000px;
     }
     &.tablet {
-        min-width: 786px;
-        max-width: 786px;
+        min-width: 766px;
+        max-width: 766px;
     }
     &.mobile-big {
-        min-width: 580px;
-        max-width: 580px;
+        min-width: 480px;
+        max-width: 480px;
     }
     &.mobile-medium {
-        min-width: 340px;
-        width: calc(100vw - 40px);
-        max-width: 500px;
+        min-width: 420px;
+        width: 450px;
+        max-width: 420px;
     }
     &.mobile-small{
-        min-width: 280px;
-        width: calc(100vw -  80px);
-        max-width: 500px;
+        min-width: 350px;
+        width: calc(100vw -  60px);
+        max-width: 400px;
+    }
+    &.mobile-mini{
+        max-width: 320px;
     }
 `
