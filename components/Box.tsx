@@ -25,7 +25,7 @@ const Container = styled.div`
   @media screen and (max-width: 500px) {
     width: 100%;
     min-width: 350px;
-    min-height: auto;
+    min-height: calc(100vh - 400px);
     padding: 30px 16px 60px 16px;
     margin: 0;
     border-radius: 0px;

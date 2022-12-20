@@ -69,7 +69,7 @@ const MainContentLine = (props:Title) => {
             <p 
                 className='line-title'
             >
-                {props.title !== '' ? `${props.title} + ${props.width}` : 'None-Title'}
+                {props.title !== '' ? `${props.title}` : 'None-Title'}
             </p>
             <div className={`line-line ${props.width}`}>
                 <div className='line-inline' ref={controlLine}>
@@ -184,6 +184,7 @@ const ContentLine = styled.div`
     color: var(--title);
     margin-top: 36px;
     &.mobile-medium{
+        margin-top: 16px;
         .line-line{
             width: auto;
             height: 220px !important;
@@ -193,6 +194,7 @@ const ContentLine = styled.div`
         }
     }
     &.mobile-mini{
+        margin-top: 16px;
         .line-line{
             height: 200px !important;
         }

@@ -4,14 +4,16 @@ import "aos/dist/aos.css";
 import Box from 'components/Box';
 import moment from "moment";
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoginState } from 'recoil/user';
+import { LoginMadalState } from 'recoil/loginModal';
 
 export default function CashWallet(){
     const [selectTab, setSelectTab] = React.useState("payment");
     const [fetchData, setFetchData] = React.useState<any>(null);
     const [usageDetails, setUsageDetails] = React.useState<any>(null);
     const [error, setError] = React.useState<any>(null);
+    const setLoginModal = useSetRecoilState(LoginMadalState);
     const fetchDatas = async () => {
         try {
             // error, data 초기화
@@ -40,6 +42,7 @@ export default function CashWallet(){
     const login = useRecoilValue(LoginState);
     React.useEffect(()=> {
         console.log('cashWallet ReWrite..!!');
+        login === null && setLoginModal(true);
         login !== null ? fetchDatas() : NoneData()
     },[login]);
     React.useEffect(()=> {
@@ -54,8 +57,7 @@ export default function CashWallet(){
         <Box>
             <TopTitle onClick={()=> console.log((fetchData && fetchData.response_data[0]) ? fetchData : 'none')}>보유 CASH</TopTitle>
             <TopTitleLine/>
-            <HaveCash onClick={()=> console.log(usageDetails)}>1,000,000 TC</HaveCash>
-
+            <HaveCash onClick={()=> console.log(usageDetails)}>0 TC</HaveCash>
             <PaymentDetail>
                 <Detail>
                     <img src="/images/icons/won.svg" alt=""/>
@@ -143,7 +145,7 @@ const TopTitleLine = styled.div`
 `
 const HaveCash = styled.p`
     font-size: 36px;
-    margin-top: 24px;
+    margin-top: 64px;
     font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
     letter-spacing: -.4px;
     text-align: center;

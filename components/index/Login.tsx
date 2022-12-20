@@ -1,8 +1,9 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import * as React from 'react';
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { LoadingState } from "recoil/loading";
 import { LoginMadalState } from "recoil/loginModal";
 import { LoginState } from "recoil/user";
@@ -13,6 +14,9 @@ const LoginBox = () => {
     const [inputEmail, setInputEmail] = React.useState('');
     const [inputPassword, setInputPassword] = React.useState('');
     const [errorMassage, setErrorMessage] = React.useState<string>('');
+    const login = useRecoilValue(LoginState);
+
+    const router = useRouter();
 
     const setLogin = useSetRecoilState(LoginState);
     // loading-state
@@ -75,6 +79,13 @@ const LoginBox = () => {
     // outside-click-function
     const clickModalOutside = (event:any) => {
         if(!loginBoxRef.current.contains(event.target)){
+            if(login === null && router.asPath.indexOf('cash') !== -1){
+                if (window.confirm('로그인 후 이용하실 수 있습니다')){
+                    return;
+                } else {
+                    router.push('/');
+                }
+            }
             setLoginModal(false);
         }
     }

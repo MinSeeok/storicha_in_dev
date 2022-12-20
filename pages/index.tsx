@@ -64,7 +64,7 @@ const Box = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 32px;
+    gap: 12px;
     &.pc-medium{
         min-width: 1000px;
         max-width: 1000px;

@@ -9,6 +9,7 @@ import Router, { useRouter } from 'next/router';
 import * as React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoadingState } from 'recoil/loading';
+import { LoginMadalState } from 'recoil/loginModal';
 import { LoginState } from 'recoil/user';
 import styled from 'styled-components';
 
@@ -51,6 +52,7 @@ const Cash:NextPage = () => {
     const loading = useRecoilValue(LoadingState);
     const setLoadState = useSetRecoilState(LoadingState);
     const [error, setError] = React.useState<any>(null);
+    const setLoginModal = useSetRecoilState(LoginMadalState);
 
     const fetchDatas = async () => {
         if(login !== null){
@@ -126,6 +128,7 @@ const Cash:NextPage = () => {
     React.useEffect(()=>{
         console.log('component lender');
         let useParams = new URLSearchParams(window.location.search);
+        login === null && setLoginModal(true);
         setIdx(Number(useParams.get('idx')));
         login !== null ? fetchDatas() : setTopupData(null);
     },[]);
