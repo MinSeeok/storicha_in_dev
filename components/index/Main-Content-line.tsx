@@ -60,12 +60,10 @@ const MainContentLine = (props:Title) => {
         }
     }
     React.useEffect(()=> {
-        console.log(controlBox.current.offsetWidth);
-        console.log(controlLine.current.offsetWidth);
+        console.log('HELLO! IP-MANAGER');
     },[]);
     return (
-        // <ContentLine data-aos="fade-up" ref={controlBox}>
-        <ContentLine ref={controlBox} className={`content ${(props.width >= 401 && props.width <= 640) ? 'mobile-medium' : (props.width <= 400) && 'mobile-mini'}`}>
+        <ContentLine ref={controlBox} data-aos="fade-up" className={`content ${(props.width >= 401 && props.width <= 640) ? 'mobile-medium' : (props.width <= 400) && 'mobile-mini'}`}>
             <p 
                 className='line-title'
             >
