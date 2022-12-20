@@ -545,7 +545,7 @@ const TopContainer = styled.div`
         transform: translateX(-50%);
         @media screen and (max-width: 1000px) {
             left: 0%;
-            transform: translateX(100%);
+            transform: translateX(85%);
         }
     }
     .search{
