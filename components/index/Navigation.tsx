@@ -84,7 +84,7 @@ const Navigation = ({time}:any) => {
         localStorage.removeItem('user-nickname');
         setJwtToken('');
         setStorageName('');
-        setJwtToken('');
+        setStorageEmail('');
         setLoadState(false);
     }
     React.useEffect(()=>{
@@ -96,7 +96,7 @@ const Navigation = ({time}:any) => {
         }
         setJwtToken(localStorage.getItem('user-jwt'));
         setStorageName(localStorage.getItem('user-nickname'));
-        setJwtToken(localStorage.getItem('user-email'));
+        setStorageEmail(localStorage.getItem('user-email'));
     },[]);
     React.useEffect(()=>{
         login === null ? setLoginState(false) : setLoginState(true);
@@ -468,7 +468,7 @@ const Navigation = ({time}:any) => {
                     <div>
                         <div className='back'/>
                         <div className='profileImage'>
-                            {login === null ? (
+                            {jwtToken === null ? (
                                 <Image
                                     width={'50px'}
                                     height={'50px'}
@@ -482,7 +482,7 @@ const Navigation = ({time}:any) => {
                                 />
                             )}
                         </div>
-                        <h4><b>{login === null ? "please, Login" : (login.nick_name === undefined || login.nick_name === '') ? 'None-Name' : login.nick_name}</b><br/>{login === null  ?  'Basic-type' : login.user_id}</h4>
+                        <h4><b>{storageName === '' ? 'Please, Login' : storageName}</b><br/>{storageEmail === '' ? 'Please, Login' : storageEmail}</h4>
                     </div>
                 </ProfileBox>
             </Container>
