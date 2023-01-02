@@ -49,7 +49,9 @@ const LoginBox = () => {
                 setErrorMessage('password does not match');
                 return;
             }
-            console.log(response);
+            localStorage.setItem('user-jwt', response.data.response_message);
+            localStorage.setItem('user-nickname', response.data.response_data[0].nick_name);
+            localStorage.setItem('user-email', response.data.response_data[0].email);
             setLogin(response ? response.data.response_data[0] : null);
             setErrorMessage('');
             setLoginModal(false);
@@ -111,7 +113,7 @@ const LoginBox = () => {
                         />
                     }
                 </div>
-                <h1 className="title" onClick={()=> console.log(localStorage.theme)}>SIGN IN<br/>TO CONTINUE</h1>
+                <h1 className="title">SIGN IN<br/>TO CONTINUE</h1>
                     <input 
                         name="email"
                         type="text" 

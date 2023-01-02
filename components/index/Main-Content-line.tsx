@@ -58,9 +58,6 @@ const MainContentLine = (props:Title) => {
             return;
         }
     }
-    React.useEffect(()=> {
-        console.log('HELLO! IP-MANAGER');
-    },[]);
     return (
         <ContentLine ref={controlBox} className={`content ${(props.width >= 401 && props.width <= 640) ? 'mobile-medium' : (props.width <= 400) && 'mobile-mini'}`}>
             <p 

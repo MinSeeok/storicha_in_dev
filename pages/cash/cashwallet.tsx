@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoginState } from 'recoil/user';
 import { LoginMadalState } from 'recoil/loginModal';
+import { BalanceType } from 'enum/data-type';
+import { useRouter } from 'next/router';
 
 export default function CashWallet(){
     const [selectTab, setSelectTab] = React.useState("payment");
@@ -14,6 +16,48 @@ export default function CashWallet(){
     const [usageDetails, setUsageDetails] = React.useState<any>(null);
     const [error, setError] = React.useState<any>(null);
     const setLoginModal = useSetRecoilState(LoginMadalState);
+    const [balance, setBalance] = React.useState<BalanceType | null>({
+        balance: 0,
+        balance_by_bonus: 0,
+        balance_by_subscription: 0,
+        balance_by_topup: 0,
+    });
+    const [useAmount, setUseAmount] = React.useState<number>(0);
+
+    // get Idx
+    const router = useRouter();
+    const postCart = () => {
+        if(login === null){
+            return;
+        }
+        console.log('Get Cash...');
+        axios({
+            method: 'GET',
+            url: `https://api-v2.storicha.in/api/cash-wallet?InfoType=2`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            withCredentials: true,
+        }).then((response):any => {
+            console.log('response-data');
+            console.log(response.data.response_data);
+            if(response.data.response_data === undefined){
+                alert('데이터를 불러오는데 문제가 발생하셨습니다.');
+                setLoginModal(true);
+            }
+            console.log(response.data.response_data.Topup);
+            console.log(response.data.response_data.Subscription);
+            console.log(response.data.response_data.Bonus);
+            setBalance({
+                balance: Number(response.data.response_data.Topup)+Number(response.data.response_data.Subscription)+Number(response.data.response_data.Bonus),
+                balance_by_bonus: Number(response.data.response_data.Bonus),
+                balance_by_subscription: Number(response.data.response_data.Subscription),
+                balance_by_topup: Number(response.data.response_data.Topup),
+            });
+        }).catch((error)=> {
+            console.log(error);
+        })
+    }
     const fetchDatas = async () => {
         try {
             // error, data 초기화
@@ -27,7 +71,6 @@ export default function CashWallet(){
             const getDataSecond = await axios.get(
                 'https://api-v2.storicha.in/api/wallet-history/1?display_yn=y&product_id=0',{withCredentials:true}
             )
-            console.log(getDataSecond);
             setUsageDetails(getDataSecond.data);
         } catch(e) {
             setError(e);
@@ -44,9 +87,11 @@ export default function CashWallet(){
         console.log('cashWallet ReWrite..!!');
         login === null && setLoginModal(true);
         login !== null ? fetchDatas() : NoneData()
+        login !== null && postCart();
     },[login]);
     React.useEffect(()=> {
         login !== null ? fetchDatas() : NoneData()
+        login !== null && postCart();
     },[]);
     const commaNumber = (number:number) => {
         const parts = number.toString().split('.');
@@ -55,25 +100,25 @@ export default function CashWallet(){
     }
     return(
         <Box>
-            <TopTitle onClick={()=> console.log((fetchData && fetchData.response_data[0]) ? fetchData : 'none')}>보유 CASH</TopTitle>
+            <TopTitle>보유 CASH</TopTitle>
             <TopTitleLine/>
-            <HaveCash onClick={()=> console.log(usageDetails)}>0 TC</HaveCash>
+            <HaveCash>{balance?.balance} TC</HaveCash>
             <PaymentDetail>
                 <Detail>
                     <img src="/images/icons/won.svg" alt=""/>
                     <p>충전액 &gt;</p>
-                    <p><b>10</b>TC</p>
+                    <p><b>{balance?.balance_by_topup}</b>TC</p>
                 </Detail>
                 <Detail>
                     <img id="cash_icon" src="/images/icons/coinplus.svg" alt=""/>
                     <p>월구독액 &gt;</p>
-                    <p><b>10</b>TC</p>
+                    <p><b>{balance?.balance_by_subscription}</b>TC</p>
                     <span>소멸예정 D30</span>
                 </Detail>
                 <Detail>
                     <img id="cash_icon2" src="/images/icons/CoinPlus2.svg" alt=""/>
                     <p>적립액 &gt;</p>
-                    <p><b>10</b>TC</p>
+                    <p><b>{balance?.balance_by_bonus}</b>TC</p>
                 </Detail>
             </PaymentDetail>
             <Tab className={selectTab === "payment" ? "payment" : "use"}>

@@ -1,21 +1,19 @@
 import { GlobalStyle } from '@src/styles/global-styled';
 import BackLogoImage from 'components/BackLogoImage';
 import Container from 'components/Container';
-import Devtools from 'components/dev/devtools';
 import FooterContainer from 'components/index/Bottom';
 import Navigation from 'components/index/Navigation';
 import LoadingContainer from 'components/LoadingBox';
-import type { AppProps } from 'next/app';
+import type { AppContext, AppProps } from 'next/app';
+import App from 'next/app';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { RecoilRoot, useSetRecoilState } from 'recoil';
-import { LoginMadalState } from 'recoil/loginModal';
+import { RecoilRoot } from 'recoil';
 import '../src/styles/globals.css';
 
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
-    // testMessege **
     React.useEffect(()=> {
         localStorage.theme = 'light';
         document.documentElement.classList.remove('dark');
@@ -39,4 +37,5 @@ function MyApp({ Component, pageProps }: AppProps) {
         </>
     )
 }
+
 export default MyApp
