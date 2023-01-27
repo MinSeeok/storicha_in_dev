@@ -153,6 +153,30 @@ const Navigation = ({time}:any) => {
         setLeftView((e:any)=>!e);
         loginMenuState && setLoginMenuState(false);
     }
+    React.useEffect(()=> {
+        if (router.asPath.includes('wlogin?q=')){
+            axios({
+                method: 'POST',
+                url: `https://api-v2.storicha.in/api/cash-user/info`,
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                data: {
+                    tk: router.query.q,
+                },
+            }).then((response):any => {
+                console.log(router.query.q);
+                localStorage.setItem('user-jwt', response.data.response_message);
+                localStorage.setItem('user-nickname', response.data.response_data[0].nick_name);
+                localStorage.setItem('user-email', response.data.response_data[0].email);
+                console.log('Post Cart End.');
+                router.push('/')
+            }).catch((error)=> {
+                console.log("error?????????")
+                console.log(error);
+            })
+        }
+    },[router]);
     return(
         <>
             {leftView && <DarkBox/>}
@@ -167,7 +191,7 @@ const Navigation = ({time}:any) => {
                             onClick={seeNavigation}
                         />
                     </div>
-                    <div className="logo-two">
+                    {/* <div className="logo-two">
                         <Image
                             src={LogoSS}
                             layout="fill"
@@ -181,7 +205,7 @@ const Navigation = ({time}:any) => {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="right">
                     {/* {loginState === true ? (
@@ -320,7 +344,7 @@ const Navigation = ({time}:any) => {
                             </div>
                         </div>
                     ) : (
-                        <p className="login" onClick={()=> setLoginModal(true)}>로그인</p>
+                        <p>로그인222222</p>
                     )}
                 </div>
                 {/* <span className="title" onClick={()=> router.push('/')}>IP Studio {time}</span> */}

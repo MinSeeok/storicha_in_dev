@@ -6,6 +6,7 @@ import Navigation from 'components/index/Navigation';
 import LoadingContainer from 'components/LoadingBox';
 import type { AppContext, AppProps } from 'next/app';
 import App from 'next/app';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';

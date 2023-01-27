@@ -63,23 +63,33 @@ const Cash:NextPage = () => {
                 setTopupData(null);
                 // loading state true
                 setLoadState(true);
-                const getData = await axios.get(
-                    'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',{withCredentials:true}
-                )
-                setTopupData(getData.data);
                 axios({
                     method: 'GET',
-                    url: `https://api-v2.storicha.in/api/cash-wallet?InfoType=2`,
-                    withCredentials: true,
-                }).then((response):any => {
-                    if(response.data === undefined){
-                        setBalance(0);
-                        alert('잔액이 존재하지 않습니다');
-                        return;
+                    url: 'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',
+                    withCredentials: false,
+                    headers: {
+                        "Content-Type": "application/json", // "Content-Type": "application/json"
+                        "Authorization": `Bearer ${localStorage.getItem('user-jwt')}` // 발행된 액세스 토큰
                     }
-                    // setBalance(response.data && response.data.response_data.Topup + response.data.response_data.Subscription + response.data.response_data.Bonus);
-                    console.log(response.data)
+                }).then ((response):any => {
+                    console.log(response);
+                }).catch(()=> {
+                    console.log('에러발생');
                 })
+                // setTopupData(getData.data);
+                // axios({
+                //     method: 'GET',
+                //     url: `https://api-v2.storicha.in/api/cash-wallet?InfoType=2`,
+                //     // withCredentials: true,
+                // }).then((response):any => {
+                //     if(response.data === undefined){
+                //         setBalance(0);
+                //         alert('잔액이 존재하지 않습니다');
+                //         return;
+                //     }
+                //     // setBalance(response.data && response.data.response_data.Topup + response.data.response_data.Subscription + response.data.response_data.Bonus);
+                //     console.log(response.data)
+                // })
             } catch(e) {
                 setError(e);
                 console.log(error);
@@ -121,6 +131,22 @@ const Cash:NextPage = () => {
         })
     }
 
+    const apitest = () => {
+        console.log(localStorage.getItem('user-jwt'));
+        axios({
+            method: 'GET',
+            url: 'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',
+            headers: {
+                "Content-Type": "application/json", // "Content-Type": "application/json"
+                "Accept" : '*/*',
+                "Authorization": `Bearer ${localStorage.getItem('user-jwt')}` // 발행된 액세스 토큰
+            }
+        }).then ((response):any => {
+            console.log(response);
+        }).catch(()=> {
+            console.log('에러발생');
+        })
+    }
     React.useEffect(()=> {
         console.log('login change');
         login !== null ? fetchDatas() : setTopupData(null);
@@ -138,7 +164,7 @@ const Cash:NextPage = () => {
             <Box>
                 {!loading && (
                     <>
-                        <Title>
+                        <Title onClick={apitest}>
                             나의 토리 캐시 잔액 &nbsp;
                             <Image
                                 src={'/images/icons/toriCoin.png'}

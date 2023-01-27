@@ -37,7 +37,7 @@ const LoginBox = () => {
         axios({
             method: 'GET',
             url: `https://api-v2.storicha.in/api/User/SiteSnsLogin?site_user_id=${inputEmail}&pwd=${inputPassword}`,
-            withCredentials: true,
+            // withCredentials: true,
         })
         .then((response):any => {
             console.log('login complete..');
