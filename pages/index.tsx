@@ -3,9 +3,9 @@ import { ThemeNavigation } from 'components/index/ThemeChangeBtn';
 import styled from 'styled-components';
 import HelmetProvier from 'components/Helmet';
 import axios from 'axios';
-import MainContentLine from 'components/index/Main-Content-line';
 import "aos/dist/aos.css";
 import Aos from 'aos';
+import DevContentLine from 'components/index/Dev-content-line';
 
 export default function Home(){
     const [innerWidth, setInnerWidth] = React.useState(0);
@@ -16,9 +16,10 @@ export default function Home(){
         })
         axios({
             method: 'POST',
-            url: `https://api-v2.storicha.in/api/Event/GetListsForDiscover?page=1&page_rows=24&me_user_idx=0&search_text&event_content_type_idx=2&stage_labeling_type_idx=0&scope_type_idx=0&topic_idxs&sort_type_name=date&genres_type_idxs`,
+            url: `${process.env.NEXT_PUBLIC_DEV_STORICAHIN_API_V2}/Event/GetListsForDiscover?page=1&page_rows=24&me_user_idx=0&search_text&event_content_type_idx=2&stage_labeling_type_idx=0&scope_type_idx=0&topic_idxs&sort_type_name=date&genres_type_idxs`,
             withCredentials: true,
         }).then((response):any => {
+            console.log(response);
         }).catch((error)=> {
             console.log(error);
         });
@@ -33,22 +34,11 @@ export default function Home(){
     },[]);
     return (
         <>
-            <HelmetProvier title='IP Manager'/>
+            <HelmetProvier title='IP Studio'/>
             <ThemeNavigation/>
-            <Box 
-                className = { 
-                    innerWidth >= 1320 ? 'pc-medium' : 
-                    innerWidth >= 1068 ? 'pc-small' : 
-                    innerWidth >= 826  ? 'tablet' : 
-                    innerWidth >= 640  ? 'mobile-big' :
-                    innerWidth >= 500  ? 'mobile-medium' : 
-                    innerWidth >= 400  ? 'mobile-small' :
-                    innerWidth <= 400  ? 'mobile-mini' :
-                    ''
-                }
-            >
+            <Box>
                 {array.map((content, i)=> (
-                    <MainContentLine title={content} width={innerWidth} key={`main-container-${i}`}/>
+                    <DevContentLine title={content} key={`dev-content-line-${i}`}/>
                 ))}
             </Box>
         </>

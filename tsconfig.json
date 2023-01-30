@@ -17,7 +17,13 @@
     "baseUrl": ".",
     // "noImplicitAny": false,
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@style/*" : ["src/styles/*"],
+      "@image/*": ["assets/images/*"],
+      "@icon/*": ["assets/images/icons/*"],
+      "@logo/*": ["assets/images/logo/*"],
+      "@content/*": ["assets/content/*"],
+      "@comp/*": ["components/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/styles/CustomThemeProvider.js"],
