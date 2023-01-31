@@ -58,7 +58,7 @@ const Navigation = ({time}:any) => {
         localStorage.removeItem('stori-email')
         localStorage.removeItem('stori-token')
         localStorage.removeItem('stori-nickName')
-        alert('로그아웃되었습니다')
+        setLogin('')
         router.push('/')
     }
     React.useEffect(()=>{
@@ -69,6 +69,8 @@ const Navigation = ({time}:any) => {
         }
         if(localStorage.getItem('stori-token') !== ''){
             setLogin(localStorage.getItem('stori-email'))
+        } else {
+            setLogin('')
         }
         if(router.asPath.includes('/wlogin?q=')){
             axios({
@@ -97,6 +99,9 @@ const Navigation = ({time}:any) => {
             })
         }
     },[])
+    // React.useEffect(()=> {
+    //     localStorage.getItem('stori-token') && setLogin('')
+    // },[router])
     const routerPathChange = (path: string) => {
         setLoginMenuState(false)
         if(router.asPath.indexOf('/series') === 0){
@@ -157,7 +162,7 @@ const Navigation = ({time}:any) => {
                     </div>
                 </div>
                 <div className="right">
-                    {login !== '' ? (
+                    {login !== '' && login !== null ? (
                         <div className="right-container" onClick={seeLoginMenuState}>
                             <div className="image">
                                 <Image
@@ -229,8 +234,7 @@ const Navigation = ({time}:any) => {
                 </div>
                 <span className="title" onClick={()=> window.open(`https://api-v2.storicha.in/user/login?ReturnUrl=${encodeURIComponent(window.location.host)}devipstudio`)}>IP Studio {time}</span>
             </TopContainer>
-            <Container ref={elem => (wrapperRef.current[1] = elem)} color={isPointTheme} style={leftView ? {left: '0px'} : {left: '-100%'}}>
-                <MenuBox color={isPointTheme}>
+            <Container ref={elem => (wrapperRef.current[1] = elem)} color={isPointTheme} style={leftView ? {left: '0px'} : {left: '-100%'}}> <MenuBox color={isPointTheme}>
                     <div className='wrapper' style={{marginTop: '4px'}} onClick={()=> router.push('/')}>
                         <div className='background'/>
                         <div className='box'>
@@ -363,6 +367,7 @@ const Navigation = ({time}:any) => {
                             </div>
                         </div>
                     </PlusMenu>
+                    <h1 onClick={() => console.log(login)}>12368921362</h1>
                 </MenuBox>
                 <ProfileBox 
                     color={isPointTheme}
