@@ -3,9 +3,7 @@ import axios from 'axios';
 import Box from 'components/Box';
 import * as React from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { LoginState } from 'recoil/user';
 import { useRouter } from 'next/router';
 
 
@@ -27,41 +25,44 @@ const Checkout: NextPage = () =>{
     const [means, setMeans] = React.useState('means1'); 
     const [fetchData, setFetchData] = React.useState<any>(null);
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState<any>(null);
-    const login = useRecoilValue(LoginState);
+    const [login, setLogin] = React.useState<String | null>('');
 
     // cash, amount 
-    const [cash, setCash] = React.useState<string | null>('');
-    const [amount, setAmount] = React.useState<string | null>('');
     const [subscription, setSubscription] = React.useState<boolean>(false);
 
 
     const fetchDatas = async () => {
-        try {
-            // error, data 초기화
-            setError(null);
-            setFetchData(null);
-            // loading state true
-            setLoading(true);
-            const getData = await axios.get(
-                'https://api-v2.storicha.in/api/payment/method?display_yn=y&product_id=0',{withCredentials:true}
-            )
-            setFetchData(getData.data);
-        } catch(e) {
-            setError(e);
+        setLoading(true)
+        await axios({
+          method: 'POST',
+          url: `https://api-v2.storicha.in/api/payment/method?display_yn=y&product_id=0`,
+          headers: {
+              "Content-Type": "multipart/form-data"
+          },
+          data: {
+              tk: localStorage.getItem('stori-token')
+          },
+        })
+        .then((response):any => {
+            setFetchData(response.data)
+        })
+        .catch((error)=> {
             console.log(error);
-        }
-        setLoading(false);
+        })
+        .finally(()=> {
+            setLoading(false);
+        })
     };
 
     // add comma
     const commaRegex = /\B(?=(\d{3})+(?!\d))/g;
+    const returnToPage = async () => {
+        alert('로그인 후 이용할 수 있습니다.')
+        router.push('/')
+    }
     React.useEffect(()=> {
-        login !== null  ? fetchDatas() : setFetchData(null); 
-        // let useParams = new URLSearchParams(window.location.search);
-        // setCash(useParams.get('bp') !== null ? useParams.get('bp') : '');
-        // setAmount(useParams.get('vatin') !== null ? useParams.get('vatin') : '');
-        // setSubscription(useParams.get('subscription') === 'false' ?  false : true);
+        localStorage.getItem('stori-token') ? setLogin(localStorage.getItem('stori-email')) : returnToPage()
+        localStorage.getItem('stori-token') ? fetchDatas() : setFetchData(null)
     },[]);
     React.useEffect(()=> {
       login  ? fetchDatas() : setFetchData(null); 
@@ -110,7 +111,7 @@ const Checkout: NextPage = () =>{
                       )}
                   </MeansBox>
                   <ButtonBox>
-                      <button>결제하기</button>
+                      <button onClick={() => alert('결제 시작')}>결제하기</button>
                       <button onClick={() => router.push(`/cash/topup/?idx=${idx}`)}>취소하기</button>
                   </ButtonBox>
                   <SubulTitle>구매 전 필수 유의사항</SubulTitle>

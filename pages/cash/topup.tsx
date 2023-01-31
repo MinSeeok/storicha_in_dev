@@ -16,7 +16,6 @@ import styled from 'styled-components';
 const Cash:NextPage = () => {
     const [inputValue, setInputValue] = React.useState<string>('');
     const [selectNumber, setSelectNumber] = React.useState<number>(0);
-    const login = useRecoilValue(LoginState);
     const [idx, setIdx] = React.useState<number>(0);
     const [price, setPrice] = React.useState<number>(0);
     const [dcPrice, setDcPrice] = React.useState<number>(0);
@@ -27,6 +26,7 @@ const Cash:NextPage = () => {
     const [fillupAmount, setFillupAmount] = React.useState<number>(0);
     const [cashBuyType, setCashBuyType] = React.useState<string>('Direct');
 
+    const [login, setLogin] = React.useState<String | null>('');
     const router = useRouter();
     const routerIdx = router.asPath.substring(router.asPath.indexOf('idx=')+4);
 
@@ -49,13 +49,11 @@ const Cash:NextPage = () => {
     // topup-data
     const [topupData, setTopupData] = React.useState<TopupProductData | null>(null);
     // loading state
-    const loading = useRecoilValue(LoadingState);
     const setLoadState = useSetRecoilState(LoadingState);
     const [error, setError] = React.useState<any>(null);
-    const setLoginModal = useSetRecoilState(LoginMadalState);
 
     const fetchDatas = async () => {
-        if(login !== null){
+        if(localStorage.getItem('stori-token')){
             console.log('fetch Data start...');
             try {
                 // error, data 초기화
@@ -64,32 +62,19 @@ const Cash:NextPage = () => {
                 // loading state true
                 setLoadState(true);
                 axios({
-                    method: 'GET',
+                    method: 'POST',
                     url: 'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',
-                    withCredentials: false,
                     headers: {
-                        "Content-Type": "application/json", // "Content-Type": "application/json"
-                        "Authorization": `Bearer ${localStorage.getItem('user-jwt')}` // 발행된 액세스 토큰
-                    }
+                        "Content-Type": "multipart/form-data"
+                    },
+                    data: {
+                        tk: localStorage.getItem('stori-token')
+                    },
                 }).then ((response):any => {
-                    console.log(response);
+                    setTopupData(response.data);
                 }).catch(()=> {
                     console.log('에러발생');
                 })
-                // setTopupData(getData.data);
-                // axios({
-                //     method: 'GET',
-                //     url: `https://api-v2.storicha.in/api/cash-wallet?InfoType=2`,
-                //     // withCredentials: true,
-                // }).then((response):any => {
-                //     if(response.data === undefined){
-                //         setBalance(0);
-                //         alert('잔액이 존재하지 않습니다');
-                //         return;
-                //     }
-                //     // setBalance(response.data && response.data.response_data.Topup + response.data.response_data.Subscription + response.data.response_data.Bonus);
-                //     console.log(response.data)
-                // })
             } catch(e) {
                 setError(e);
                 console.log(error);
@@ -112,8 +97,8 @@ const Cash:NextPage = () => {
                 prd_idx: productIdx,
                 policy_idx: pricePolicy,
                 fill_qty: fillupAmount,
+                tk: localStorage.getItem('stori-token')
             },
-            withCredentials: true,
         }).then((response):any => {
             const res_idx = response.data.response_data[0].cash_product_order_idx;
             const res_bp = response.data.response_data[0].cash_fillup_amount;
@@ -130,41 +115,24 @@ const Cash:NextPage = () => {
             console.log(error);
         })
     }
-
-    const apitest = () => {
-        console.log(localStorage.getItem('user-jwt'));
-        axios({
-            method: 'GET',
-            url: 'https://api-v2.storicha.in/api/cash/product?display_yn=y&product_id=0',
-            headers: {
-                "Content-Type": "application/json", // "Content-Type": "application/json"
-                "Accept" : '*/*',
-                "Authorization": `Bearer ${localStorage.getItem('user-jwt')}` // 발행된 액세스 토큰
-            }
-        }).then ((response):any => {
-            console.log(response);
-        }).catch(()=> {
-            console.log('에러발생');
-        })
+    const returnToPage = async () => {
+        alert('로그인 후 이용할 수 있습니다.')
+        router.push('/')
     }
-    React.useEffect(()=> {
-        console.log('login change');
-        login !== null ? fetchDatas() : setTopupData(null);
-    },[login]);
     React.useEffect(()=>{
-        console.log('component lender');
-        let useParams = new URLSearchParams(window.location.search);
-        login === null && setLoginModal(true);
-        setIdx(Number(useParams.get('idx')));
-        login !== null ? fetchDatas() : setTopupData(null);
+        console.log('component lender')
+        let useParams = new URLSearchParams(window.location.search)
+        setIdx(Number(useParams.get('idx')))
+        localStorage.getItem('stori-token') ? setLogin(localStorage.getItem('stori-email')) : returnToPage()
+        localStorage.getItem('stori-token') ? fetchDatas() : setTopupData(null)
     },[]);
     return(
         <>
             <HelmetProvier title='토리 캐시 결제'/>
             <Box>
-                {!loading && (
+                {login && (
                     <>
-                        <Title onClick={apitest}>
+                        <Title onClick={()=>returnToPage()}>
                             나의 토리 캐시 잔액 &nbsp;
                             <Image
                                 src={'/images/icons/toriCoin.png'}

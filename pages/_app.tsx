@@ -3,10 +3,7 @@ import BackLogoImage from 'components/BackLogoImage';
 import Container from 'components/Container';
 import FooterContainer from 'components/index/Bottom';
 import Navigation from 'components/index/Navigation';
-import LoadingContainer from 'components/LoadingBox';
-import type { AppContext, AppProps } from 'next/app';
-import App from 'next/app';
-import { useRouter } from 'next/router';
+import type { AppProps } from 'next/app';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
@@ -28,7 +25,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <Container>
                         <BackLogoImage/>
                         <Component {...pageProps}/>
-                        <LoadingContainer/>
                         <Navigation/>
                         {/* <Devtools/> */}
                     </Container>

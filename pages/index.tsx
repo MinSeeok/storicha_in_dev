@@ -5,7 +5,7 @@ import HelmetProvier from 'components/Helmet';
 import axios from 'axios';
 import "aos/dist/aos.css";
 import Aos from 'aos';
-import DevContentLine from 'components/index/Dev-content-line';
+import DevContentLine from '@comp/index/ContentLine';
 
 export default function Home(){
     const [innerWidth, setInnerWidth] = React.useState(0);
